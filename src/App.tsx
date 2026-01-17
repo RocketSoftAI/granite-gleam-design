@@ -13,6 +13,9 @@ import Contact from "./pages/Contact";
 import Reviews from "./pages/Reviews";
 import FAQ from "./pages/FAQ";
 import Portfolio from "./pages/Portfolio";
+import ServiceArea from "./pages/ServiceArea";
+import BlogPage from "./pages/blog";
+import BlogPost from "./pages/blog/BlogPost";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +35,9 @@ const App = () => (
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/service-area" element={<ServiceArea />} />
+          <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
