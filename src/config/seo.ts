@@ -278,3 +278,125 @@ export const generateBreadcrumbSchema = (items: { name: string; url: string }[])
     item: `${SITE_CONFIG.domain}${item.url}`,
   })),
 });
+
+// ============================================
+// AEO (Answer Engine Optimization) SCHEMAS
+// ============================================
+
+/**
+ * HowTo Schema - For process/instructional content
+ * Optimized for Google Featured Snippets & AI answer engines
+ */
+export const generateHowToSchema = (howTo: {
+  name: string;
+  description: string;
+  totalTime?: string; // ISO 8601 duration format, e.g., "P21D" for 21 days
+  estimatedCost?: { currency: string; value: string };
+  steps: { name: string; text: string; image?: string }[];
+}) => ({
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: howTo.name,
+  description: howTo.description,
+  ...(howTo.totalTime && { totalTime: howTo.totalTime }),
+  ...(howTo.estimatedCost && {
+    estimatedCost: {
+      '@type': 'MonetaryAmount',
+      currency: howTo.estimatedCost.currency,
+      value: howTo.estimatedCost.value,
+    },
+  }),
+  step: howTo.steps.map((step, index) => ({
+    '@type': 'HowToStep',
+    position: index + 1,
+    name: step.name,
+    text: step.text,
+    ...(step.image && { image: `${SITE_CONFIG.domain}${step.image}` }),
+  })),
+});
+
+/**
+ * Service Schema - For service pages
+ * Helps AI engines understand service offerings
+ */
+export const generateServiceSchema = (service: {
+  name: string;
+  description: string;
+  provider?: string;
+  areaServed?: string[];
+  serviceType?: string;
+}) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: service.name,
+  description: service.description,
+  provider: {
+    '@type': 'LocalBusiness',
+    name: service.provider || SITE_CONFIG.name,
+  },
+  areaServed: (service.areaServed || SITE_CONFIG.serviceAreas).map((area) => ({
+    '@type': 'City',
+    name: area,
+  })),
+  ...(service.serviceType && { serviceType: service.serviceType }),
+});
+
+/**
+ * WebPage Schema with speakable - For voice search optimization
+ * Marks content that's suitable for text-to-speech by AI assistants
+ */
+export const generateWebPageSchema = (page: {
+  name: string;
+  description: string;
+  url: string;
+  speakableSelectors?: string[]; // CSS selectors for speakable content
+}) => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: page.name,
+  description: page.description,
+  url: `${SITE_CONFIG.domain}${page.url}`,
+  isPartOf: {
+    '@type': 'WebSite',
+    name: SITE_CONFIG.name,
+    url: SITE_CONFIG.domain,
+  },
+  ...(page.speakableSelectors && {
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: page.speakableSelectors,
+    },
+  }),
+});
+
+/**
+ * Organization Schema with enhanced details
+ * Comprehensive org data for knowledge panels
+ */
+export const generateOrganizationSchema = () => ({
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE_CONFIG.name,
+  url: SITE_CONFIG.domain,
+  logo: `${SITE_CONFIG.domain}/logo.png`,
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: SITE_CONFIG.phone,
+    contactType: 'customer service',
+    areaServed: 'US',
+    availableLanguage: 'English',
+  },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE_CONFIG.address.street,
+    addressLocality: SITE_CONFIG.address.city,
+    addressRegion: SITE_CONFIG.address.state,
+    postalCode: SITE_CONFIG.address.zip,
+    addressCountry: SITE_CONFIG.address.country,
+  },
+  sameAs: [
+    // Add social media URLs here
+    // 'https://www.facebook.com/stoneworksco',
+    // 'https://www.instagram.com/stoneworksco',
+  ],
+});
