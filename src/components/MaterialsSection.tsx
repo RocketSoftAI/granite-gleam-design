@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 // Import material images
 import marbleDetail from '@/assets/marble-detail.jpg';
@@ -9,24 +10,28 @@ import quartziteDetail from '@/assets/quartzite-detail.jpg';
 const materials = [
   {
     name: 'Granite',
+    slug: 'granite-countertops',
     image: graniteDetail,
     description: 'Natural beauty meets durability. Each slab is uniquely formed over millions of years, offering unmatched heat and scratch resistance.',
     features: ['100% Natural Stone', 'Heat Resistant', 'Unique Patterns'],
   },
   {
     name: 'Quartz',
+    slug: 'quartz-countertops',
     image: quartzDetail,
     description: 'Engineered for perfection. Consistent patterns with the look of natural stone and virtually maintenance-free performance.',
     features: ['Non-Porous', 'Low Maintenance', 'Consistent Color'],
   },
   {
     name: 'Marble',
+    slug: 'marble-countertops',
     image: marbleDetail,
     description: 'Timeless elegance for discerning homeowners. The classic choice for those who appreciate true luxury and sophistication.',
     features: ['Classic Beauty', 'Cool Surface', 'Unique Veining'],
   },
   {
     name: 'Quartzite',
+    slug: 'quartzite-countertops',
     image: quartziteDetail,
     description: 'Nature\'s hardest stone. The durability of granite with the flowing patterns of marble—the best of both worlds.',
     features: ['Extremely Durable', 'Natural Stone', 'Exotic Patterns'],
@@ -54,15 +59,16 @@ const MaterialsSection = () => {
         {/* Materials Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {materials.map((material) => (
-            <div
+            <Link
               key={material.name}
-              className="group cursor-pointer"
+              to={`/services/${material.slug}`}
+              className="group block"
             >
-              {/* Image */}
+              {/* Image - full clickable area */}
               <div className="relative overflow-hidden rounded-lg mb-6 aspect-square">
                 <img
                   src={material.image}
-                  alt={material.name}
+                  alt={`${material.name} countertops - click to learn more`}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -80,23 +86,25 @@ const MaterialsSection = () => {
                     ))}
                   </div>
                 </div>
+
+                {/* Mobile tap indicator */}
+                <div className="absolute top-4 right-4 bg-primary/90 backdrop-blur-sm p-2 rounded-full opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ArrowRight className="w-4 h-4 text-primary-foreground" />
+                </div>
               </div>
 
-              {/* Content */}
+              {/* Content - all clickable */}
               <h3 className="font-serif text-2xl font-medium text-foreground mb-3 group-hover:text-primary transition-colors">
                 {material.name}
               </h3>
               <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                 {material.description}
               </p>
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-3 transition-all"
-              >
+              <span className="inline-flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-3 transition-all">
                 Learn More
                 <ArrowRight className="w-4 h-4" />
-              </a>
-            </div>
+              </span>
+            </Link>
           ))}
         </div>
       </div>

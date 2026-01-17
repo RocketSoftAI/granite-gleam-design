@@ -1,5 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import heroImage from '@/assets/hero-kitchen.jpg';
 
 const HeroSection = () => {
@@ -41,12 +42,16 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4 animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-            <Button variant="hero" size="heroLg" className="group">
-              Schedule a Consultation
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            <Button variant="hero" size="heroLg" className="group" asChild>
+              <Link to="/contact">
+                Schedule a Consultation
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </Link>
             </Button>
-            <Button variant="heroOutline" size="heroLg">
-              View Our Work
+            <Button variant="heroOutline" size="heroLg" asChild>
+              <Link to="/portfolio">
+                View Our Work
+              </Link>
             </Button>
           </div>
 

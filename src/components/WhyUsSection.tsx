@@ -1,4 +1,5 @@
-import { Shield, Award, Users, Mountain } from 'lucide-react';
+import { Shield, Award, Users, Mountain, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const differentiators = [
   {
@@ -59,6 +60,15 @@ const WhyUsSection = () => {
                 <span className="block text-sm text-muted-foreground">Happy Homeowners This Year</span>
               </div>
             </div>
+            
+            {/* CTA Link */}
+            <Link 
+              to="/about" 
+              className="inline-flex items-center gap-2 text-primary font-medium hover:gap-3 transition-all mt-8"
+            >
+              Learn More About Us
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
 
           {/* Right Column - Cards */}
