@@ -2,7 +2,9 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Calendar, Clock, User, Tag } from 'lucide-react';
 import Layout from '@/components/Layout';
 import SectionHeader from '@/components/SectionHeader';
+import SEOHead from '@/components/SEOHead';
 import { getBlogPostBySlug, getRelatedPosts } from '@/data/blog';
+import { generateBlogPostSchema, generateBreadcrumbSchema, SITE_CONFIG } from '@/config/seo';
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -12,6 +14,30 @@ const BlogPost = () => {
   if (!post) {
     return <Navigate to="/blog" replace />;
   }
+
+  // Generate schemas for this blog post
+  const blogSchema = generateBlogPostSchema({
+    title: post.title,
+    excerpt: post.excerpt,
+    content: post.content,
+    image: post.image,
+    author: post.author,
+    date: post.date,
+    slug: post.slug,
+  });
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Blog', url: '/blog' },
+    { name: post.title, url: `/blog/${post.slug}` },
+  ]);
+
+  const customSEO = {
+    title: `${post.title} | Stoneworks of Colorado Blog`,
+    description: post.excerpt,
+    canonicalPath: `/blog/${post.slug}`,
+    ogType: 'article' as const,
+  };
 
   // Convert markdown-like content to HTML-friendly paragraphs
   const renderContent = (content: string) => {
@@ -81,6 +107,7 @@ const BlogPost = () => {
 
   return (
     <Layout>
+      <SEOHead customSEO={customSEO} schema={[blogSchema, breadcrumbSchema]} />
       {/* Hero Section */}
       <section className="relative min-h-[50vh] flex items-end overflow-hidden pt-24">
         <div className="absolute inset-0">

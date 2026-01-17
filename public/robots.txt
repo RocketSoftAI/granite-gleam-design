@@ -1,3 +1,6 @@
+# Stoneworks of Colorado - robots.txt
+# https://stoneworksco.com
+
 User-agent: Googlebot
 Allow: /
 
@@ -12,3 +15,13 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+# Sitemap location
+Sitemap: https://stoneworksco.com/sitemap.xml
+
+# Canonical domain (www vs non-www)
+# Preferred: https://stoneworksco.com (no www)
+
+# Disallow admin/private paths (if any)
+# Disallow: /admin/
+# Disallow: /private/
