@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Search } from 'lucide-react';
 import Layout from '@/components/Layout';
 import PageHero from '@/components/PageHero';
+import SEOHead from '@/components/SEOHead';
 import { Input } from '@/components/ui/input';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { generateFAQSchema } from '@/config/seo';
 
 const faqData = [
   { category: 'General', question: 'How long does a typical countertop project take?', answer: 'Most residential projects are completed within 2-3 weeks from material selection to installation. Kitchen projects typically take 2-3 weeks, bathrooms 1-2 weeks.' },
@@ -20,8 +22,12 @@ const FAQPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const filtered = faqData.filter(faq => faq.question.toLowerCase().includes(searchTerm.toLowerCase()) || faq.answer.toLowerCase().includes(searchTerm.toLowerCase()));
 
+  // Generate FAQ schema for all FAQs
+  const faqSchema = generateFAQSchema(faqData);
+
   return (
     <Layout>
+      <SEOHead schema={faqSchema} />
       <PageHero badge="FAQ" title="Frequently Asked" titleAccent="Questions" description="Find answers to common questions about our materials, process, and services." />
       
       <section className="py-24 lg:py-32 bg-background">

@@ -5,7 +5,9 @@ import Layout from '@/components/Layout';
 import PageHero from '@/components/PageHero';
 import SectionHeader from '@/components/SectionHeader';
 import FormPlaceholder from '@/components/FormPlaceholder';
+import SEOHead from '@/components/SEOHead';
 import { getMaterialBySlug, getAllMaterials } from '@/data/materials';
+import { generateProductSchema, generateFAQSchema, generateBreadcrumbSchema, PAGE_SEO } from '@/config/seo';
 import {
   Accordion,
   AccordionContent,
@@ -41,8 +43,35 @@ const MaterialPage = () => {
 
   const allMaterials = getAllMaterials().filter(m => m.slug !== materialSlug);
 
+  // Generate schemas for this material page
+  const productSchema = generateProductSchema({
+    name: materialData.name,
+    description: materialData.description,
+    priceRange: materialData.priceRange,
+    image: materialData.heroImage,
+    slug: materialData.slug,
+  });
+
+  const faqSchema = generateFAQSchema(materialData.faqs);
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Services', url: '/services' },
+    { name: `${materialData.name} Countertops`, url: `/services/${materialData.slug}-countertops` },
+  ]);
+
+  // Get custom SEO for this material page
+  const pagePath = `/services/${materialData.slug}-countertops`;
+  const customSEO = PAGE_SEO[pagePath] || {
+    title: `${materialData.name} Countertops Fort Collins | Stoneworks of Colorado`,
+    description: materialData.description,
+    canonicalPath: pagePath,
+    ogType: 'product' as const,
+  };
+
   return (
     <Layout>
+      <SEOHead customSEO={customSEO} schema={[productSchema, faqSchema, breadcrumbSchema]} />
       {/* Hero Section */}
       <PageHero
         badge={`${materialData.name} Countertops`}
