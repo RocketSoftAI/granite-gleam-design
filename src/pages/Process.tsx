@@ -3,6 +3,8 @@ import Layout from '@/components/Layout';
 import PageHero from '@/components/PageHero';
 import SectionHeader from '@/components/SectionHeader';
 import FormPlaceholder from '@/components/FormPlaceholder';
+import SEOHead from '@/components/SEOHead';
+import { generateHowToSchema, generateBreadcrumbSchema } from '@/config/seo';
 
 import heroKitchen from '@/assets/hero-kitchen.jpg';
 
@@ -87,8 +89,27 @@ const ProcessPage = () => {
     commercial: '3-6 weeks'
   };
 
+  // HowTo Schema for AEO - optimized for featured snippets and AI answers
+  const howToSchema = generateHowToSchema({
+    name: 'How to Get Custom Stone Countertops Installed',
+    description: 'Complete guide to getting custom granite, quartz, or quartzite countertops installed in your home. From initial consultation through professional installation, typically completed in 2-3 weeks.',
+    totalTime: 'P21D', // 21 days in ISO 8601
+    estimatedCost: { currency: 'USD', value: '3000-15000' },
+    steps: steps.map((step) => ({
+      name: step.title,
+      text: step.description,
+    })),
+  });
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Our Process', url: '/process' },
+  ]);
+
   return (
     <Layout>
+      <SEOHead schema={[howToSchema, breadcrumbSchema]} />
+      
       {/* Hero Section */}
       <PageHero
         badge="Our Process"
