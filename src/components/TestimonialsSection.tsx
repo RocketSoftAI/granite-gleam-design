@@ -1,5 +1,7 @@
 import { Star, Quote, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ScrollAnimation, StaggerContainer, StaggerItem } from '@/components/ui/scroll-animation';
+import { motion } from 'framer-motion';
 
 const testimonials = [
   {
@@ -30,54 +32,63 @@ const TestimonialsSection = () => {
     <section className="py-24 lg:py-32 bg-muted">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <ScrollAnimation variant="fadeUp" className="text-center max-w-3xl mx-auto mb-16">
           <span className="label-caps text-muted-foreground mb-4 block">Testimonials</span>
           <h2 className="heading-section text-foreground mb-6">
             Words from
             <br />
             <span className="italic font-normal text-muted-foreground">Our Clients</span>
           </h2>
-        </div>
+        </ScrollAnimation>
 
         {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
-            <div
-              key={testimonial.name}
-              className="bg-card p-8 lg:p-10 rounded-lg shadow-soft relative group hover:shadow-medium transition-all duration-500"
-            >
-              {/* Quote Icon */}
-              <div className="absolute -top-4 right-8 w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                <Quote className="w-5 h-5 text-primary-foreground fill-primary-foreground" />
-              </div>
-
-              {/* Stars */}
-              <div className="flex gap-1 mb-6">
-                {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-bronze text-bronze" />
-                ))}
-              </div>
-
-              {/* Quote Text */}
-              <p className="text-foreground leading-relaxed mb-8 italic">
-                "{testimonial.text}"
-              </p>
-
-              {/* Author */}
-              <div className="border-t border-border pt-6">
-                <div className="font-serif text-lg font-medium text-foreground">
-                  {testimonial.name}
+        <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" staggerDelay={0.15}>
+          {testimonials.map((testimonial) => (
+            <StaggerItem key={testimonial.name}>
+              <motion.div
+                className="bg-card p-8 lg:p-10 rounded-lg shadow-soft relative group hover:shadow-medium transition-all duration-500 h-full"
+                whileHover={{ y: -5 }}
+              >
+                {/* Quote Icon */}
+                <div className="absolute -top-4 right-8 w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                  <Quote className="w-5 h-5 text-primary-foreground fill-primary-foreground" />
                 </div>
-                <div className="text-sm text-muted-foreground mt-1">
-                  {testimonial.project} • {testimonial.location}
+
+                {/* Stars */}
+                <div className="flex gap-1 mb-6">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, scale: 0 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      <Star className="w-4 h-4 fill-bronze text-bronze" />
+                    </motion.div>
+                  ))}
                 </div>
-              </div>
-            </div>
+
+                {/* Quote Text */}
+                <p className="text-foreground leading-relaxed mb-8 italic">
+                  "{testimonial.text}"
+                </p>
+
+                {/* Author */}
+                <div className="border-t border-border pt-6">
+                  <div className="font-serif text-lg font-medium text-foreground">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-sm text-muted-foreground mt-1">
+                    {testimonial.project} • {testimonial.location}
+                  </div>
+                </div>
+              </motion.div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
 
         {/* View All Reviews Link */}
-        <div className="text-center mt-12">
+        <ScrollAnimation variant="fadeUp" delay={0.3} className="text-center mt-12">
           <Link 
             to="/reviews" 
             className="inline-flex items-center gap-2 text-primary font-medium hover:gap-4 transition-all duration-300"
@@ -85,30 +96,41 @@ const TestimonialsSection = () => {
             Read All Reviews
             <ArrowRight className="w-5 h-5" />
           </Link>
-        </div>
+        </ScrollAnimation>
 
         {/* Trust Badges */}
-        <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16 mt-16 pt-16 border-t border-border">
-          <div className="text-center">
-            <div className="font-serif text-5xl font-medium text-foreground mb-2">4.9</div>
-            <div className="flex justify-center gap-1 mb-1">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <Star key={i} className="w-4 h-4 fill-bronze text-bronze" />
-              ))}
-            </div>
-            <span className="label-caps text-muted-foreground">Google Reviews</span>
+        <ScrollAnimation variant="fadeUp" delay={0.4}>
+          <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16 mt-16 pt-16 border-t border-border">
+            <motion.div 
+              className="text-center"
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="font-serif text-5xl font-medium text-foreground mb-2">4.9</div>
+              <div className="flex justify-center gap-1 mb-1">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Star key={i} className="w-4 h-4 fill-bronze text-bronze" />
+                ))}
+              </div>
+              <span className="label-caps text-muted-foreground">Google Reviews</span>
+            </motion.div>
+            <div className="w-px h-16 bg-border hidden sm:block" />
+            <motion.div 
+              className="text-center"
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="font-serif text-5xl font-medium text-foreground mb-2">A+</div>
+              <span className="label-caps text-muted-foreground">BBB Rating</span>
+            </motion.div>
+            <div className="w-px h-16 bg-border hidden sm:block" />
+            <motion.div 
+              className="text-center"
+              whileHover={{ scale: 1.05 }}
+            >
+              <div className="font-serif text-5xl font-medium text-foreground mb-2">20+</div>
+              <span className="label-caps text-muted-foreground">Years in Business</span>
+            </motion.div>
           </div>
-          <div className="w-px h-16 bg-border hidden sm:block" />
-          <div className="text-center">
-            <div className="font-serif text-5xl font-medium text-foreground mb-2">A+</div>
-            <span className="label-caps text-muted-foreground">BBB Rating</span>
-          </div>
-          <div className="w-px h-16 bg-border hidden sm:block" />
-          <div className="text-center">
-            <div className="font-serif text-5xl font-medium text-foreground mb-2">20+</div>
-            <span className="label-caps text-muted-foreground">Years in Business</span>
-          </div>
-        </div>
+        </ScrollAnimation>
       </div>
     </section>
   );

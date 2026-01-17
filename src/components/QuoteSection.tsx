@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ScrollAnimation } from '@/components/ui/scroll-animation';
+import { motion } from 'framer-motion';
 import quoteBackground from '@/assets/quote-background.jpg';
 
 const QuoteSection = () => {
@@ -36,7 +38,7 @@ const QuoteSection = () => {
       <div className="relative z-10 container mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left Column - Content */}
-          <div>
+          <ScrollAnimation variant="slideLeft">
             <span className="label-caps text-primary-foreground/60 mb-4 block">Start Your Project</span>
             <h2 className="heading-section text-primary-foreground mb-6">
               Ready to Transform
@@ -51,9 +53,10 @@ const QuoteSection = () => {
 
             {/* Contact Info */}
             <div className="space-y-4">
-              <a
+              <motion.a
                 href="tel:+19705551234"
                 className="flex items-center gap-4 text-primary-foreground/90 hover:text-primary-foreground transition-colors group"
+                whileHover={{ x: 5 }}
               >
                 <div className="w-12 h-12 rounded-full bg-primary-foreground/10 flex items-center justify-center group-hover:bg-primary-foreground/20 transition-colors">
                   <Phone className="w-5 h-5" />
@@ -62,10 +65,11 @@ const QuoteSection = () => {
                   <span className="block text-sm text-primary-foreground/60">Call Us</span>
                   <span className="font-medium">(970) 555-1234</span>
                 </div>
-              </a>
-              <a
+              </motion.a>
+              <motion.a
                 href="mailto:info@stoneworksco.com"
                 className="flex items-center gap-4 text-primary-foreground/90 hover:text-primary-foreground transition-colors group"
+                whileHover={{ x: 5 }}
               >
                 <div className="w-12 h-12 rounded-full bg-primary-foreground/10 flex items-center justify-center group-hover:bg-primary-foreground/20 transition-colors">
                   <Mail className="w-5 h-5" />
@@ -74,8 +78,11 @@ const QuoteSection = () => {
                   <span className="block text-sm text-primary-foreground/60">Email</span>
                   <span className="font-medium">info@stoneworksco.com</span>
                 </div>
-              </a>
-              <div className="flex items-center gap-4 text-primary-foreground/90">
+              </motion.a>
+              <motion.div 
+                className="flex items-center gap-4 text-primary-foreground/90"
+                whileHover={{ x: 5 }}
+              >
                 <div className="w-12 h-12 rounded-full bg-primary-foreground/10 flex items-center justify-center">
                   <MapPin className="w-5 h-5" />
                 </div>
@@ -83,92 +90,103 @@ const QuoteSection = () => {
                   <span className="block text-sm text-primary-foreground/60">Showroom</span>
                   <span className="font-medium">123 Craftsman Way, Fort Collins, CO</span>
                 </div>
-              </div>
+              </motion.div>
             </div>
-          </div>
+          </ScrollAnimation>
 
           {/* Right Column - Form */}
-          <div className="bg-card/95 backdrop-blur-sm p-8 lg:p-10 rounded-lg shadow-elevated">
-            <h3 className="font-serif text-2xl font-medium text-foreground mb-6">
-              Request a Free Quote
-            </h3>
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid sm:grid-cols-2 gap-4">
+          <ScrollAnimation variant="slideRight" delay={0.2}>
+            <motion.div 
+              className="bg-card/95 backdrop-blur-sm p-8 lg:p-10 rounded-lg shadow-elevated"
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <h3 className="font-serif text-2xl font-medium text-foreground mb-6">
+                Request a Free Quote
+              </h3>
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Your Name
+                    </label>
+                    <Input
+                      type="text"
+                      placeholder="John Smith"
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="h-12 bg-background"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Phone Number
+                    </label>
+                    <Input
+                      type="tel"
+                      placeholder="(970) 555-0000"
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="h-12 bg-background"
+                    />
+                  </div>
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
-                    Your Name
+                    Email Address
                   </label>
                   <Input
-                    type="text"
-                    placeholder="John Smith"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    type="email"
+                    placeholder="john@example.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className="h-12 bg-background"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
-                    Phone Number
+                    Project Type
                   </label>
-                  <Input
-                    type="tel"
-                    placeholder="(970) 555-0000"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="h-12 bg-background"
+                  <Select onValueChange={(value) => setFormData({ ...formData, projectType: value })}>
+                    <SelectTrigger className="h-12 bg-background">
+                      <SelectValue placeholder="Select project type" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-card border-border">
+                      <SelectItem value="kitchen">Kitchen Countertops</SelectItem>
+                      <SelectItem value="bathroom">Bathroom Vanity</SelectItem>
+                      <SelectItem value="outdoor">Outdoor Kitchen</SelectItem>
+                      <SelectItem value="fireplace">Fireplace Surround</SelectItem>
+                      <SelectItem value="commercial">Commercial Project</SelectItem>
+                      <SelectItem value="other">Other</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    Tell Us About Your Project
+                  </label>
+                  <Textarea
+                    placeholder="Describe your vision, timeline, and any specific materials you're interested in..."
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    className="min-h-[120px] bg-background resize-none"
                   />
                 </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Email Address
-                </label>
-                <Input
-                  type="email"
-                  placeholder="john@example.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="h-12 bg-background"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Project Type
-                </label>
-                <Select onValueChange={(value) => setFormData({ ...formData, projectType: value })}>
-                  <SelectTrigger className="h-12 bg-background">
-                    <SelectValue placeholder="Select project type" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-card border-border">
-                    <SelectItem value="kitchen">Kitchen Countertops</SelectItem>
-                    <SelectItem value="bathroom">Bathroom Vanity</SelectItem>
-                    <SelectItem value="outdoor">Outdoor Kitchen</SelectItem>
-                    <SelectItem value="fireplace">Fireplace Surround</SelectItem>
-                    <SelectItem value="commercial">Commercial Project</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-foreground mb-2">
-                  Tell Us About Your Project
-                </label>
-                <Textarea
-                  placeholder="Describe your vision, timeline, and any specific materials you're interested in..."
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="min-h-[120px] bg-background resize-none"
-                />
-              </div>
-              <Button variant="premium" size="xl" type="submit" className="w-full group">
-                Get Your Free Quote
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-              <p className="text-center text-xs text-muted-foreground">
-                We typically respond within 24 hours. No spam, ever.
-              </p>
-            </form>
-          </div>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Button variant="premium" size="xl" type="submit" className="w-full group">
+                    Get Your Free Quote
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </motion.div>
+                <p className="text-center text-xs text-muted-foreground">
+                  We typically respond within 24 hours. No spam, ever.
+                </p>
+              </form>
+            </motion.div>
+          </ScrollAnimation>
         </div>
       </div>
     </section>
