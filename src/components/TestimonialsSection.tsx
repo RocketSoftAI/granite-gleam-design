@@ -1,4 +1,5 @@
-import { Star, Quote } from 'lucide-react';
+import { Star, Quote, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const testimonials = [
   {
@@ -73,6 +74,17 @@ const TestimonialsSection = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* View All Reviews Link */}
+        <div className="text-center mt-12">
+          <Link 
+            to="/reviews" 
+            className="inline-flex items-center gap-2 text-primary font-medium hover:gap-4 transition-all duration-300"
+          >
+            Read All Reviews
+            <ArrowRight className="w-5 h-5" />
+          </Link>
         </div>
 
         {/* Trust Badges */}

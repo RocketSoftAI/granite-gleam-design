@@ -1,4 +1,5 @@
-import { MessageSquare, Palette, Ruler, Hammer, CheckCircle } from 'lucide-react';
+import { MessageSquare, Palette, Ruler, Hammer, CheckCircle, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const steps = [
   {
@@ -95,6 +96,17 @@ const ProcessSection = () => {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Learn More Link */}
+        <div className="text-center mt-16">
+          <Link 
+            to="/process" 
+            className="inline-flex items-center gap-2 text-primary font-medium hover:gap-4 transition-all duration-300"
+          >
+            Learn More About Our Process
+            <ArrowRight className="w-5 h-5" />
+          </Link>
         </div>
       </div>
     </section>

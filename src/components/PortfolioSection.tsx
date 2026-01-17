@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 // Import portfolio images
 import portfolioBathroom from '@/assets/portfolio-bathroom.jpg';
@@ -8,6 +9,14 @@ import portfolioOutdoor from '@/assets/portfolio-outdoor.jpg';
 import portfolioGourmet from '@/assets/portfolio-gourmet.jpg';
 import portfolioSpa from '@/assets/portfolio-spa.jpg';
 import portfolioPantry from '@/assets/portfolio-pantry.jpg';
+
+// Map material names to their service page slugs
+const materialToSlug: Record<string, string> = {
+  'Quartz': 'quartz-countertops',
+  'Marble': 'marble-countertops',
+  'Granite': 'granite-countertops',
+  'Quartzite': 'quartzite-countertops',
+};
 
 const portfolioItems = [
   { id: 1, image: portfolioIsland, title: 'Modern Waterfall Island', material: 'Quartz', category: 'Kitchen' },
@@ -64,49 +73,54 @@ const PortfolioSection = () => {
         {/* Portfolio Grid - Masonry-like layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredItems.map((item, index) => (
-            <div
+            <Link
               key={item.id}
-              className={`group relative overflow-hidden rounded-lg cursor-pointer card-stone ${
+              to={`/services/${materialToSlug[item.material]}`}
+              className={`group relative overflow-hidden rounded-lg block card-stone ${
                 index === 0 || index === 3 ? 'md:row-span-2' : ''
               }`}
             >
               <div className={`relative ${index === 0 || index === 3 ? 'aspect-[3/4]' : 'aspect-[4/3]'}`}>
                 <img
                   src={item.image}
-                  alt={item.title}
+                  alt={`${item.title} - ${item.material} countertop project`}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                {/* Overlay - always visible on mobile for tap feedback */}
+                <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-60 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-500" />
                 
-                {/* Content */}
-                <div className="absolute inset-0 p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                {/* Content - always visible on mobile */}
+                <div className="absolute inset-0 p-6 flex flex-col justify-end opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-500 lg:translate-y-4 lg:group-hover:translate-y-0">
                   <span className="label-caps text-primary-foreground/70 mb-1">{item.material}</span>
                   <h3 className="heading-card text-primary-foreground mb-2">{item.title}</h3>
                   <div className="flex items-center gap-2 text-primary-foreground/80">
-                    <span className="text-sm">View Project</span>
+                    <span className="text-sm">View {item.material} Projects</span>
                     <ArrowUpRight className="w-4 h-4" />
                   </div>
                 </div>
 
                 {/* Material Badge - Always Visible */}
-                <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                  <span className="text-xs font-medium text-foreground">{item.material}</span>
-                </div>
+                <Link 
+                  to={`/services/${materialToSlug[item.material]}`}
+                  className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm px-3 py-1.5 rounded-full hover:bg-primary hover:text-primary-foreground transition-colors"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <span className="text-xs font-medium">{item.material}</span>
+                </Link>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
         {/* View All Link */}
         <div className="text-center mt-12">
-          <a 
-            href="#" 
+          <Link 
+            to="/portfolio" 
             className="inline-flex items-center gap-2 text-primary font-medium hover:gap-4 transition-all duration-300"
           >
             View Complete Portfolio
             <ArrowUpRight className="w-5 h-5" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
