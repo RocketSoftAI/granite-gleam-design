@@ -1,5 +1,6 @@
 import { Shield, Award, Users, Mountain, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ScrollAnimation, StaggerContainer, StaggerItem } from '@/components/ui/scroll-animation';
 
 const differentiators = [
   {
@@ -30,7 +31,7 @@ const WhyUsSection = () => {
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left Column - Text */}
-          <div>
+          <ScrollAnimation variant="slideLeft">
             <span className="label-caps text-muted-foreground mb-4 block">Why Stoneworks</span>
             <h2 className="heading-section text-foreground mb-6">
               Where Precision
@@ -69,26 +70,24 @@ const WhyUsSection = () => {
               Learn More About Us
               <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
+          </ScrollAnimation>
 
           {/* Right Column - Cards */}
-          <div className="grid sm:grid-cols-2 gap-6">
-            {differentiators.map((item, index) => (
-              <div
-                key={item.title}
-                className="bg-card p-6 lg:p-8 rounded-lg shadow-soft hover:shadow-medium transition-all duration-500 group"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                  <item.icon className="w-5 h-5" />
+          <StaggerContainer className="grid sm:grid-cols-2 gap-6" staggerDelay={0.1}>
+            {differentiators.map((item) => (
+              <StaggerItem key={item.title}>
+                <div className="bg-card p-6 lg:p-8 rounded-lg shadow-soft hover:shadow-medium transition-all duration-500 group h-full">
+                  <div className="w-12 h-12 rounded-full bg-accent flex items-center justify-center mb-5 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+                    <item.icon className="w-5 h-5" />
+                  </div>
+                  <h3 className="heading-card text-foreground mb-3">{item.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {item.description}
+                  </p>
                 </div>
-                <h3 className="heading-card text-foreground mb-3">{item.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       </div>
     </section>

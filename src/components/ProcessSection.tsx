@@ -1,5 +1,7 @@
 import { MessageSquare, Palette, Ruler, Hammer, CheckCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { ScrollAnimation, StaggerContainer, StaggerItem } from '@/components/ui/scroll-animation';
+import { motion } from 'framer-motion';
 
 const steps = [
   {
@@ -44,7 +46,7 @@ const ProcessSection = () => {
     <section id="process" className="py-24 lg:py-32 bg-background overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        <ScrollAnimation variant="fadeUp" className="text-center max-w-3xl mx-auto mb-20">
           <span className="label-caps text-muted-foreground mb-4 block">Our Process</span>
           <h2 className="heading-section text-foreground mb-6">
             From Vision to
@@ -55,51 +57,57 @@ const ProcessSection = () => {
             We've refined our process over 20 years to make your experience seamless. 
             Most projects are completed within 2-3 weeks.
           </p>
-        </div>
+        </ScrollAnimation>
 
         {/* Process Timeline */}
         <div className="relative">
           {/* Connecting Line */}
           <div className="absolute top-24 left-0 right-0 h-0.5 bg-border hidden lg:block" />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 lg:gap-6" staggerDelay={0.15}>
             {steps.map((item, index) => (
-              <div key={item.step} className="relative group">
-                {/* Step Number Circle */}
-                <div className="relative z-10 mb-6 flex justify-center lg:justify-start">
-                  <div className="w-16 h-16 rounded-full bg-background border-2 border-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 shadow-soft">
-                    <item.icon className="w-6 h-6" />
+              <StaggerItem key={item.step}>
+                <div className="relative group">
+                  {/* Step Number Circle */}
+                  <div className="relative z-10 mb-6 flex justify-center lg:justify-start">
+                    <motion.div 
+                      className="w-16 h-16 rounded-full bg-background border-2 border-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 shadow-soft"
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <item.icon className="w-6 h-6" />
+                    </motion.div>
                   </div>
-                </div>
 
-                {/* Content */}
-                <div className="text-center lg:text-left">
-                  <span className="label-caps text-primary mb-2 block">{item.step}</span>
-                  <h3 className="font-serif text-xl font-medium text-foreground mb-3">
-                    {item.title}
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-3">
-                    {item.description}
-                  </p>
-                  <span className="inline-flex items-center gap-1 text-xs font-medium text-primary/80">
-                    <span className="w-4 h-px bg-primary/40" />
-                    {item.duration}
-                  </span>
-                </div>
-
-                {/* Arrow for desktop */}
-                {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-24 -right-3 w-6 h-0.5">
-                    <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-primary/30 absolute -right-2 -top-[5px]" />
+                  {/* Content */}
+                  <div className="text-center lg:text-left">
+                    <span className="label-caps text-primary mb-2 block">{item.step}</span>
+                    <h3 className="font-serif text-xl font-medium text-foreground mb-3">
+                      {item.title}
+                    </h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-3">
+                      {item.description}
+                    </p>
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-primary/80">
+                      <span className="w-4 h-px bg-primary/40" />
+                      {item.duration}
+                    </span>
                   </div>
-                )}
-              </div>
+
+                  {/* Arrow for desktop */}
+                  {index < steps.length - 1 && (
+                    <div className="hidden lg:block absolute top-24 -right-3 w-6 h-0.5">
+                      <div className="w-0 h-0 border-t-[6px] border-t-transparent border-b-[6px] border-b-transparent border-l-[8px] border-l-primary/30 absolute -right-2 -top-[5px]" />
+                    </div>
+                  )}
+                </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
 
         {/* Learn More Link */}
-        <div className="text-center mt-16">
+        <ScrollAnimation variant="fadeUp" delay={0.4} className="text-center mt-16">
           <Link 
             to="/process" 
             className="inline-flex items-center gap-2 text-primary font-medium hover:gap-4 transition-all duration-300"
@@ -107,7 +115,7 @@ const ProcessSection = () => {
             Learn More About Our Process
             <ArrowRight className="w-5 h-5" />
           </Link>
-        </div>
+        </ScrollAnimation>
       </div>
     </section>
   );
