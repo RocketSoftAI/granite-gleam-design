@@ -177,7 +177,7 @@ const QuoteSection = () => {
             {/* Contact Info */}
             <div className="space-y-4">
               <motion.a
-                href="tel:+19705551234"
+                href="tel:+19704931992"
                 className="flex items-center gap-4 text-primary-foreground/90 hover:text-primary-foreground transition-colors group"
                 whileHover={{ x: 5 }}
               >

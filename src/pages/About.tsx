@@ -196,7 +196,7 @@ const AboutPage = () => {
               
               <div className="space-y-6 text-muted-foreground">
                 <p>
-                  Our 15,000 square foot fabrication facility in Fort Collins houses the most 
+                  Our 15,000 square foot fabrication facility in Loveland houses the most 
                   advanced stone processing equipment in Northern Colorado.
                 </p>
                 <ul className="space-y-4">

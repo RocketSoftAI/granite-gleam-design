@@ -43,7 +43,7 @@ const StickyMobileCTA = () => {
             <div className="flex items-center gap-3">
               {/* Click-to-Call */}
               <a
-                href="tel:+19705551234"
+                href="tel:+19704931992"
                 className="flex-1 flex items-center justify-center gap-2 h-12 bg-charcoal text-primary-foreground rounded-lg font-medium text-sm hover:bg-charcoal/90 transition-colors"
               >
                 <Phone className="w-4 h-4" />

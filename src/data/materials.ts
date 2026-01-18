@@ -357,6 +357,88 @@ At Stoneworks of Colorado, we've embraced this innovative material for clients s
       }
     ],
     features: ['Ultra Heat Resistant', 'Zero Maintenance', 'UV Stable']
+  },
+  marble: {
+    slug: 'marble',
+    name: 'Marble',
+    heroImage: marbleDetail,
+    tagline: 'Timeless Elegance for Discerning Homeowners',
+    description: 'Marble has graced the finest homes and palaces for centuries. Experience the unmatched luxury and classic beauty of natural marble countertops.',
+    overview: `Marble is a metamorphic rock prized for thousands of years for its beauty and sophistication. From the Taj Mahal to the finest European kitchens, marble has been the material of choice for those who appreciate timeless elegance.
+
+At Stoneworks of Colorado, we offer a curated selection of premium marbles from quarries around the world. While marble requires more care than some alternatives, its unparalleled beauty and classic appeal make it the perfect choice for spaces where aesthetics take center stage.`,
+    pros: [
+      'Unmatched natural beauty and elegance',
+      'Cool surface ideal for baking and pastry work',
+      'Unique veining patterns - each slab is one-of-a-kind',
+      'Timeless appeal that never goes out of style',
+      'Increases home value with luxury appeal',
+      'Available in stunning white, gray, and colored varieties'
+    ],
+    cons: [
+      'Softer than granite - can scratch more easily',
+      'Porous - requires regular sealing',
+      'Susceptible to etching from acidic substances',
+      'Higher maintenance than quartz or granite',
+      'Not recommended for high-traffic kitchens'
+    ],
+    applications: [
+      {
+        title: 'Bathroom Vanities',
+        description: 'Marble\'s elegance shines in master baths where it creates a spa-like luxury atmosphere.'
+      },
+      {
+        title: 'Baking Stations',
+        description: 'The naturally cool surface is perfect for rolling pastry and working with chocolate.'
+      },
+      {
+        title: 'Fireplace Surrounds',
+        description: 'Create a stunning focal point with marble\'s dramatic veining and timeless beauty.'
+      },
+      {
+        title: 'Bar Tops',
+        description: 'For spaces where aesthetics matter most, marble creates an unforgettable impression.'
+      }
+    ],
+    maintenance: [
+      {
+        title: 'Immediate Cleanup',
+        description: 'Wipe up spills immediately, especially acidic substances like wine, citrus, and vinegar.'
+      },
+      {
+        title: 'Regular Sealing',
+        description: 'Seal marble every 3-6 months for optimal protection. We offer professional sealing services.'
+      },
+      {
+        title: 'Gentle Cleaning',
+        description: 'Use pH-neutral stone cleaner only. Avoid acidic or abrasive cleaners.'
+      },
+      {
+        title: 'Patina Acceptance',
+        description: 'Many marble lovers embrace the natural patina that develops over time as part of its character.'
+      }
+    ],
+    priceRange: '$60 - $200+ per square foot installed',
+    priceNote: 'Price varies based on marble variety, veining, and origin. Rare marbles command premium prices.',
+    faqs: [
+      {
+        question: 'Is marble too high-maintenance for kitchens?',
+        answer: 'Marble requires more care than granite or quartz, but many homeowners find the beauty worth the effort. Consider marble for lower-traffic areas like baking stations or bathroom vanities if you want the look with less worry.'
+      },
+      {
+        question: 'What causes marble to etch?',
+        answer: 'Acidic substances like lemon juice, wine, tomato sauce, and vinegar can etch (dull) the polished surface of marble. This is a chemical reaction, not a stain, and occurs even on sealed marble. Immediate cleanup minimizes etching.'
+      },
+      {
+        question: 'Can etching be repaired?',
+        answer: 'Light etching can often be polished out with marble polishing powder. Deeper etching may require professional restoration. Many marble owners embrace etching as part of the stone\'s natural character over time.'
+      },
+      {
+        question: 'What\'s the difference between Carrara and Calacatta marble?',
+        answer: 'Both come from Italy, but Calacatta features bolder, more dramatic veining on a whiter background, making it rarer and more expensive. Carrara has softer gray veining on a grayish-white base and is more affordable.'
+      }
+    ],
+    features: ['Natural Stone', 'Classic Beauty', 'Cool Surface']
   }
 };
 

@@ -40,7 +40,7 @@ const BookingSuccess = ({ appointment, contactName, onClose }: BookingSuccessPro
           <div>
             <p className="font-medium">Stoneworks of Colorado</p>
             <p className="text-sm text-muted-foreground">
-              4008 S Taft Hill Rd, Fort Collins, CO 80526
+              3555 S Lincoln Ave, Loveland, CO 80537
             </p>
           </div>
         </div>
