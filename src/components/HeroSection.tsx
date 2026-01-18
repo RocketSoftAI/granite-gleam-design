@@ -9,7 +9,15 @@ const HeroSection = () => {
 
   return (
     <>
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section 
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        style={{
+          // CSS gradient placeholder - shows immediately while image loads
+          // This provides instant visual feedback and improves perceived LCP
+          backgroundColor: 'hsl(30, 10%, 18%)',
+          backgroundImage: 'linear-gradient(to bottom, hsl(30, 10%, 15%) 0%, hsl(30, 10%, 20%) 50%, hsl(30, 10%, 12%) 100%)'
+        }}
+      >
         {/* Background Image with Overlay - Responsive with preloaded WebP */}
         <div className="absolute inset-0">
           <picture>
@@ -30,12 +38,13 @@ const HeroSection = () => {
               srcSet="/images/hero-desktop.webp"
               type="image/webp"
             />
-            {/* Fallback */}
+            {/* Fallback - using loading="eager" explicitly for LCP element */}
             <img
               src="/images/hero-desktop.webp"
               alt="Luxury kitchen with custom stone countertops"
               className="w-full h-full object-cover"
               fetchPriority="high"
+              loading="eager"
               width="1920"
               height="1080"
               decoding="async"
