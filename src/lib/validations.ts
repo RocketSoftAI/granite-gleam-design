@@ -48,5 +48,24 @@ export const emailSchema = z.object({
     .max(255, { message: "Email must be less than 255 characters" }),
 });
 
+export const exitPopupSchema = z.object({
+  name: z
+    .string()
+    .trim()
+    .min(2, { message: "Name must be at least 2 characters" })
+    .max(100, { message: "Name must be less than 100 characters" }),
+  email: z
+    .string()
+    .trim()
+    .email({ message: "Please enter a valid email address" })
+    .max(255, { message: "Email must be less than 255 characters" }),
+  phone: z
+    .string()
+    .trim()
+    .regex(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/, { message: "Please enter a valid phone number" })
+    .or(z.string().length(0)),
+});
+
 export type QuoteFormData = z.infer<typeof quoteFormSchema>;
 export type EmailFormData = z.infer<typeof emailSchema>;
+export type ExitPopupFormData = z.infer<typeof exitPopupSchema>;
