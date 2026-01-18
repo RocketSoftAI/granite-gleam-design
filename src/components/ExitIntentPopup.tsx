@@ -64,15 +64,18 @@ const ExitIntentPopup = () => {
             className="fixed inset-0 bg-charcoal/60 backdrop-blur-sm z-[100]"
           />
 
-          {/* Popup */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-[101] max-w-md mx-auto"
-          >
-            <div className="bg-card rounded-2xl shadow-elevated overflow-hidden">
+          {/* Scrollable container */}
+          <div className="fixed inset-0 z-[101] overflow-y-auto">
+            <div className="min-h-full flex items-center justify-center p-4">
+              {/* Popup */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="w-full max-w-md"
+              >
+                <div className="bg-card rounded-2xl shadow-elevated overflow-hidden">
               {/* Header with gradient */}
               <div className="bg-gradient-to-r from-primary to-bronze p-6 text-primary-foreground relative">
                 <button
@@ -159,6 +162,8 @@ const ExitIntentPopup = () => {
               </div>
             </div>
           </motion.div>
+            </div>
+          </div>
         </>
       )}
     </AnimatePresence>
