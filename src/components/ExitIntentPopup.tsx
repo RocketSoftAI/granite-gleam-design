@@ -3,11 +3,15 @@ import { X, Gift, ArrowRight, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { emailSchema } from '@/lib/validations';
+import { toast } from 'sonner';
 
 const ExitIntentPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const hasTriggered = useRef(false);
 
   useEffect(() => {
@@ -41,13 +45,29 @@ const ExitIntentPopup = () => {
     };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email.trim()) {
+    setEmailError('');
+    
+    // Validate email
+    const result = emailSchema.safeParse({ email });
+    
+    if (!result.success) {
+      setEmailError(result.error.errors[0]?.message || 'Please enter a valid email');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
       // In production, this would send to your email service
-      console.log('Lead captured:', email);
       setIsSubmitted(true);
+      toast.success('Check your inbox for the guide!');
       setTimeout(() => setIsOpen(false), 3000);
+    } catch {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -123,16 +143,27 @@ const ExitIntentPopup = () => {
                     </ul>
 
                     <form onSubmit={handleSubmit} className="space-y-3">
-                      <Input
-                        type="email"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="h-12 bg-background"
-                        required
-                      />
-                      <Button variant="premium" size="xl" type="submit" className="w-full group">
-                        Get Free Guide + $200 Off
+                      <div>
+                        <Input
+                          type="email"
+                          placeholder="Enter your email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className={`h-12 bg-background ${emailError ? 'border-destructive' : ''}`}
+                          maxLength={255}
+                        />
+                        {emailError && (
+                          <p className="text-xs text-destructive mt-1">{emailError}</p>
+                        )}
+                      </div>
+                      <Button 
+                        variant="premium" 
+                        size="xl" 
+                        type="submit" 
+                        className="w-full group"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? 'Sending...' : 'Get Free Guide + $200 Off'}
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </Button>
                     </form>
