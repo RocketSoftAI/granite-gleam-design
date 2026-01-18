@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// Removed framer-motion to prevent duplicate rendering issues
 import { format, addDays, startOfDay, isSameDay } from 'date-fns';
 import { Calendar } from '@/components/ui/calendar';
 import { supabase } from '@/integrations/supabase/client';
@@ -178,140 +178,129 @@ const BookingCalendar = ({ onClose }: BookingCalendarProps) => {
     return !availableDates.some(d => isSameDay(d, date));
   };
 
+  const renderStepContent = () => {
+    if (step === 'select-date') {
+      return (
+        <div className="flex flex-col items-center">
+          <h3 className="text-lg font-medium mb-4">Select a Date</h3>
+          {isLoadingSlots ? (
+            <div className="flex items-center justify-center h-64">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <Calendar
+              mode="single"
+              selected={selectedDate}
+              onSelect={handleDateSelect}
+              disabled={isDateDisabled}
+              modifiers={{
+                available: availableDates,
+              }}
+              modifiersStyles={{
+                available: {
+                  fontWeight: 'bold',
+                },
+              }}
+              className="rounded-md border"
+            />
+          )}
+          {!isLoadingSlots && availability.length === 0 && (
+            <p className="text-sm text-muted-foreground mt-4">
+              No availability found. Please call us at (970) 493-1992.
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    if (step === 'select-time' && selectedDate) {
+      return (
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <button
+              onClick={handleBack}
+              className="text-sm text-primary hover:underline"
+            >
+              ← Change date
+            </button>
+            <span className="text-sm font-medium">
+              {format(selectedDate, 'EEEE, MMMM d')}
+            </span>
+          </div>
+          <h3 className="text-lg font-medium mb-4">Select a Time</h3>
+          <TimeSlotPicker
+            slots={getSlotsForDate(selectedDate)}
+            selectedSlot={selectedSlot}
+            onSelectSlot={handleSlotSelect}
+            isLoading={false}
+            selectedDate={selectedDate}
+          />
+        </div>
+      );
+    }
+
+    if (step === 'enter-info' && selectedDate && selectedSlot) {
+      return (
+        <div>
+          <h3 className="text-lg font-medium mb-4">Your Information</h3>
+          <BookingForm
+            selectedDate={selectedDate}
+            selectedSlot={selectedSlot}
+            onSubmit={handleFormSubmit}
+            onBack={handleBack}
+            isSubmitting={isSubmitting}
+          />
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  if (step === 'success' && successData) {
+    return (
+      <div className="w-full max-w-lg mx-auto">
+        <BookingSuccess
+          appointment={successData.appointment}
+          contactName={successData.contactName}
+          onClose={handleClose}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="w-full max-w-lg mx-auto">
-      <AnimatePresence mode="wait">
-        {step === 'success' && successData ? (
-          <BookingSuccess
-            key="success"
-            appointment={successData.appointment}
-            contactName={successData.contactName}
-            onClose={handleClose}
-          />
-        ) : (
-          <motion.div
-            key="booking-flow"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="space-y-6"
-          >
-            {/* Progress indicator */}
-            <div className="flex items-center justify-center gap-2">
-              {['Date', 'Time', 'Details'].map((label, index) => {
-                const stepIndex = ['select-date', 'select-time', 'enter-info'].indexOf(step);
-                const isActive = index <= stepIndex;
-                const isCurrent = index === stepIndex;
-                return (
-                  <div key={label} className="flex items-center gap-2">
-                    <div className={`
-                      flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
-                      ${isCurrent ? 'bg-primary text-primary-foreground' : 
-                        isActive ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}
-                    `}>
-                      {index + 1}
-                    </div>
-                    <span className={`text-sm hidden sm:inline ${isCurrent ? 'font-medium' : 'text-muted-foreground'}`}>
-                      {label}
-                    </span>
-                    {index < 2 && (
-                      <div className={`w-8 h-0.5 ${isActive && index < stepIndex ? 'bg-primary' : 'bg-muted'}`} />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+      <div className="space-y-6">
+        {/* Progress indicator */}
+        <div className="flex items-center justify-center gap-2">
+          {['Date', 'Time', 'Details'].map((label, index) => {
+            const stepIndex = ['select-date', 'select-time', 'enter-info'].indexOf(step);
+            const isActive = index <= stepIndex;
+            const isCurrent = index === stepIndex;
+            return (
+              <div key={label} className="flex items-center gap-2">
+                <div className={`
+                  flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
+                  ${isCurrent ? 'bg-primary text-primary-foreground' : 
+                    isActive ? 'bg-primary/20 text-primary' : 'bg-muted text-muted-foreground'}
+                `}>
+                  {index + 1}
+                </div>
+                <span className={`text-sm hidden sm:inline ${isCurrent ? 'font-medium' : 'text-muted-foreground'}`}>
+                  {label}
+                </span>
+                {index < 2 && (
+                  <div className={`w-8 h-0.5 ${isActive && index < stepIndex ? 'bg-primary' : 'bg-muted'}`} />
+                )}
+              </div>
+            );
+          })}
+        </div>
 
-            {/* Step content */}
-            <AnimatePresence mode="wait">
-              {step === 'select-date' && (
-                <motion.div
-                  key="date"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  className="flex flex-col items-center"
-                >
-                  <h3 className="text-lg font-medium mb-4">Select a Date</h3>
-                  {isLoadingSlots ? (
-                    <div className="flex items-center justify-center h-64">
-                      <Loader2 className="w-8 h-8 animate-spin text-primary" />
-                    </div>
-                  ) : (
-                    <Calendar
-                      mode="single"
-                      selected={selectedDate}
-                      onSelect={handleDateSelect}
-                      disabled={isDateDisabled}
-                      modifiers={{
-                        available: availableDates,
-                      }}
-                      modifiersStyles={{
-                        available: {
-                          fontWeight: 'bold',
-                        },
-                      }}
-                      className="rounded-md border"
-                    />
-                  )}
-                  {!isLoadingSlots && availability.length === 0 && (
-                    <p className="text-sm text-muted-foreground mt-4">
-                      No availability found. Please call us at (970) 493-1992.
-                    </p>
-                  )}
-                </motion.div>
-              )}
-
-              {step === 'select-time' && selectedDate && (
-                <motion.div
-                  key="time"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <button
-                      onClick={handleBack}
-                      className="text-sm text-primary hover:underline"
-                    >
-                      ← Change date
-                    </button>
-                    <span className="text-sm font-medium">
-                      {format(selectedDate, 'EEEE, MMMM d')}
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-medium mb-4">Select a Time</h3>
-                  <TimeSlotPicker
-                    slots={getSlotsForDate(selectedDate)}
-                    selectedSlot={selectedSlot}
-                    onSelectSlot={handleSlotSelect}
-                    isLoading={false}
-                    selectedDate={selectedDate}
-                  />
-                </motion.div>
-              )}
-
-              {step === 'enter-info' && selectedDate && selectedSlot && (
-                <motion.div
-                  key="info"
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                >
-                  <h3 className="text-lg font-medium mb-4">Your Information</h3>
-                  <BookingForm
-                    selectedDate={selectedDate}
-                    selectedSlot={selectedSlot}
-                    onSubmit={handleFormSubmit}
-                    onBack={handleBack}
-                    isSubmitting={isSubmitting}
-                  />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        {/* Step content - no AnimatePresence to prevent duplicate rendering */}
+        {renderStepContent()}
+      </div>
     </div>
   );
 };
