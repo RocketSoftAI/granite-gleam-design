@@ -43,7 +43,7 @@ const PromoBanner = () => {
               {' '}on all projects booked this month
             </p>
             <Link
-              to="/contact"
+              to="/special-offer"
               className="hidden sm:inline-flex items-center gap-1 text-xs font-bold underline underline-offset-2 hover:no-underline whitespace-nowrap"
             >
               Claim Offer

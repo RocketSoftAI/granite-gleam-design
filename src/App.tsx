@@ -19,6 +19,7 @@ import Portfolio from "./pages/Portfolio";
 import ServiceArea from "./pages/ServiceArea";
 import BlogPage from "./pages/blog";
 import BlogPost from "./pages/blog/BlogPost";
+import SpecialOffer from "./pages/SpecialOffer";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
           <Route path="/service-area" element={<ServiceArea />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/special-offer" element={<SpecialOffer />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

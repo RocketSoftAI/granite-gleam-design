@@ -156,11 +156,18 @@ const Navbar = () => {
                 (970) 493-1992
               </a>
               <Button 
-                variant={showTransparent ? 'heroOutline' : 'premium'} 
+                variant={showTransparent ? 'heroOutline' : 'outline'} 
                 size="lg" 
                 asChild
               >
                 <Link to="/contact">Get a Quote</Link>
+              </Button>
+              <Button 
+                variant="premium" 
+                size="lg" 
+                asChild
+              >
+                <Link to="/special-offer">Claim Offer</Link>
               </Button>
             </div>
 
@@ -314,9 +321,14 @@ const Navbar = () => {
               </a>
               
               <Button variant="premium" size="lg" className="w-full h-14 text-base" asChild>
-                <Link to="/contact">
-                  Get Your Free Quote
+                <Link to="/special-offer">
+                  Claim January Offer
                   <ArrowRight className="w-5 h-5 ml-2" />
+                </Link>
+              </Button>
+              <Button variant="outline" size="lg" className="w-full h-12 text-base" asChild>
+                <Link to="/contact">
+                  Get a Quote
                 </Link>
               </Button>
             </div>
