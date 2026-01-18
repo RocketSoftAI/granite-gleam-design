@@ -38,54 +38,32 @@ const ServiceAreaPage = () => {
         description="From Wellington to Boulder, and Estes Park to Greeley—we bring expert stone fabrication to communities across the I-25 corridor and beyond."
       />
 
-      {/* Map Section */}
+      {/* Coverage Section */}
       <section className="py-16 lg:py-24 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div>
-              <SectionHeader
-                badge="Coverage"
-                title="Our Service"
-                titleAccent="Territory"
-                description="We proudly serve homeowners throughout Northern Colorado, with our shop centrally located in Fort Collins for maximum coverage."
-                centered={false}
-              />
-              
-              <div className="space-y-4 mt-8">
-                <div className="flex items-start gap-4">
-                  <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <span className="font-medium text-foreground block">I-25 Corridor</span>
-                    <span className="text-sm text-muted-foreground">Wellington to Boulder and everywhere in between</span>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <span className="font-medium text-foreground block">West to the Mountains</span>
-                    <span className="text-sm text-muted-foreground">Serving Estes Park and foothill communities</span>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <MapPin className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <span className="font-medium text-foreground block">East to the Plains</span>
-                    <span className="text-sm text-muted-foreground">Greeley, Evans, and surrounding areas</span>
-                  </div>
-                </div>
+          <div className="max-w-3xl mx-auto">
+            <SectionHeader
+              badge="Coverage"
+              title="Our Service"
+              titleAccent="Territory"
+              description="We proudly serve homeowners throughout Northern Colorado, with our shop centrally located in Loveland for maximum coverage."
+            />
+            
+            <div className="grid sm:grid-cols-3 gap-6 mt-8">
+              <div className="bg-muted p-6 rounded-lg text-center">
+                <MapPin className="w-6 h-6 text-primary mx-auto mb-3" />
+                <span className="font-medium text-foreground block mb-1">I-25 Corridor</span>
+                <span className="text-sm text-muted-foreground">Wellington to Boulder</span>
               </div>
-            </div>
-
-            {/* Map Placeholder */}
-            <div className="aspect-square bg-muted rounded-lg flex items-center justify-center">
-              <div className="text-center text-muted-foreground p-8">
-                <MapPin className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                <p className="font-medium mb-2">Interactive Service Area Map</p>
-                <p className="text-sm">Showing coverage across Northern Colorado</p>
-                <div className="mt-4 text-xs">
-                  <p>Fort Collins • Loveland • Greeley</p>
-                  <p>Longmont • Boulder • Windsor</p>
-                </div>
+              <div className="bg-muted p-6 rounded-lg text-center">
+                <MapPin className="w-6 h-6 text-primary mx-auto mb-3" />
+                <span className="font-medium text-foreground block mb-1">West to the Mountains</span>
+                <span className="text-sm text-muted-foreground">Estes Park & foothills</span>
+              </div>
+              <div className="bg-muted p-6 rounded-lg text-center">
+                <MapPin className="w-6 h-6 text-primary mx-auto mb-3" />
+                <span className="font-medium text-foreground block mb-1">East to the Plains</span>
+                <span className="text-sm text-muted-foreground">Greeley & surrounding areas</span>
               </div>
             </div>
           </div>
