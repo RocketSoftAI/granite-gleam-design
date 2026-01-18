@@ -42,9 +42,9 @@ const AboutPage = () => {
 
   const team = [
     {
-      name: 'Mike Richardson',
+      name: 'Rob Abrahamson',
       role: 'Founder & President',
-      bio: 'Mike founded Stoneworks of Colorado in 2003 after 15 years in the stone industry. His passion for quality and customer service has shaped our company culture.'
+      bio: 'Rob founded Stoneworks of Colorado in 2003 after 15 years in the stone industry. His passion for quality and customer service has shaped our company culture.'
     },
     {
       name: 'Sarah Chen',
@@ -57,9 +57,9 @@ const AboutPage = () => {
       bio: 'Carlos brings 18 years of stone fabrication expertise to our shop. His precision and attention to detail set the standard for our team.'
     },
     {
-      name: 'Jennifer Walsh',
+      name: 'Lori Westrum',
       role: 'Operations Manager',
-      bio: 'Jennifer ensures every project runs smoothly from first consultation to final installation, coordinating all aspects of our customer experience.'
+      bio: 'Lori ensures every project runs smoothly from first consultation to final installation, coordinating all aspects of our customer experience.'
     }
   ];
 
@@ -94,7 +94,7 @@ const AboutPage = () => {
                   integrity and care.
                 </p>
                 <p>
-                  When Mike Richardson opened our first shop in Fort Collins in 2003, he had 
+                  When Rob Abrahamson opened our first shop in Loveland in 2003, he had 
                   one fabrication table and a vision. Today, we operate a state-of-the-art 
                   15,000 square foot facility with CNC technology, water jet cutting, and a 
                   team of 25 dedicated professionals.
