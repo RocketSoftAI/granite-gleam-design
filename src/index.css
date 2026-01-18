@@ -209,6 +209,14 @@
     text-wrap: balance;
   }
 
+  /* Hide GHL chat bubble text on mobile - only show icon */
+  @media (max-width: 768px) {
+    .lc_message-container,
+    .lc_text-widget-open {
+      display: none !important;
+    }
+  }
+
   .bg-cream {
     background-color: hsl(var(--cream));
   }
