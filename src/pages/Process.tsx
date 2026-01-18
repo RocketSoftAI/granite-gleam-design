@@ -130,41 +130,6 @@ const ProcessPage = () => {
         size="large"
       />
 
-      {/* Timeline Overview */}
-      <section className="py-16 bg-muted">
-        <div className="container mx-auto px-6 lg:px-12">
-          <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16">
-            <div className="flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-primary" />
-              <span className="text-foreground">
-                <strong>Kitchen:</strong> {timeline.kitchen}
-              </span>
-            </div>
-            <div className="w-px h-8 bg-border hidden sm:block" />
-            <div className="flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-primary" />
-              <span className="text-foreground">
-                <strong>Bathroom:</strong> {timeline.bathroom}
-              </span>
-            </div>
-            <div className="w-px h-8 bg-border hidden sm:block" />
-            <div className="flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-primary" />
-              <span className="text-foreground">
-                <strong>Outdoor:</strong> {timeline.outdoor}
-              </span>
-            </div>
-            <div className="w-px h-8 bg-border hidden sm:block" />
-            <div className="flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-primary" />
-              <span className="text-foreground">
-                <strong>Commercial:</strong> {timeline.commercial}
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Detailed Process Steps */}
       <section className="py-24 lg:py-32 bg-background">
         <div className="container mx-auto px-6 lg:px-12">
@@ -224,6 +189,41 @@ const ProcessPage = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Project Timeline Section */}
+      <section className="py-16 lg:py-20 bg-muted">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="text-center mb-10">
+            <span className="label-caps text-muted-foreground mb-3 block">Typical Timelines</span>
+            <h3 className="font-serif text-2xl lg:text-3xl font-medium text-foreground">
+              How Long Will Your Project Take?
+            </h3>
+          </div>
+          
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 max-w-4xl mx-auto">
+            <div className="bg-card p-6 rounded-lg shadow-soft text-center">
+              <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
+              <h4 className="font-serif text-lg font-medium text-foreground mb-1">Kitchen</h4>
+              <p className="text-2xl font-bold text-primary">{timeline.kitchen}</p>
+            </div>
+            <div className="bg-card p-6 rounded-lg shadow-soft text-center">
+              <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
+              <h4 className="font-serif text-lg font-medium text-foreground mb-1">Bathroom</h4>
+              <p className="text-2xl font-bold text-primary">{timeline.bathroom}</p>
+            </div>
+            <div className="bg-card p-6 rounded-lg shadow-soft text-center">
+              <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
+              <h4 className="font-serif text-lg font-medium text-foreground mb-1">Outdoor</h4>
+              <p className="text-2xl font-bold text-primary">{timeline.outdoor}</p>
+            </div>
+            <div className="bg-card p-6 rounded-lg shadow-soft text-center">
+              <Calendar className="w-8 h-8 text-primary mx-auto mb-3" />
+              <h4 className="font-serif text-lg font-medium text-foreground mb-1">Commercial</h4>
+              <p className="text-2xl font-bold text-primary">{timeline.commercial}</p>
+            </div>
           </div>
         </div>
       </section>
