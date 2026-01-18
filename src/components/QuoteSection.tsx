@@ -6,21 +6,59 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollAnimation } from '@/components/ui/scroll-animation';
 import { motion } from 'framer-motion';
+import { quoteFormSchema, type QuoteFormData } from '@/lib/validations';
+import { toast } from 'sonner';
 import quoteBackground from '@/assets/quote-background.jpg';
 
 const QuoteSection = () => {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<QuoteFormData>({
     name: '',
     email: '',
     phone: '',
     projectType: '',
     message: '',
   });
+  const [errors, setErrors] = useState<Partial<Record<keyof QuoteFormData, string>>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log(formData);
+    setErrors({});
+    
+    // Validate form data
+    const result = quoteFormSchema.safeParse(formData);
+    
+    if (!result.success) {
+      const fieldErrors: Partial<Record<keyof QuoteFormData, string>> = {};
+      result.error.errors.forEach((error) => {
+        const field = error.path[0] as keyof QuoteFormData;
+        if (!fieldErrors[field]) {
+          fieldErrors[field] = error.message;
+        }
+      });
+      setErrors(fieldErrors);
+      toast.error('Please fix the errors in the form');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    try {
+      // In production, this would submit to a backend
+      // For now, we just show a success message
+      toast.success('Thank you! We will contact you within 24 hours.');
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        projectType: '',
+        message: '',
+      });
+    } catch {
+      toast.error('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -115,8 +153,12 @@ const QuoteSection = () => {
                       placeholder="John Smith"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="h-12 bg-background"
+                      className={`h-12 bg-background ${errors.name ? 'border-destructive' : ''}`}
+                      maxLength={100}
                     />
+                    {errors.name && (
+                      <p className="text-xs text-destructive mt-1">{errors.name}</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
@@ -127,8 +169,12 @@ const QuoteSection = () => {
                       placeholder="(970) 555-0000"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="h-12 bg-background"
+                      className={`h-12 bg-background ${errors.phone ? 'border-destructive' : ''}`}
+                      maxLength={20}
                     />
+                    {errors.phone && (
+                      <p className="text-xs text-destructive mt-1">{errors.phone}</p>
+                    )}
                   </div>
                 </div>
                 <div>
@@ -140,15 +186,19 @@ const QuoteSection = () => {
                     placeholder="john@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="h-12 bg-background"
+                    className={`h-12 bg-background ${errors.email ? 'border-destructive' : ''}`}
+                    maxLength={255}
                   />
+                  {errors.email && (
+                    <p className="text-xs text-destructive mt-1">{errors.email}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Project Type
                   </label>
                   <Select onValueChange={(value) => setFormData({ ...formData, projectType: value })}>
-                    <SelectTrigger className="h-12 bg-background">
+                    <SelectTrigger className={`h-12 bg-background ${errors.projectType ? 'border-destructive' : ''}`}>
                       <SelectValue placeholder="Select project type" />
                     </SelectTrigger>
                     <SelectContent className="bg-card border-border">
@@ -160,6 +210,9 @@ const QuoteSection = () => {
                       <SelectItem value="other">Other</SelectItem>
                     </SelectContent>
                   </Select>
+                  {errors.projectType && (
+                    <p className="text-xs text-destructive mt-1">{errors.projectType}</p>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
@@ -169,15 +222,30 @@ const QuoteSection = () => {
                     placeholder="Describe your vision, timeline, and any specific materials you're interested in..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="min-h-[120px] bg-background resize-none"
+                    className={`min-h-[120px] bg-background resize-none ${errors.message ? 'border-destructive' : ''}`}
+                    maxLength={1000}
                   />
+                  <div className="flex justify-between mt-1">
+                    {errors.message && (
+                      <p className="text-xs text-destructive">{errors.message}</p>
+                    )}
+                    <p className="text-xs text-muted-foreground ml-auto">
+                      {formData.message.length}/1000
+                    </p>
+                  </div>
                 </div>
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Button variant="premium" size="xl" type="submit" className="w-full group">
-                    Get Your Free Quote
+                  <Button 
+                    variant="premium" 
+                    size="xl" 
+                    type="submit" 
+                    className="w-full group"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? 'Sending...' : 'Get Your Free Quote'}
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </motion.div>
