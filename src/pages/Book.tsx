@@ -20,9 +20,9 @@ const Book = () => {
         }}
       />
       
-      <div className="min-h-screen bg-background flex flex-col">
+      <div className="min-h-screen bg-background">
         {/* Simple header */}
-        <header className="flex items-center justify-between p-4 border-b border-border bg-card flex-shrink-0">
+        <header className="sticky top-0 z-10 flex items-center justify-between p-4 border-b border-border bg-card">
           <Link 
             to="/" 
             className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
@@ -39,8 +39,8 @@ const Book = () => {
           </a>
         </header>
 
-        {/* Booking content */}
-        <div className="flex-1 overflow-y-auto py-6 px-4">
+        {/* Booking content - uses natural document scrolling */}
+        <div className="py-6 px-4 pb-24">
           <div className="max-w-lg mx-auto">
             <h1 className="text-2xl font-serif font-medium text-center mb-2">
               Book a Showroom Visit
