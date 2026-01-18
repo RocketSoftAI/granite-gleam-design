@@ -65,5 +65,41 @@
       data-resources-url="https://beta.leadconnectorhq.com/chat-widget/loader.js"
       data-widget-id="68d6b1e32c7d0b6e6655dd6c">
     </script>
+    
+    <!-- Hide GHL chat bubble on mobile -->
+    <style>
+      @media (max-width: 768px) {
+        /* Hide the text bubble popup, keep only the icon */
+        iframe[src*="chat-widget"] + div,
+        div[id*="lc-text"],
+        div[class*="lc-text"],
+        .lc-text-widget,
+        #lc-text-widget {
+          display: none !important;
+          visibility: hidden !important;
+        }
+      }
+    </style>
+    <script>
+      // Hide GHL chat bubble text on mobile
+      if (window.innerWidth <= 768) {
+        const observer = new MutationObserver(function(mutations) {
+          const textBubble = document.querySelector('[class*="lc-text"], [id*="lc-text"], div[style*="position: fixed"] > div > div:has(img)');
+          if (textBubble) {
+            textBubble.style.display = 'none';
+          }
+          // Target the bubble by looking for the specific structure
+          document.querySelectorAll('div[style*="position: fixed"]').forEach(function(el) {
+            if (el.querySelector('img[alt*="avatar"], img[src*="avatar"]')) {
+              const parent = el.closest('div[style*="position: fixed"]');
+              if (parent && parent !== el) {
+                el.style.display = 'none';
+              }
+            }
+          });
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+      }
+    </script>
   </body>
 </html>

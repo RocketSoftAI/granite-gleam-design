@@ -211,8 +211,13 @@
 
   /* Hide GHL chat bubble text on mobile - only show icon */
   @media (max-width: 768px) {
-    .lc_message-container,
-    .lc_text-widget-open {
+    /* LeadConnector/GHL chat bubble popup */
+    #lc-text-widget,
+    .lc-text-widget,
+    [class*="lc-text"],
+    [class*="lc_text"],
+    .lc-1jh40ms,
+    div[style*="position: fixed"][style*="bottom"] > div:has(img[alt*="avatar"]) {
       display: none !important;
     }
   }
