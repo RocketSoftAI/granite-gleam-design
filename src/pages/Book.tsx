@@ -1,10 +1,15 @@
 import { ArrowLeft, Phone } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
-
-const BOOKING_URL = 'https://api.leadconnectorhq.com/widget/booking/7VbijpcAi4BpIyKbMJHa';
+import BookingCalendar from '@/components/booking/BookingCalendar';
 
 const Book = () => {
+  const navigate = useNavigate();
+
+  const handleClose = () => {
+    navigate('/');
+  };
+
   return (
     <>
       <SEOHead
@@ -34,21 +39,17 @@ const Book = () => {
           </a>
         </header>
 
-        {/* Full-height calendar embed */}
-        <div className="flex-1 flex flex-col" style={{ height: 'calc(100vh - 65px)' }}>
-          <iframe
-            src={BOOKING_URL}
-            width="100%"
-            height="100%"
-            style={{ 
-              border: 'none',
-              flex: 1,
-              minHeight: '700px',
-            }}
-            title="Book an Appointment"
-            allow="geolocation"
-            loading="eager"
-          />
+        {/* Booking content */}
+        <div className="flex-1 overflow-y-auto py-6 px-4">
+          <div className="max-w-lg mx-auto">
+            <h1 className="text-2xl font-serif font-medium text-center mb-2">
+              Book a Showroom Visit
+            </h1>
+            <p className="text-muted-foreground text-center mb-8">
+              See our stunning countertop selections in person
+            </p>
+            <BookingCalendar onClose={handleClose} />
+          </div>
         </div>
       </div>
     </>
