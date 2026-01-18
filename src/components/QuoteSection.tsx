@@ -175,10 +175,9 @@ const QuoteSection = () => {
 
             {/* Contact Info */}
             <div className="space-y-4">
-              <motion.a
+              <a
                 href="tel:+19704931992"
-                className="flex items-center gap-4 text-primary-foreground/90 hover:text-primary-foreground transition-colors group"
-                whileHover={{ x: 5 }}
+                className="flex items-center gap-4 text-primary-foreground/90 hover:text-primary-foreground hover:translate-x-1 transition-all group"
               >
                 <div className="w-12 h-12 rounded-full bg-primary-foreground/10 flex items-center justify-center group-hover:bg-primary-foreground/20 transition-colors">
                   <Phone className="w-5 h-5" />
@@ -187,11 +186,10 @@ const QuoteSection = () => {
                   <span className="block text-sm text-primary-foreground/60">Call Us</span>
                   <span className="font-medium">(970) 493-1992</span>
                 </div>
-              </motion.a>
-              <motion.a
+              </a>
+              <a
                 href="mailto:office@stoneworksofcolorado.com"
-                className="flex items-center gap-4 text-primary-foreground/90 hover:text-primary-foreground transition-colors group"
-                whileHover={{ x: 5 }}
+                className="flex items-center gap-4 text-primary-foreground/90 hover:text-primary-foreground hover:translate-x-1 transition-all group"
               >
                 <div className="w-12 h-12 rounded-full bg-primary-foreground/10 flex items-center justify-center group-hover:bg-primary-foreground/20 transition-colors">
                   <Mail className="w-5 h-5" />
@@ -200,10 +198,9 @@ const QuoteSection = () => {
                   <span className="block text-sm text-primary-foreground/60">Email</span>
                   <span className="font-medium">office@stoneworksofcolorado.com</span>
                 </div>
-              </motion.a>
-              <motion.div 
+              </a>
+              <div 
                 className="flex items-center gap-4 text-primary-foreground/90"
-                whileHover={{ x: 5 }}
               >
                 <div className="w-12 h-12 rounded-full bg-primary-foreground/10 flex items-center justify-center">
                   <MapPin className="w-5 h-5" />
@@ -212,16 +209,14 @@ const QuoteSection = () => {
                   <span className="block text-sm text-primary-foreground/60">Showroom</span>
                   <span className="font-medium">3555 S Lincoln Ave, Loveland, CO</span>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </ScrollAnimation>
 
           {/* Right Column - Form */}
           <ScrollAnimation variant="slideRight" delay={0.2}>
-            <motion.div 
-              className="bg-card/95 backdrop-blur-sm p-8 lg:p-10 rounded-lg shadow-elevated"
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.3 }}
+            <div 
+              className="bg-card/95 backdrop-blur-sm p-8 lg:p-10 rounded-lg shadow-elevated hover:-translate-y-1 transition-transform duration-300"
             >
               <h3 className="font-serif text-2xl font-medium text-foreground mb-6">
                 Request a Free Quote
@@ -431,10 +426,7 @@ const QuoteSection = () => {
                   error={errors.smsConsent}
                 />
 
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
+                <div className="hover:scale-[1.02] active:scale-[0.98] transition-transform">
                   <Button 
                     variant="premium" 
                     size="xl" 
@@ -445,9 +437,9 @@ const QuoteSection = () => {
                     {isSubmitting ? 'Sending...' : 'Get Your Free Quote'}
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Button>
-                </motion.div>
+                </div>
               </form>
-            </motion.div>
+            </div>
           </ScrollAnimation>
         </div>
       </div>

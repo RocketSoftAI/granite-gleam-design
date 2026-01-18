@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { motion } from 'framer-motion';
 import { quoteFormSchema, type QuoteFormData } from '@/lib/validations';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -169,10 +168,8 @@ const SpecialOffer = () => {
           <div className="container mx-auto px-6 lg:px-12 relative z-10">
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
               {/* Left: Offer Details */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+              <div
+                className="animate-fade-in"
               >
                 {/* Offer Badge */}
                 <div className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-full mb-6">
@@ -231,14 +228,12 @@ const SpecialOffer = () => {
                     <span className="font-semibold text-foreground">Limited time offer</span> — Ends January 31st
                   </p>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Right: Quote Form */}
-              <motion.div 
-                className="bg-card p-8 lg:p-10 rounded-xl shadow-elevated border border-border"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+              <div 
+                className="bg-card p-8 lg:p-10 rounded-xl shadow-elevated border border-border animate-fade-in"
+                style={{ animationDelay: '0.2s' }}
               >
                 {/* Form Header with Offer Applied */}
                 <div className="bg-gradient-to-r from-primary/10 to-bronze/10 -mx-8 lg:-mx-10 -mt-8 lg:-mt-10 px-8 lg:px-10 py-5 rounded-t-xl mb-6 border-b border-primary/20">
@@ -469,7 +464,7 @@ const SpecialOffer = () => {
                     {!isSubmitting && <ArrowRight className="ml-2 w-5 h-5" />}
                   </Button>
                 </form>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>

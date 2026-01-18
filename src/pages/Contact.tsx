@@ -3,7 +3,6 @@ import { Phone, Mail, MapPin, Clock, Calendar } from 'lucide-react';
 import Layout from '@/components/Layout';
 import ContactForm from '@/components/ContactForm';
 import { Button } from '@/components/ui/button';
-import { motion } from 'framer-motion';
 import BookingModal from '@/components/BookingModal';
 
 const ContactPage = () => {
@@ -46,11 +45,8 @@ const ContactPage = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             {/* Left: Hero Content + Contact Info */}
-            <motion.div
-              className="order-2 lg:order-1"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+            <div
+              className="order-2 lg:order-1 animate-fade-in"
             >
               <span className="label-caps text-primary-foreground/60 mb-4 block">Contact Us</span>
               <h1 className="font-serif text-4xl lg:text-5xl font-medium text-primary-foreground mb-4">
@@ -65,12 +61,10 @@ const ContactPage = () => {
               {/* Quick Contact Cards */}
               <div className="grid grid-cols-2 gap-4">
                 {contactInfo.map((item, index) => (
-                  <motion.div 
+                  <div 
                     key={index} 
-                    className="bg-primary-foreground/5 backdrop-blur-sm p-4 rounded-lg border border-primary-foreground/10"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 * index }}
+                    className="bg-primary-foreground/5 backdrop-blur-sm p-4 rounded-lg border border-primary-foreground/10 animate-fade-in"
+                    style={{ animationDelay: `${0.1 * index}s` }}
                   >
                     <div className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center mb-3">
                       <item.icon className="w-4 h-4 text-primary-foreground/80" />
@@ -89,20 +83,18 @@ const ContactPage = () => {
                       <p className="text-sm font-medium text-primary-foreground/90">{item.primary}</p>
                     )}
                     <p className="text-xs text-primary-foreground/50 mt-0.5">{item.secondary}</p>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-            </motion.div>
+            </div>
 
             {/* Right: Quote Form */}
-            <motion.div
-              className="order-1 lg:order-2"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+            <div
+              className="order-1 lg:order-2 animate-fade-in"
+              style={{ animationDelay: '0.2s' }}
             >
               <ContactForm />
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -112,12 +104,8 @@ const ContactPage = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left: Map */}
-            <motion.div 
-              className="aspect-[4/3] bg-muted rounded-lg overflow-hidden"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+            <div 
+              className="aspect-[4/3] bg-muted rounded-lg overflow-hidden animate-fade-in"
             >
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3040.5!2d-105.075!3d40.3641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x876ea5c8e5fba5a7%3A0x0!2s3555%20S%20Lincoln%20Ave%2C%20Loveland%2C%20CO%2080537!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
@@ -130,14 +118,12 @@ const ContactPage = () => {
                 title="StoneWorks Showroom Location"
                 className="w-full h-full"
               />
-            </motion.div>
+            </div>
 
             {/* Right: Showroom Info */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+            <div
+              className="animate-fade-in"
+              style={{ animationDelay: '0.2s' }}
             >
               <span className="label-caps text-muted-foreground mb-4 block">Visit Us</span>
               <h2 className="font-serif text-3xl lg:text-4xl font-medium text-foreground mb-4">
@@ -199,7 +185,7 @@ const ContactPage = () => {
                 <p className="font-medium text-foreground">3555 S Lincoln Ave, Loveland, CO 80537</p>
                 <p className="text-sm text-muted-foreground mt-1">Just off US-287 • Ample parking available</p>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
