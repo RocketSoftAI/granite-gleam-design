@@ -15,4 +15,42 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Chunk splitting for better caching and smaller initial load
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // React core - rarely changes, cache aggressively
+          'react-vendor': ['react', 'react-dom'],
+          // Router - separate chunk for route-based code splitting
+          'router': ['react-router-dom'],
+          // UI components - shared across pages
+          'ui-vendor': [
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-tabs',
+            '@radix-ui/react-tooltip',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-select',
+            '@radix-ui/react-checkbox',
+            '@radix-ui/react-label',
+            '@radix-ui/react-slot',
+          ],
+          // Data fetching - used across app
+          'query': ['@tanstack/react-query'],
+        },
+      },
+    },
+    // Terser for better minification (removes console.log in prod)
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+    // Increase warning limit since we're chunking intentionally
+    chunkSizeWarningLimit: 600,
+  },
 }));

@@ -112,7 +112,25 @@
   </head>
 
   <body>
-    <div id="root"></div>
+    <!-- Pre-rendered hero for instant FCP - React hydrates over this -->
+    <div id="root">
+      <div data-prerender="true" class="hero-placeholder" style="min-height:100vh;display:flex;align-items:center;overflow:hidden;position:relative">
+        <div style="position:relative;z-index:10;width:100%;max-width:1280px;margin:0 auto;padding:6rem 1.5rem 1.5rem">
+          <div style="max-width:48rem">
+            <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:0.5rem 1rem;border-radius:9999px;margin-bottom:2rem">
+              <span style="width:0.5rem;height:0.5rem;border-radius:9999px;background:hsl(30,50%,50%)"></span>
+              <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.8);font-weight:500">Northern Colorado's Premier Stone Fabricator</span>
+            </div>
+            <h1 style="font-family:Playfair Display,serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:500;color:white;margin:0 0 1.5rem;line-height:1.1">
+              Timeless Stone,<br><span style="font-style:italic;font-weight:400;opacity:0.9">Crafted for You</span>
+            </h1>
+            <p style="font-size:1.125rem;color:rgba(255,255,255,0.8);max-width:36rem;margin:0 0 2.5rem;line-height:1.6">
+              With over 20 years of expertise in granite, quartz, marble, and quartzite, we create custom countertops that elevate your kitchen and bath to works of art.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- GHL Chat Widget - Heavily deferred for performance -->
@@ -132,23 +150,24 @@
           document.body.appendChild(script);
         }
         
-        // Mobile: Load after significant scroll or 15 seconds (increased from 10)
+        // Mobile: Load after significant scroll or 30 seconds (increased from 15)
         if (window.innerWidth <= 768) {
           var scrollHandler = function() {
-            if (window.scrollY > window.innerHeight * 0.75) {
+            // Trigger at 50% scroll instead of 75%
+            if (window.scrollY > window.innerHeight * 0.5) {
               loadChatWidget();
               window.removeEventListener('scroll', scrollHandler);
             }
           };
           window.addEventListener('scroll', scrollHandler, { passive: true });
-          setTimeout(loadChatWidget, 15000);
+          setTimeout(loadChatWidget, 30000); // 30s on mobile
         } else {
-          // Desktop: Load after 5 seconds (increased from 3)
+          // Desktop: Load after 8 seconds (increased from 5)
           if (document.readyState === 'complete') {
-            setTimeout(loadChatWidget, 5000);
+            setTimeout(loadChatWidget, 8000);
           } else {
             window.addEventListener('load', function() {
-              setTimeout(loadChatWidget, 5000);
+              setTimeout(loadChatWidget, 8000);
             }, { once: true });
           }
         }

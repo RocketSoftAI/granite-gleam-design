@@ -48,6 +48,7 @@ const HeroSection = () => {
               width="1920"
               height="1080"
               decoding="async"
+              sizes="100vw"
             />
           </picture>
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-charcoal/40 to-charcoal/70" />

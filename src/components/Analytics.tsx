@@ -171,24 +171,29 @@ const Analytics = () => {
   useEffect(() => {
     const init = () => {
       // Use requestIdleCallback for non-blocking initialization
-      // Increased timeout to prioritize initial render
+      // Significantly increased timeout to prioritize initial render and LCP
       if ('requestIdleCallback' in window) {
         (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => void })
-          .requestIdleCallback(initializeGA, { timeout: 8000 });
+          .requestIdleCallback(initializeGA, { timeout: 12000 }); // Increased from 8000
       } else {
-        // Fallback to setTimeout - increased delay for better FCP
-        setTimeout(initializeGA, 6000);
+        // Fallback to setTimeout - increased delay for better FCP/LCP
+        setTimeout(initializeGA, 10000); // Increased from 6000
       }
     };
+
+    // Check for slow connection and delay further if needed
+    const connection = (navigator as Navigator & { connection?: { effectiveType?: string } }).connection;
+    const isSlow = connection?.effectiveType === '2g' || connection?.effectiveType === 'slow-2g';
+    const baseDelay = isSlow ? 5000 : 3000; // Extra delay on slow connections
 
     // Wait for page to be fully interactive before loading analytics
     // This ensures FCP and LCP are not impacted
     if (document.readyState === 'complete') {
       // Additional delay after load to ensure FCP/LCP metrics are captured
-      setTimeout(init, 2000);
+      setTimeout(init, baseDelay);
     } else {
       window.addEventListener('load', () => {
-        setTimeout(init, 2000);
+        setTimeout(init, baseDelay);
       }, { once: true });
     }
 
