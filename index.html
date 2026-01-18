@@ -69,25 +69,25 @@
     <link 
       rel="preload" 
       as="image" 
-      href="/images/hero-mobile.png"
+      href="/images/hero-mobile.webp"
       media="(max-width: 640px)"
-      type="image/png"
+      type="image/webp"
       fetchpriority="high"
     />
     <link 
       rel="preload" 
       as="image" 
-      href="/images/hero-tablet.png"
+      href="/images/hero-tablet.webp"
       media="(min-width: 641px) and (max-width: 1024px)"
-      type="image/png"
+      type="image/webp"
       fetchpriority="high"
     />
     <link 
       rel="preload" 
       as="image" 
-      href="/images/hero-desktop.png"
+      href="/images/hero-desktop.webp"
       media="(min-width: 1025px)"
-      type="image/png"
+      type="image/webp"
       fetchpriority="high"
     />
     
@@ -112,10 +112,28 @@
   </head>
 
   <body>
-    <!-- Pre-rendered hero for instant FCP - React hydrates over this -->
+    <!-- Pre-rendered hero with image for instant LCP - React hydrates over this -->
     <div id="root">
-      <div data-prerender="true" class="hero-placeholder" style="min-height:100vh;display:flex;align-items:center;overflow:hidden;position:relative">
-        <div style="position:relative;z-index:10;width:100%;max-width:1280px;margin:0 auto;padding:6rem 1.5rem 1.5rem">
+      <div data-prerender="true" style="min-height:100vh;position:relative;overflow:hidden">
+        <!-- Pre-rendered background image - this IS the LCP element -->
+        <picture style="position:absolute;inset:0">
+          <source media="(max-width: 640px)" srcset="/images/hero-mobile.webp" type="image/webp">
+          <source media="(max-width: 1024px)" srcset="/images/hero-tablet.webp" type="image/webp">
+          <source srcset="/images/hero-desktop.webp" type="image/webp">
+          <img 
+            src="/images/hero-desktop.webp" 
+            alt="Luxury kitchen with custom stone countertops" 
+            style="width:100%;height:100%;object-fit:cover"
+            fetchpriority="high"
+            decoding="sync"
+            width="1920"
+            height="1080"
+          >
+        </picture>
+        <!-- Dark overlay -->
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(41,37,33,0.5),rgba(41,37,33,0.4),rgba(41,37,33,0.7))"></div>
+        <!-- Content -->
+        <div style="position:relative;z-index:10;display:flex;align-items:center;min-height:100vh;padding:6rem 1.5rem 1.5rem;max-width:1280px;margin:0 auto">
           <div style="max-width:48rem">
             <div style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:0.5rem 1rem;border-radius:9999px;margin-bottom:2rem">
               <span style="width:0.5rem;height:0.5rem;border-radius:9999px;background:hsl(30,50%,50%)"></span>
