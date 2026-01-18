@@ -52,7 +52,15 @@ const BUDGET_RANGE_OPTIONS = [
   { value: 'not_sure', label: 'Not sure yet' },
 ];
 
-const ContactForm = () => {
+interface ContactFormProps {
+  title?: string;
+  description?: string;
+}
+
+const ContactForm = ({ 
+  title = "Request a Free Quote",
+  description = "Fill out the form below and we'll get back to you within 24 hours."
+}: ContactFormProps) => {
   const [formData, setFormData] = useState<QuoteFormData>({
     name: '',
     email: '',
@@ -139,10 +147,10 @@ const ContactForm = () => {
       transition={{ duration: 0.5 }}
     >
       <h3 className="font-serif text-2xl font-medium text-foreground mb-2">
-        Request a Free Quote
+        {title}
       </h3>
       <p className="text-muted-foreground text-sm mb-6">
-        Fill out the form below and we'll get back to you within 24 hours.
+        {description}
       </p>
       
       <form onSubmit={handleSubmit} className="space-y-5">
