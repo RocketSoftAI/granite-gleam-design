@@ -167,24 +167,29 @@ export const trackMaterialQuoteForm = (material: string) => {
 const Analytics = () => {
   const location = useLocation();
 
-  // Initialize GA on first load (lazy with requestIdleCallback)
+  // Initialize GA after page is interactive (prioritize FCP/LCP)
   useEffect(() => {
     const init = () => {
       // Use requestIdleCallback for non-blocking initialization
+      // Increased timeout to prioritize initial render
       if ('requestIdleCallback' in window) {
         (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => void })
-          .requestIdleCallback(initializeGA, { timeout: 5000 });
+          .requestIdleCallback(initializeGA, { timeout: 8000 });
       } else {
-        // Fallback to setTimeout for browsers without requestIdleCallback
-        setTimeout(initializeGA, 4000);
+        // Fallback to setTimeout - increased delay for better FCP
+        setTimeout(initializeGA, 6000);
       }
     };
 
-    // Wait for page to fully load before initializing analytics
+    // Wait for page to be fully interactive before loading analytics
+    // This ensures FCP and LCP are not impacted
     if (document.readyState === 'complete') {
-      init();
+      // Additional delay after load to ensure FCP/LCP metrics are captured
+      setTimeout(init, 2000);
     } else {
-      window.addEventListener('load', init, { once: true });
+      window.addEventListener('load', () => {
+        setTimeout(init, 2000);
+      }, { once: true });
     }
 
     return () => {
