@@ -115,31 +115,46 @@ serve(async (req) => {
     console.log('Raw slots data:', JSON.stringify(slotsData));
 
     // Transform the slots into a more usable format
-    // GHL returns slots grouped by date like { "2024-01-15": { slots: [...] } }
+    // GHL returns slots grouped by date like { "2024-01-15": { slots: ["2024-01-15T08:00:00-07:00", ...] } }
     const formattedSlots: DaySlots[] = [];
     
     // Handle the GHL response format
     const rawSlots = slotsData || {};
+    
+    // Log the keys we're processing
+    const dateKeys = Object.keys(rawSlots).filter(key => /^\d{4}-\d{2}-\d{2}$/.test(key));
+    console.log('Date keys found:', dateKeys.length, dateKeys.slice(0, 5));
     
     for (const [date, dayData] of Object.entries(rawSlots)) {
       // Skip non-date keys
       if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
       
       const daySlots = (dayData as any)?.slots || [];
-      const slots: TimeSlot[] = daySlots.map((slot: any, index: number) => {
-        const startDateTime = new Date(slot.startTime || slot);
-        const endDateTime = slot.endTime ? new Date(slot.endTime) : new Date(startDateTime.getTime() + 60 * 60 * 1000);
+      console.log(`Processing ${date}: ${daySlots.length} raw slots`);
+      
+      const slots: TimeSlot[] = daySlots.map((slot: string, index: number) => {
+        // GHL returns slots as ISO strings like "2024-01-15T08:00:00-07:00"
+        // Parse the time from the ISO string directly to preserve timezone
+        const timePart = slot.split('T')[1];
+        const [hourStr, minuteStr] = timePart.split(':');
+        const hour = parseInt(hourStr, 10);
+        const minute = parseInt(minuteStr, 10);
+        
+        // Format display time
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        const displayHour = hour % 12 || 12;
+        const displayMinutes = minute.toString().padStart(2, '0');
+        const displayTime = `${displayHour}:${displayMinutes} ${ampm}`;
+        
+        // Parse the full date for ISO string
+        const startDateTime = new Date(slot);
+        const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);
         
         return {
           id: `${date}-${index}`,
-          startTime: startDateTime.toISOString(),
+          startTime: slot, // Keep original GHL format
           endTime: endDateTime.toISOString(),
-          displayTime: startDateTime.toLocaleTimeString('en-US', {
-            hour: 'numeric',
-            minute: '2-digit',
-            hour12: true,
-            timeZone: timezone,
-          }),
+          displayTime,
         };
       });
 
