@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, Gift, ArrowRight, CheckCircle } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { exitPopupSchema } from '@/lib/validations';
@@ -22,12 +21,10 @@ const ExitIntentPopup = () => {
   const hasTriggered = useRef(false);
 
   useEffect(() => {
-    // Check if popup was already shown
     const shown = sessionStorage.getItem('exit-popup-shown');
     if (shown) return;
 
     const handleMouseLeave = (e: MouseEvent) => {
-      // Only trigger when mouse leaves from top of viewport
       if (e.clientY <= 0 && !hasTriggered.current) {
         hasTriggered.current = true;
         setIsOpen(true);
@@ -35,7 +32,6 @@ const ExitIntentPopup = () => {
       }
     };
 
-    // Also trigger after 45 seconds on page (engagement-based)
     const timer = setTimeout(() => {
       if (!hasTriggered.current) {
         hasTriggered.current = true;
@@ -56,13 +52,11 @@ const ExitIntentPopup = () => {
     e.preventDefault();
     setErrors({});
     
-    // Validate SMS consent
     if (!smsConsent) {
       setErrors({ smsConsent: 'You must agree to receive communications to submit this form' });
       return;
     }
     
-    // Validate form
     const result = exitPopupSchema.safeParse(formData);
     
     if (!result.success) {
@@ -110,31 +104,22 @@ const ExitIntentPopup = () => {
     }
   };
 
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsOpen(false)}
-            className="fixed inset-0 bg-charcoal/60 backdrop-blur-sm z-[100]"
-          />
+  if (!isOpen) return null;
 
-          {/* Scrollable container */}
-          <div className="fixed inset-0 z-[101] overflow-y-auto">
-            <div className="min-h-full flex items-center justify-center p-4">
-              {/* Popup */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                className="w-full max-w-md"
-              >
-                <div className="bg-card rounded-2xl shadow-elevated overflow-hidden">
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        onClick={() => setIsOpen(false)}
+        className="fixed inset-0 bg-charcoal/60 backdrop-blur-sm z-[100] animate-fade-in"
+      />
+
+      {/* Scrollable container */}
+      <div className="fixed inset-0 z-[101] overflow-y-auto">
+        <div className="min-h-full flex items-center justify-center p-4">
+          {/* Popup */}
+          <div className="w-full max-w-md animate-scale-in">
+            <div className="bg-card rounded-2xl shadow-elevated overflow-hidden">
               {/* Header with gradient */}
               <div className="bg-gradient-to-r from-primary to-bronze p-6 text-primary-foreground relative">
                 <button
@@ -222,7 +207,6 @@ const ExitIntentPopup = () => {
                         )}
                       </div>
                       
-                      {/* SMS Consent */}
                       <SmsConsentCheckbox
                         checked={smsConsent}
                         onCheckedChange={setSmsConsent}
@@ -243,14 +227,9 @@ const ExitIntentPopup = () => {
                   </>
                 ) : (
                   <div className="text-center py-8">
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ type: 'spring', damping: 15 }}
-                      className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4"
-                    >
+                    <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 animate-scale-in">
                       <CheckCircle className="w-8 h-8 text-primary" />
-                    </motion.div>
+                    </div>
                     <h4 className="font-serif text-xl font-medium text-foreground mb-2">
                       You're All Set!
                     </h4>
@@ -261,12 +240,10 @@ const ExitIntentPopup = () => {
                 )}
               </div>
             </div>
-          </motion.div>
-            </div>
           </div>
-        </>
-      )}
-    </AnimatePresence>
+        </div>
+      </div>
+    </>
   );
 };
 

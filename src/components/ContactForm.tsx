@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { motion } from 'framer-motion';
 import { quoteFormSchema, type QuoteFormData } from '@/lib/validations';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -152,11 +151,8 @@ const ContactForm = ({
   };
 
   return (
-    <motion.div 
-      className="bg-card p-8 lg:p-10 rounded-lg shadow-elevated"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+    <div 
+      className="bg-card p-8 lg:p-10 rounded-lg shadow-elevated animate-fade-in"
     >
       <h3 className="font-serif text-2xl font-medium text-foreground mb-2">
         {title}
@@ -380,7 +376,7 @@ const ContactForm = ({
           {!isSubmitting && <ArrowRight className="ml-2 w-5 h-5" />}
         </Button>
       </form>
-    </motion.div>
+    </div>
   );
 };
 
