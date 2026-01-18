@@ -2,3 +2,9 @@ project_id = "cnwpotkeptcfysvasonk"
 
 [functions.submit-lead]
 verify_jwt = false
+
+[functions.get-calendar-slots]
+verify_jwt = false
+
+[functions.create-appointment]
+verify_jwt = false
