@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-// Removed framer-motion to prevent duplicate rendering issues
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { format, addDays, startOfDay, isSameDay } from 'date-fns';
 import { Calendar } from '@/components/ui/calendar';
 import { supabase } from '@/integrations/supabase/client';
@@ -40,67 +39,86 @@ const BookingCalendar = ({ onClose }: BookingCalendarProps) => {
     contactName: string;
   } | null>(null);
 
-  // Fetch availability when component mounts or date range changes
+  // Fetch availability when component mounts
   useEffect(() => {
+    let mounted = true;
+    
+    const fetchAvailability = async () => {
+      setIsLoadingSlots(true);
+      try {
+        const startDate = format(startOfDay(new Date()), 'yyyy-MM-dd');
+        const endDate = format(addDays(new Date(), 30), 'yyyy-MM-dd');
+
+        const { data, error } = await supabase.functions.invoke('get-calendar-slots', {
+          body: {
+            startDate,
+            endDate,
+            timezone: 'America/Denver',
+          },
+        });
+
+        if (!mounted) return;
+
+        if (error) {
+          console.error('Error fetching slots:', error);
+          toast.error('Failed to load available times');
+          return;
+        }
+
+        if (data?.availability) {
+          setAvailability(data.availability);
+          setCalendarId(data.calendarId);
+        }
+      } catch (err) {
+        if (!mounted) return;
+        console.error('Failed to fetch availability:', err);
+        toast.error('Failed to load calendar');
+      } finally {
+        if (mounted) {
+          setIsLoadingSlots(false);
+        }
+      }
+    };
+
     fetchAvailability();
+    
+    return () => {
+      mounted = false;
+    };
   }, []);
 
-  const fetchAvailability = async () => {
-    setIsLoadingSlots(true);
-    try {
-      const startDate = format(startOfDay(new Date()), 'yyyy-MM-dd');
-      const endDate = format(addDays(new Date(), 30), 'yyyy-MM-dd');
+  // Memoize available dates to prevent re-renders
+  const availableDates = useMemo(() => {
+    return availability.map(day => new Date(day.date + 'T12:00:00'));
+  }, [availability]);
 
-      const { data, error } = await supabase.functions.invoke('get-calendar-slots', {
-        body: {
-          startDate,
-          endDate,
-          timezone: 'America/Denver',
-        },
-      });
+  // Memoize the date set for faster lookups
+  const availableDateStrings = useMemo(() => {
+    return new Set(availability.map(day => day.date));
+  }, [availability]);
 
-      if (error) {
-        console.error('Error fetching slots:', error);
-        toast.error('Failed to load available times');
-        return;
-      }
-
-      if (data?.availability) {
-        setAvailability(data.availability);
-        setCalendarId(data.calendarId);
-      }
-    } catch (err) {
-      console.error('Failed to fetch availability:', err);
-      toast.error('Failed to load calendar');
-    } finally {
-      setIsLoadingSlots(false);
-    }
-  };
-
-  // Get available dates for calendar highlighting
-  const availableDates = availability.map(day => new Date(day.date + 'T12:00:00'));
-
-  // Get slots for selected date
-  const getSlotsForDate = (date: Date): TimeSlot[] => {
-    const dateStr = format(date, 'yyyy-MM-dd');
+  // Get slots for selected date - memoized
+  const currentSlots = useMemo(() => {
+    if (!selectedDate) return [];
+    const dateStr = format(selectedDate, 'yyyy-MM-dd');
     const daySlots = availability.find(day => day.date === dateStr);
     return daySlots?.slots || [];
-  };
+  }, [selectedDate, availability]);
 
-  const handleDateSelect = (date: Date | undefined) => {
+  const handleDateSelect = useCallback((date: Date | undefined) => {
     setSelectedDate(date);
     setSelectedSlot(null);
     if (date) {
       setStep('select-time');
     }
-  };
+  }, []);
 
-  const handleSlotSelect = (slot: TimeSlot) => {
+  const handleSlotSelect = useCallback((slot: TimeSlot) => {
     setSelectedSlot(slot);
     setStep('enter-info');
-  };
+  }, []);
 
-  const handleFormSubmit = async (contactData: { 
+  const handleFormSubmit = useCallback(async (contactData: { 
     name: string; 
     email: string; 
     phone?: string; 
@@ -149,114 +167,36 @@ const BookingCalendar = ({ onClose }: BookingCalendarProps) => {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [selectedDate, selectedSlot, calendarId]);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     if (onClose) {
       onClose();
     } else {
-      // Reset state for standalone page
       setStep('select-date');
       setSelectedDate(undefined);
       setSelectedSlot(null);
       setSuccessData(null);
     }
-  };
+  }, [onClose]);
 
-  const handleBack = () => {
+  const handleBack = useCallback(() => {
     if (step === 'enter-info') {
       setStep('select-time');
     } else if (step === 'select-time') {
       setStep('select-date');
       setSelectedSlot(null);
     }
-  };
+  }, [step]);
 
-  // Disable dates in the past or with no availability
-  const isDateDisabled = (date: Date) => {
+  // Memoized date disabled function
+  const isDateDisabled = useCallback((date: Date) => {
     if (date < startOfDay(new Date())) return true;
-    return !availableDates.some(d => isSameDay(d, date));
-  };
+    const dateStr = format(date, 'yyyy-MM-dd');
+    return !availableDateStrings.has(dateStr);
+  }, [availableDateStrings]);
 
-  const renderStepContent = () => {
-    if (step === 'select-date') {
-      return (
-        <div className="flex flex-col items-center">
-          <h3 className="text-lg font-medium mb-4">Select a Date</h3>
-          {isLoadingSlots ? (
-            <div className="flex items-center justify-center h-64">
-              <Loader2 className="w-8 h-8 animate-spin text-primary" />
-            </div>
-          ) : (
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={handleDateSelect}
-              disabled={isDateDisabled}
-              modifiers={{
-                available: availableDates,
-              }}
-              modifiersStyles={{
-                available: {
-                  fontWeight: 'bold',
-                },
-              }}
-              className="rounded-md border"
-            />
-          )}
-          {!isLoadingSlots && availability.length === 0 && (
-            <p className="text-sm text-muted-foreground mt-4">
-              No availability found. Please call us at (970) 493-1992.
-            </p>
-          )}
-        </div>
-      );
-    }
-
-    if (step === 'select-time' && selectedDate) {
-      return (
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <button
-              onClick={handleBack}
-              className="text-sm text-primary hover:underline"
-            >
-              ← Change date
-            </button>
-            <span className="text-sm font-medium">
-              {format(selectedDate, 'EEEE, MMMM d')}
-            </span>
-          </div>
-          <h3 className="text-lg font-medium mb-4">Select a Time</h3>
-          <TimeSlotPicker
-            slots={getSlotsForDate(selectedDate)}
-            selectedSlot={selectedSlot}
-            onSelectSlot={handleSlotSelect}
-            isLoading={false}
-            selectedDate={selectedDate}
-          />
-        </div>
-      );
-    }
-
-    if (step === 'enter-info' && selectedDate && selectedSlot) {
-      return (
-        <div>
-          <h3 className="text-lg font-medium mb-4">Your Information</h3>
-          <BookingForm
-            selectedDate={selectedDate}
-            selectedSlot={selectedSlot}
-            onSubmit={handleFormSubmit}
-            onBack={handleBack}
-            isSubmitting={isSubmitting}
-          />
-        </div>
-      );
-    }
-
-    return null;
-  };
-
+  // Success step
   if (step === 'success' && successData) {
     return (
       <div className="w-full max-w-lg mx-auto">
@@ -298,8 +238,67 @@ const BookingCalendar = ({ onClose }: BookingCalendarProps) => {
           })}
         </div>
 
-        {/* Step content - no AnimatePresence to prevent duplicate rendering */}
-        {renderStepContent()}
+        {/* Step content */}
+        {step === 'select-date' && (
+          <div className="flex flex-col items-center">
+            <h3 className="text-lg font-medium mb-4">Select a Date</h3>
+            {isLoadingSlots ? (
+              <div className="flex items-center justify-center h-64">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : (
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={handleDateSelect}
+                disabled={isDateDisabled}
+                className="rounded-md border"
+              />
+            )}
+            {!isLoadingSlots && availability.length === 0 && (
+              <p className="text-sm text-muted-foreground mt-4">
+                No availability found. Please call us at (970) 493-1992.
+              </p>
+            )}
+          </div>
+        )}
+
+        {step === 'select-time' && selectedDate && (
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <button
+                onClick={handleBack}
+                className="text-sm text-primary hover:underline"
+              >
+                ← Change date
+              </button>
+              <span className="text-sm font-medium">
+                {format(selectedDate, 'EEEE, MMMM d')}
+              </span>
+            </div>
+            <h3 className="text-lg font-medium mb-4">Select a Time</h3>
+            <TimeSlotPicker
+              slots={currentSlots}
+              selectedSlot={selectedSlot}
+              onSelectSlot={handleSlotSelect}
+              isLoading={false}
+              selectedDate={selectedDate}
+            />
+          </div>
+        )}
+
+        {step === 'enter-info' && selectedDate && selectedSlot && (
+          <div>
+            <h3 className="text-lg font-medium mb-4">Your Information</h3>
+            <BookingForm
+              selectedDate={selectedDate}
+              selectedSlot={selectedSlot}
+              onSubmit={handleFormSubmit}
+              onBack={handleBack}
+              isSubmitting={isSubmitting}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
