@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, Calendar, X } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Calendar } from 'lucide-react';
 import Layout from '@/components/Layout';
 import ContactForm from '@/components/ContactForm';
 import { Button } from '@/components/ui/button';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import BookingModal from '@/components/BookingModal';
 
 const ContactPage = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -203,50 +204,7 @@ const ContactPage = () => {
         </div>
       </section>
 
-      {/* Calendar Booking Modal */}
-      <AnimatePresence>
-        {isCalendarOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setIsCalendarOpen(false)}
-              className="fixed inset-0 bg-charcoal/60 backdrop-blur-sm z-[100]"
-            />
-            <div className="fixed inset-0 z-[101] overflow-y-auto">
-              <div className="min-h-full flex items-center justify-center p-4">
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                  transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-                  className="w-full max-w-2xl bg-card rounded-2xl shadow-elevated overflow-hidden"
-                >
-                  <div className="flex items-center justify-between p-4 border-b border-border">
-                    <h3 className="font-serif text-xl font-medium text-foreground">Book a Showroom Appointment</h3>
-                    <button
-                      onClick={() => setIsCalendarOpen(false)}
-                      className="p-2 hover:bg-muted rounded-full transition-colors"
-                      aria-label="Close calendar"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  </div>
-                  <div className="p-4">
-                    <iframe
-                      src="https://api.leadconnectorhq.com/widget/booking/7VbijpcAi4BpIyKbMJHa"
-                      style={{ width: '100%', height: '700px', border: 'none', overflow: 'auto' }}
-                      title="Book an Appointment"
-                      allow="geolocation"
-                    />
-                  </div>
-                </motion.div>
-              </div>
-            </div>
-          </>
-        )}
-      </AnimatePresence>
+      <BookingModal isOpen={isCalendarOpen} onClose={() => setIsCalendarOpen(false)} />
     </Layout>
   );
 };
