@@ -236,9 +236,9 @@ const ContactPage = () => {
                   <div className="p-4">
                     <iframe
                       src="https://api.leadconnectorhq.com/widget/booking/7VbijpcAi4BpIyKbMJHa"
-                      style={{ width: '100%', height: '600px', border: 'none' }}
-                      scrolling="no"
+                      style={{ width: '100%', height: '700px', border: 'none', overflow: 'auto' }}
                       title="Book an Appointment"
+                      allow="geolocation"
                     />
                   </div>
                 </motion.div>
