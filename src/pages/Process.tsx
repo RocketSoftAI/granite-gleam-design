@@ -7,6 +7,11 @@ import SEOHead from '@/components/SEOHead';
 import { generateHowToSchema, generateBreadcrumbSchema } from '@/config/seo';
 
 import heroKitchen from '@/assets/hero-kitchen.jpg';
+import processConsultation from '@/assets/process-consultation.jpg';
+import processMaterialSelection from '@/assets/process-material-selection.jpg';
+import processTemplating from '@/assets/process-templating.jpg';
+import processFabrication from '@/assets/process-fabrication.jpg';
+import processInstallation from '@/assets/process-installation.jpg';
 
 const ProcessPage = () => {
   const steps = [
@@ -15,6 +20,7 @@ const ProcessPage = () => {
       step: '01',
       title: 'Initial Consultation',
       duration: '1-2 days',
+      image: processConsultation,
       description: 'Every project begins with a conversation. We meet at your home or our showroom to understand your vision, discuss materials, and take preliminary measurements.',
       details: [
         'Review your project goals and design preferences',
@@ -29,6 +35,7 @@ const ProcessPage = () => {
       step: '02',
       title: 'Material Selection',
       duration: '1 day',
+      image: processMaterialSelection,
       description: 'Visit our slab yard to hand-select the exact stone for your project. We guide you through colors, patterns, veining, and help you find the perfect match.',
       details: [
         'Browse our extensive slab inventory',
@@ -43,6 +50,7 @@ const ProcessPage = () => {
       step: '03',
       title: 'Digital Templating',
       duration: '2-3 hours',
+      image: processTemplating,
       description: 'Our team visits your home with laser templating technology to capture every angle and measurement with sub-millimeter precision.',
       details: [
         'Laser measurement technology for perfect accuracy',
@@ -57,6 +65,7 @@ const ProcessPage = () => {
       step: '04',
       title: 'Expert Fabrication',
       duration: '5-7 days',
+      image: processFabrication,
       description: 'Your stone is cut, polished, and finished in our state-of-the-art fabrication facility. CNC precision meets artisan finishing for flawless results.',
       details: [
         'CNC cutting for precise dimensions',
@@ -71,6 +80,7 @@ const ProcessPage = () => {
       step: '05',
       title: 'Professional Installation',
       duration: '1 day',
+      image: processInstallation,
       description: 'Our master installers bring your countertops to life with seamless, professional installation. We leave your space clean and ready to enjoy.',
       details: [
         'Careful removal of existing countertops (if applicable)',
@@ -203,13 +213,14 @@ const ProcessPage = () => {
                   </ul>
                 </div>
 
-                <div className={`bg-muted rounded-lg aspect-[4/3] flex items-center justify-center ${
+                <div className={`rounded-lg aspect-[4/3] overflow-hidden ${
                   index % 2 === 1 ? 'lg:col-start-1' : ''
                 }`}>
-                  <div className="text-center text-muted-foreground">
-                    <step.icon className="w-16 h-16 mx-auto mb-4 opacity-30" />
-                    <p className="text-sm">Step {step.step} Illustration</p>
-                  </div>
+                  <img 
+                    src={step.image} 
+                    alt={step.title}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             ))}
