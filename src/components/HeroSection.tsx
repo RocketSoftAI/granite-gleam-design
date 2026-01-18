@@ -77,7 +77,7 @@ const HeroSection = () => {
               </div>
               <div className="w-px h-12 bg-primary-foreground/20 hidden sm:block" />
               <div className="text-center">
-                <span className="block text-3xl font-serif font-medium text-primary-foreground">Lifetime</span>
+                <span className="block text-3xl font-serif font-medium text-primary-foreground">1 Year</span>
                 <span className="text-xs uppercase tracking-wider text-primary-foreground/60">Warranty</span>
               </div>
             </div>

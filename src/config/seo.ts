@@ -82,7 +82,7 @@ export const SITE_CONFIG = {
 export const PAGE_SEO: Record<string, PageSEO> = {
   '/': {
     title: 'Stoneworks of Colorado | Custom Stone & Granite Countertops',
-    description: "Northern Colorado's premier custom stone fabricator. 20+ years crafting granite, quartz, marble & quartzite countertops. Free consultation. Lifetime warranty.",
+    description: "Northern Colorado's premier custom stone fabricator. 20+ years crafting granite, quartz, marble & quartzite countertops. Free consultation. 1 year warranty.",
     canonicalPath: '/',
     ogType: 'website',
   },
@@ -115,6 +115,12 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     canonicalPath: '/services/porcelain-countertops',
     ogType: 'product',
   },
+  '/services/marble-countertops': {
+    title: 'Marble Countertops Fort Collins | Timeless Elegance | Stoneworks CO',
+    description: 'Luxurious marble countertops in Northern Colorado. Classic Carrara and Calacatta varieties. Perfect for bathrooms and baking stations. Expert installation.',
+    canonicalPath: '/services/marble-countertops',
+    ogType: 'product',
+  },
   '/about': {
     title: 'About Stoneworks of Colorado | 20+ Years of Excellence',
     description: 'Family-owned stone fabricator since 2003. Meet our expert team, explore our state-of-the-art facility, and learn what sets Stoneworks apart.',
@@ -127,7 +133,7 @@ export const PAGE_SEO: Record<string, PageSEO> = {
   },
   '/contact': {
     title: 'Contact Stoneworks of Colorado | Free Consultation',
-    description: 'Get a free countertop consultation. Visit our Fort Collins showroom, call (970) 555-0123, or request a quote online. Same-day response.',
+    description: 'Get a free countertop consultation. Visit our Loveland showroom, call (970) 493-1992, or request a quote online. Same-day response.',
     canonicalPath: '/contact',
   },
   '/reviews': {
@@ -154,6 +160,16 @@ export const PAGE_SEO: Record<string, PageSEO> = {
     title: 'Countertop Blog | Tips & Guides | Stoneworks of Colorado',
     description: 'Expert advice on countertop materials, care, design trends, and kitchen remodeling. Learn from Northern Colorado stone specialists.',
     canonicalPath: '/blog',
+  },
+  '/book': {
+    title: 'Book Appointment | Stoneworks of Colorado',
+    description: 'Schedule your free showroom consultation at Stoneworks of Colorado. Visit our Loveland showroom to see hundreds of granite, quartz, and quartzite slabs.',
+    canonicalPath: '/book',
+  },
+  '/special-offer': {
+    title: 'Special Offer | Stoneworks of Colorado',
+    description: 'Claim your special offer on all countertop projects. Limited time offer from Stoneworks of Colorado.',
+    canonicalPath: '/special-offer',
   },
 };
 

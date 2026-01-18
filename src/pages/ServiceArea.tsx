@@ -7,8 +7,8 @@ import ContactForm from '@/components/ContactForm';
 
 const ServiceAreaPage = () => {
   const primaryCities = [
-    { name: 'Fort Collins', description: 'Our home base and showroom location. Full-service support for all project types.' },
-    { name: 'Loveland', description: 'Just minutes from our facility. Quick turnaround times and easy showroom visits.' },
+    { name: 'Loveland', description: 'Our home base and showroom location. Full-service support for all project types.' },
+    { name: 'Fort Collins', description: 'Just minutes from our facility. Quick turnaround times and easy showroom visits.' },
     { name: 'Greeley', description: 'Serving the Greeley area with complete fabrication and installation services.' },
     { name: 'Longmont', description: 'Regular installations throughout Longmont and surrounding communities.' },
     { name: 'Boulder', description: 'Bringing premium stone fabrication to Boulder County homeowners.' },
