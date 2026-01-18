@@ -11,6 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEOHead from '@/components/SEOHead';
+import SpecialOfferExitPopup from '@/components/SpecialOfferExitPopup';
 
 const PROJECT_AREAS_OPTIONS = [
   { value: 'kitchen_only', label: 'Kitchen only' },
@@ -460,6 +461,7 @@ const SpecialOffer = () => {
       </main>
       
       <Footer />
+      <SpecialOfferExitPopup />
     </>
   );
 };
