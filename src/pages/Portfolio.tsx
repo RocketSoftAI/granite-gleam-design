@@ -48,7 +48,7 @@ const PortfolioPage = () => {
             {filteredItems.map((item) => (
               <div key={item.id} className="group relative overflow-hidden rounded-lg cursor-pointer card-stone">
                 <div className="relative aspect-[4/3]">
-                  <img src={item.image} alt={`${item.title} - ${item.material} countertop in ${item.category.toLowerCase()}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <img src={item.image} alt={`${item.title} - ${item.material} countertop in ${item.category.toLowerCase()}`} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="absolute inset-0 p-6 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-all duration-500">
                     <span className="label-caps text-primary-foreground/70 mb-1">{item.material}</span>
