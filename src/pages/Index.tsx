@@ -1,17 +1,21 @@
+import { lazy, Suspense } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import WhyUsSection from '@/components/WhyUsSection';
-import ProcessSection from '@/components/ProcessSection';
-import TestimonialsSection from '@/components/TestimonialsSection';
 import MaterialsSection from '@/components/MaterialsSection';
-import QuoteSection from '@/components/QuoteSection';
 import MidPageCTA from '@/components/MidPageCTA';
-import Footer from '@/components/Footer';
 import SEOHead from '@/components/SEOHead';
 import PromoBanner from '@/components/PromoBanner';
 import StickyMobileCTA from '@/components/StickyMobileCTA';
 import ExitIntentPopup from '@/components/ExitIntentPopup';
+import { SectionLoadingSkeleton } from '@/components/LoadingSkeleton';
 import { generateLocalBusinessSchema } from '@/config/seo';
+
+// Lazy load below-the-fold sections for faster initial render
+const WhyUsSection = lazy(() => import('@/components/WhyUsSection'));
+const ProcessSection = lazy(() => import('@/components/ProcessSection'));
+const TestimonialsSection = lazy(() => import('@/components/TestimonialsSection'));
+const QuoteSection = lazy(() => import('@/components/QuoteSection'));
+const Footer = lazy(() => import('@/components/Footer'));
 
 const Index = () => {
   const schema = generateLocalBusinessSchema();
@@ -36,8 +40,14 @@ const Index = () => {
           </div>
         </section>
         
-        <WhyUsSection />
-        <ProcessSection />
+        {/* Lazy-loaded sections with Suspense */}
+        <Suspense fallback={<SectionLoadingSkeleton />}>
+          <WhyUsSection />
+        </Suspense>
+        
+        <Suspense fallback={<SectionLoadingSkeleton />}>
+          <ProcessSection />
+        </Suspense>
         
         {/* Mid-page CTA #2 */}
         <section className="py-12 lg:py-16 bg-background">
@@ -50,10 +60,19 @@ const Index = () => {
           </div>
         </section>
         
-        <TestimonialsSection />
-        <QuoteSection />
+        <Suspense fallback={<SectionLoadingSkeleton />}>
+          <TestimonialsSection />
+        </Suspense>
+        
+        <Suspense fallback={<SectionLoadingSkeleton />}>
+          <QuoteSection />
+        </Suspense>
       </main>
-      <Footer />
+      
+      <Suspense fallback={<div className="h-64 bg-muted/30" />}>
+        <Footer />
+      </Suspense>
+      
       <StickyMobileCTA />
       <ExitIntentPopup />
     </div>
