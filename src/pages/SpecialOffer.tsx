@@ -12,6 +12,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SEOHead from '@/components/SEOHead';
 import SpecialOfferExitPopup from '@/components/SpecialOfferExitPopup';
+import SmsConsentCheckbox from '@/components/SmsConsentCheckbox';
 
 const PROJECT_AREAS_OPTIONS = [
   { value: 'kitchen_only', label: 'Kitchen only' },
@@ -68,12 +69,20 @@ const SpecialOffer = () => {
     budgetRange: '',
     message: '',
   });
-  const [errors, setErrors] = useState<Partial<Record<keyof QuoteFormData, string>>>({});
+  const [smsConsent, setSmsConsent] = useState(false);
+  const [errors, setErrors] = useState<Partial<Record<keyof QuoteFormData | 'smsConsent', string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    
+    // Validate SMS consent
+    if (!smsConsent) {
+      setErrors({ smsConsent: 'You must agree to receive communications to submit this form' });
+      toast.error('Please agree to the SMS consent to continue');
+      return;
+    }
     
     const result = quoteFormSchema.safeParse(formData);
     
@@ -106,6 +115,8 @@ const SpecialOffer = () => {
           message: result.data.message,
           source: 'stoneworks-january-special-offer',
           specialOffer: 'free-upgraded-edge-profile-january',
+          smsConsent: true,
+          smsConsentDate: new Date().toISOString(),
         },
       });
 
@@ -128,6 +139,7 @@ const SpecialOffer = () => {
         budgetRange: '',
         message: '',
       });
+      setSmsConsent(false);
     } catch (err) {
       console.error('Error submitting form:', err);
       toast.error('Something went wrong. Please try again.');
@@ -440,6 +452,13 @@ const SpecialOffer = () => {
                     </div>
                   </div>
 
+                  {/* SMS Consent Checkbox */}
+                  <SmsConsentCheckbox
+                    checked={smsConsent}
+                    onCheckedChange={setSmsConsent}
+                    error={errors.smsConsent}
+                  />
+
                   <Button
                     type="submit"
                     size="lg"
@@ -449,10 +468,6 @@ const SpecialOffer = () => {
                     {isSubmitting ? 'Reserving Your Offer...' : 'Claim My Free Upgrade'}
                     {!isSubmitting && <ArrowRight className="ml-2 w-5 h-5" />}
                   </Button>
-
-                  <p className="text-xs text-muted-foreground text-center">
-                    By submitting, you agree to be contacted about your project. No spam, ever.
-                  </p>
                 </form>
               </motion.div>
             </div>
