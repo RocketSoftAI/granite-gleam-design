@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
@@ -76,11 +75,7 @@ const BookingForm = ({
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      className="space-y-6"
-    >
+    <div className="space-y-6 animate-fade-in">
       {/* Selected Date/Time Summary */}
       <div className="bg-accent/30 rounded-lg p-4 space-y-2">
         <div className="flex items-center gap-2 text-sm">
@@ -180,7 +175,7 @@ const BookingForm = ({
           </Button>
         </div>
       </form>
-    </motion.div>
+    </div>
   );
 };
 
