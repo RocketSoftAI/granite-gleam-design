@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Facebook, Instagram, Linkedin, ArrowUp } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, ArrowUp, Calendar } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -148,6 +149,12 @@ const Footer = () => {
               <p>Mon - Fri: 8am - 4pm</p>
               <p>Closed 12pm - 1pm for lunch</p>
             </div>
+            <Button asChild className="mt-4 w-full">
+              <Link to="/book">
+                <Calendar className="w-4 h-4 mr-2" />
+                Book Appointment
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
@@ -159,10 +166,10 @@ const Footer = () => {
             © {new Date().getFullYear()} Stoneworks of Colorado. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <Link to="/faq" className="text-sm text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors">
+            <Link to="/privacy-policy" className="text-sm text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors">
               Privacy Policy
             </Link>
-            <Link to="/faq" className="text-sm text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors">
+            <Link to="/terms-of-service" className="text-sm text-primary-foreground/50 hover:text-primary-foreground/70 transition-colors">
               Terms of Service
             </Link>
             <button
