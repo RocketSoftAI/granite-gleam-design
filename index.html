@@ -68,79 +68,69 @@
     
     <!-- Hide GHL chat bubble on mobile, keep icon only -->
     <style>
+      /* On mobile, clip the widget container to only show the bottom-right icon area */
       @media (max-width: 768px) {
-        /* Target the GHL bubble container - it appears near the chat icon */
-        #chat-widget-container > div:not(:last-child),
-        [data-testid*="bubble"],
-        [class*="bubble"],
-        [class*="Bubble"],
-        [class*="message-preview"],
-        [class*="MessagePreview"],
-        [class*="text-widget"],
-        [class*="TextWidget"],
-        /* More specific GHL selectors */
-        .chat-widget-bubble,
-        .lc-chat-bubble,
-        .lc-message-bubble,
-        .lc-widget-bubble,
-        /* Target by structure - bubble with avatar image */
-        div[style*="border-radius"][style*="background"]:has(img[style*="border-radius: 50%"]),
-        div[style*="box-shadow"]:has(img[style*="border-radius"]) {
-          display: none !important;
-          opacity: 0 !important;
-          visibility: hidden !important;
-          pointer-events: none !important;
+        /* Target the GHL widget container - usually has fixed positioning */
+        #chat-widget,
+        #lc-chat-widget,
+        .lc-chat-widget,
+        div[id*="chat-widget"],
+        div[class*="chat-widget"] {
+          /* Clip to show only bottom 70px (the icon) */
+          clip-path: inset(calc(100% - 70px) 0 0 calc(100% - 70px)) !important;
+        }
+        
+        /* Alternative: target iframe container */
+        iframe[src*="leadconnector"],
+        iframe[src*="chat-widget"] {
+          clip-path: inset(calc(100% - 70px) 0 0 calc(100% - 70px)) !important;
         }
       }
     </style>
     <script>
-      // Aggressively hide GHL text bubble on mobile
+      // Hide GHL bubble on mobile by clipping the widget
       (function() {
         if (window.innerWidth > 768) return;
         
-        function hideBubble() {
-          // Find elements that look like the chat bubble
-          document.querySelectorAll('div').forEach(function(el) {
-            var style = window.getComputedStyle(el);
-            var rect = el.getBoundingClientRect();
-            
-            // The bubble is typically fixed position, bottom-right, contains an image
-            if (style.position === 'fixed' && 
-                rect.bottom > window.innerHeight - 200 &&
-                rect.right > window.innerWidth - 150 &&
-                rect.width > 150 && rect.width < 350 &&
-                el.querySelector('img')) {
-              
-              // Check if this looks like the bubble (has text content, not just an icon)
-              var text = el.textContent || '';
-              if (text.includes('question') || text.includes('Message') || text.includes('Hi there')) {
-                el.style.cssText = 'display: none !important; visibility: hidden !important;';
+        function clipWidget() {
+          // Find iframe or container elements from GHL
+          var selectors = [
+            'iframe[src*="leadconnector"]',
+            'iframe[src*="chat-widget"]',
+            'iframe[src*="msgsndr"]',
+            '#chat-widget',
+            '#lc-chat-widget',
+            '[id*="chat-widget"]',
+            '[class*="chat-widget"]'
+          ];
+          
+          selectors.forEach(function(sel) {
+            document.querySelectorAll(sel).forEach(function(el) {
+              el.style.clipPath = 'inset(calc(100% - 80px) 0 0 calc(100% - 80px))';
+            });
+          });
+          
+          // Also find fixed position containers with iframes
+          document.querySelectorAll('div[style*="position: fixed"]').forEach(function(el) {
+            if (el.querySelector('iframe') || el.textContent.includes('Message us')) {
+              // Check if this is bottom-right positioned (likely the chat widget)
+              var rect = el.getBoundingClientRect();
+              if (rect.right > window.innerWidth - 100 && rect.bottom > window.innerHeight - 200) {
+                el.style.clipPath = 'inset(calc(100% - 80px) 0 0 calc(100% - 80px))';
               }
             }
           });
         }
         
-        // Run on load and observe for changes
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(hideBubble, 1000);
-            setTimeout(hideBubble, 2000);
-            setTimeout(hideBubble, 3000);
-          });
-        } else {
-          setTimeout(hideBubble, 1000);
-          setTimeout(hideBubble, 2000);
-          setTimeout(hideBubble, 3000);
-        }
+        // Run multiple times as widget loads async
+        setTimeout(clipWidget, 500);
+        setTimeout(clipWidget, 1500);
+        setTimeout(clipWidget, 3000);
+        setTimeout(clipWidget, 5000);
         
-        // Observe DOM changes
-        var observer = new MutationObserver(function() {
-          hideBubble();
-        });
-        observer.observe(document.body || document.documentElement, { 
-          childList: true, 
-          subtree: true 
-        });
+        // Also observe for DOM changes
+        var observer = new MutationObserver(clipWidget);
+        observer.observe(document.documentElement, { childList: true, subtree: true });
       })();
     </script>
   </body>
