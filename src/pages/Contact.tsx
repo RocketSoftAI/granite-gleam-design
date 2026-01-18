@@ -40,9 +40,10 @@ const ContactPage = () => {
       {/* Compact Hero + Form Section */}
       <section className="pt-32 pb-16 lg:pt-40 lg:pb-24 bg-charcoal">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
             {/* Left: Hero Content + Contact Info */}
             <motion.div
+              className="order-2 lg:order-1"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
@@ -91,6 +92,7 @@ const ContactPage = () => {
 
             {/* Right: Quote Form */}
             <motion.div
+              className="order-1 lg:order-2"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
