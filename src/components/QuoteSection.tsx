@@ -231,54 +231,60 @@ const QuoteSection = () => {
                 {/* Name & Phone Row */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
+                    <label htmlFor="quote-name" className="block text-sm font-medium text-foreground mb-2">
                       Your Name
                     </label>
                     <Input
+                      id="quote-name"
                       type="text"
                       placeholder="John Smith"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className={`h-12 bg-background ${errors.name ? 'border-destructive' : ''}`}
                       maxLength={100}
+                      aria-describedby={errors.name ? 'quote-name-error' : undefined}
                     />
                     {errors.name && (
-                      <p className="text-xs text-destructive mt-1">{errors.name}</p>
+                      <p id="quote-name-error" className="text-xs text-destructive mt-1" role="alert">{errors.name}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
+                    <label htmlFor="quote-phone" className="block text-sm font-medium text-foreground mb-2">
                       Phone Number
                     </label>
                     <Input
+                      id="quote-phone"
                       type="tel"
                       placeholder="(970) 555-0000"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       className={`h-12 bg-background ${errors.phone ? 'border-destructive' : ''}`}
                       maxLength={20}
+                      aria-describedby={errors.phone ? 'quote-phone-error' : undefined}
                     />
                     {errors.phone && (
-                      <p className="text-xs text-destructive mt-1">{errors.phone}</p>
+                      <p id="quote-phone-error" className="text-xs text-destructive mt-1" role="alert">{errors.phone}</p>
                     )}
                   </div>
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">
+                  <label htmlFor="quote-email" className="block text-sm font-medium text-foreground mb-2">
                     Email Address
                   </label>
                   <Input
+                    id="quote-email"
                     type="email"
                     placeholder="john@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     className={`h-12 bg-background ${errors.email ? 'border-destructive' : ''}`}
                     maxLength={255}
+                    aria-describedby={errors.email ? 'quote-email-error' : undefined}
                   />
                   {errors.email && (
-                    <p className="text-xs text-destructive mt-1">{errors.email}</p>
+                    <p id="quote-email-error" className="text-xs text-destructive mt-1" role="alert">{errors.email}</p>
                   )}
                 </div>
 

@@ -26,16 +26,17 @@ const BlogPage = () => {
       {/* Category Filter */}
       <section className="py-8 bg-muted border-b border-border">
         <div className="container mx-auto px-6 lg:px-12">
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center" role="group" aria-label="Filter by category">
             {categories.map((category) => (
               <button
                 key={category}
                 onClick={() => setActiveCategory(category)}
-                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
                   activeCategory === category
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-card text-muted-foreground hover:bg-secondary'
                 }`}
+                aria-pressed={activeCategory === category}
               >
                 {category}
               </button>
