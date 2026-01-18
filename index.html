@@ -66,40 +66,82 @@
       data-widget-id="68d6b1e32c7d0b6e6655dd6c">
     </script>
     
-    <!-- Hide GHL chat bubble on mobile -->
+    <!-- Hide GHL chat bubble on mobile, keep icon only -->
     <style>
       @media (max-width: 768px) {
-        /* Hide the text bubble popup, keep only the icon */
-        iframe[src*="chat-widget"] + div,
-        div[id*="lc-text"],
-        div[class*="lc-text"],
-        .lc-text-widget,
-        #lc-text-widget {
+        /* Target the GHL bubble container - it appears near the chat icon */
+        #chat-widget-container > div:not(:last-child),
+        [data-testid*="bubble"],
+        [class*="bubble"],
+        [class*="Bubble"],
+        [class*="message-preview"],
+        [class*="MessagePreview"],
+        [class*="text-widget"],
+        [class*="TextWidget"],
+        /* More specific GHL selectors */
+        .chat-widget-bubble,
+        .lc-chat-bubble,
+        .lc-message-bubble,
+        .lc-widget-bubble,
+        /* Target by structure - bubble with avatar image */
+        div[style*="border-radius"][style*="background"]:has(img[style*="border-radius: 50%"]),
+        div[style*="box-shadow"]:has(img[style*="border-radius"]) {
           display: none !important;
+          opacity: 0 !important;
           visibility: hidden !important;
+          pointer-events: none !important;
         }
       }
     </style>
     <script>
-      // Hide GHL chat bubble text on mobile
-      if (window.innerWidth <= 768) {
-        const observer = new MutationObserver(function(mutations) {
-          const textBubble = document.querySelector('[class*="lc-text"], [id*="lc-text"], div[style*="position: fixed"] > div > div:has(img)');
-          if (textBubble) {
-            textBubble.style.display = 'none';
-          }
-          // Target the bubble by looking for the specific structure
-          document.querySelectorAll('div[style*="position: fixed"]').forEach(function(el) {
-            if (el.querySelector('img[alt*="avatar"], img[src*="avatar"]')) {
-              const parent = el.closest('div[style*="position: fixed"]');
-              if (parent && parent !== el) {
-                el.style.display = 'none';
+      // Aggressively hide GHL text bubble on mobile
+      (function() {
+        if (window.innerWidth > 768) return;
+        
+        function hideBubble() {
+          // Find elements that look like the chat bubble
+          document.querySelectorAll('div').forEach(function(el) {
+            var style = window.getComputedStyle(el);
+            var rect = el.getBoundingClientRect();
+            
+            // The bubble is typically fixed position, bottom-right, contains an image
+            if (style.position === 'fixed' && 
+                rect.bottom > window.innerHeight - 200 &&
+                rect.right > window.innerWidth - 150 &&
+                rect.width > 150 && rect.width < 350 &&
+                el.querySelector('img')) {
+              
+              // Check if this looks like the bubble (has text content, not just an icon)
+              var text = el.textContent || '';
+              if (text.includes('question') || text.includes('Message') || text.includes('Hi there')) {
+                el.style.cssText = 'display: none !important; visibility: hidden !important;';
               }
             }
           });
+        }
+        
+        // Run on load and observe for changes
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(hideBubble, 1000);
+            setTimeout(hideBubble, 2000);
+            setTimeout(hideBubble, 3000);
+          });
+        } else {
+          setTimeout(hideBubble, 1000);
+          setTimeout(hideBubble, 2000);
+          setTimeout(hideBubble, 3000);
+        }
+        
+        // Observe DOM changes
+        var observer = new MutationObserver(function() {
+          hideBubble();
         });
-        observer.observe(document.body, { childList: true, subtree: true });
-      }
+        observer.observe(document.body || document.documentElement, { 
+          childList: true, 
+          subtree: true 
+        });
+      })();
     </script>
   </body>
 </html>
