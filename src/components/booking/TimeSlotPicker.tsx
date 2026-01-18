@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -52,15 +51,12 @@ const TimeSlotPicker = ({
 
   return (
     <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-      {slots.map((slot, index) => (
-        <motion.button
+      {slots.map((slot) => (
+        <button
           key={slot.id}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.03 }}
           onClick={() => onSelectSlot(slot)}
           className={cn(
-            "px-3 py-2 rounded-md text-sm font-medium transition-all duration-200",
+            "px-3 py-2 rounded-md text-sm font-medium transition-colors duration-150",
             "border border-border hover:border-primary/50",
             "focus:outline-none focus:ring-2 focus:ring-primary/20",
             selectedSlot?.id === slot.id
@@ -69,7 +65,7 @@ const TimeSlotPicker = ({
           )}
         >
           {slot.displayTime}
-        </motion.button>
+        </button>
       ))}
     </div>
   );
