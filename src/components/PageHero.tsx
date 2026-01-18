@@ -4,6 +4,7 @@ interface PageHeroProps {
   titleAccent?: string;
   description?: string;
   backgroundImage?: string;
+  backgroundAlt?: string;
   children?: React.ReactNode;
   size?: 'default' | 'large';
 }
@@ -14,6 +15,7 @@ const PageHero = ({
   titleAccent, 
   description, 
   backgroundImage,
+  backgroundAlt,
   children,
   size = 'default'
 }: PageHeroProps) => {
@@ -26,7 +28,7 @@ const PageHero = ({
         <div className="absolute inset-0">
           <img
             src={backgroundImage}
-            alt=""
+            alt={backgroundAlt || `${title} ${titleAccent || ''} hero background`}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal/60 via-charcoal/50 to-charcoal/80" />
