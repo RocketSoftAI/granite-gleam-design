@@ -8,6 +8,7 @@ import { ScrollAnimation } from '@/components/ui/scroll-animation';
 import { motion } from 'framer-motion';
 import { quoteFormSchema, type QuoteFormData } from '@/lib/validations';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 import quoteBackground from '@/assets/quote-background.jpg';
 
 const QuoteSection = () => {
@@ -44,8 +45,24 @@ const QuoteSection = () => {
     setIsSubmitting(true);
     
     try {
-      // In production, this would submit to a backend
-      // For now, we just show a success message
+      const { data, error } = await supabase.functions.invoke('submit-lead', {
+        body: {
+          name: result.data.name,
+          email: result.data.email,
+          phone: result.data.phone,
+          projectType: result.data.projectType,
+          message: result.data.message,
+          source: 'quote_form',
+        },
+      });
+
+      if (error) {
+        console.error('Error submitting lead:', error);
+        toast.error('Something went wrong. Please try again.');
+        return;
+      }
+
+      console.log('Lead submitted successfully:', data);
       toast.success('Thank you! We will contact you within 24 hours.');
       setFormData({
         name: '',
@@ -54,7 +71,8 @@ const QuoteSection = () => {
         projectType: '',
         message: '',
       });
-    } catch {
+    } catch (err) {
+      console.error('Error submitting form:', err);
       toast.error('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
