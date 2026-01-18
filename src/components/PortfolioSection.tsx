@@ -95,6 +95,7 @@ const PortfolioSection = () => {
                     <img
                       src={item.image}
                       alt={`${item.title} - ${item.material} countertop project`}
+                      loading="lazy"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     {/* Overlay - always visible on mobile for tap feedback */}
