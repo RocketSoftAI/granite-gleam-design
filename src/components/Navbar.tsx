@@ -147,13 +147,13 @@ const Navbar = () => {
             {/* CTA Buttons */}
             <div className="hidden lg:flex items-center gap-4">
               <a
-                href="tel:+19705551234"
+                href="tel:+19704931992"
                 className={`flex items-center gap-2 text-sm font-medium transition-colors duration-300 ${
                   showTransparent ? 'text-primary-foreground' : 'text-foreground'
                 }`}
               >
                 <Phone className="w-4 h-4" />
-                (970) 555-1234
+                (970) 493-1992
               </a>
               <Button 
                 variant={showTransparent ? 'heroOutline' : 'premium'} 
@@ -301,7 +301,7 @@ const Navbar = () => {
               }}
             >
               <a
-                href="tel:+19705551234"
+                href="tel:+19704931992"
                 className="flex items-center gap-3 text-foreground hover:text-primary transition-colors"
               >
                 <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
@@ -309,7 +309,7 @@ const Navbar = () => {
                 </div>
                 <div>
                   <span className="block text-xs text-muted-foreground uppercase tracking-wider">Call Us</span>
-                  <span className="text-lg font-medium">(970) 555-1234</span>
+                  <span className="text-lg font-medium">(970) 493-1992</span>
                 </div>
               </a>
               

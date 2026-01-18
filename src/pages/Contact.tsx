@@ -8,23 +8,23 @@ const ContactPage = () => {
     {
       icon: Phone,
       title: 'Phone',
-      primary: '(970) 555-1234',
+      primary: '(970) 493-1992',
       secondary: 'Mon-Fri 8am-5pm, Sat 9am-2pm',
-      action: 'tel:+19705551234'
+      action: 'tel:+19704931992'
     },
     {
       icon: Mail,
       title: 'Email',
-      primary: 'info@stoneworksco.com',
+      primary: 'office@stoneworksofcolorado.com',
       secondary: 'We respond within 24 hours',
-      action: 'mailto:info@stoneworksco.com'
+      action: 'mailto:office@stoneworksofcolorado.com'
     },
     {
       icon: MapPin,
       title: 'Showroom',
-      primary: '123 Craftsman Way',
-      secondary: 'Fort Collins, CO 80524',
-      action: 'https://maps.google.com'
+      primary: '3555 S Lincoln Ave',
+      secondary: 'Loveland, CO 80537',
+      action: 'https://maps.google.com/?q=3555+S+Lincoln+Ave,+Loveland,+CO+80537'
     },
     {
       icon: Clock,
@@ -116,7 +116,7 @@ const ContactPage = () => {
               transition={{ duration: 0.6 }}
             >
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3028.7244085042!2d-105.0749!3d40.5853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x876eaff4c5c4a5a7%3A0x0!2sFort%20Collins%2C%20CO%2080524!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3040.5!2d-105.075!3d40.3641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x876ea5c8e5fba5a7%3A0x0!2s3555%20S%20Lincoln%20Ave%2C%20Loveland%2C%20CO%2080537!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -183,8 +183,8 @@ const ContactPage = () => {
 
               <div className="mt-8 pt-8 border-t border-border">
                 <p className="text-sm text-muted-foreground mb-2">No appointment necessary</p>
-                <p className="font-medium text-foreground">123 Craftsman Way, Fort Collins, CO 80524</p>
-                <p className="text-sm text-muted-foreground mt-1">Just off I-25, Exit 268 • Ample parking available</p>
+                <p className="font-medium text-foreground">3555 S Lincoln Ave, Loveland, CO 80537</p>
+                <p className="text-sm text-muted-foreground mt-1">Just off US-287 • Ample parking available</p>
               </div>
             </motion.div>
           </div>

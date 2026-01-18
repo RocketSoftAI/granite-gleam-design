@@ -174,11 +174,11 @@ const QuoteSection = () => {
                 </div>
                 <div>
                   <span className="block text-sm text-primary-foreground/60">Call Us</span>
-                  <span className="font-medium">(970) 555-1234</span>
+                  <span className="font-medium">(970) 493-1992</span>
                 </div>
               </motion.a>
               <motion.a
-                href="mailto:info@stoneworksco.com"
+                href="mailto:office@stoneworksofcolorado.com"
                 className="flex items-center gap-4 text-primary-foreground/90 hover:text-primary-foreground transition-colors group"
                 whileHover={{ x: 5 }}
               >
@@ -187,7 +187,7 @@ const QuoteSection = () => {
                 </div>
                 <div>
                   <span className="block text-sm text-primary-foreground/60">Email</span>
-                  <span className="font-medium">info@stoneworksco.com</span>
+                  <span className="font-medium">office@stoneworksofcolorado.com</span>
                 </div>
               </motion.a>
               <motion.div 
@@ -199,7 +199,7 @@ const QuoteSection = () => {
                 </div>
                 <div>
                   <span className="block text-sm text-primary-foreground/60">Showroom</span>
-                  <span className="font-medium">123 Craftsman Way, Fort Collins, CO</span>
+                  <span className="font-medium">3555 S Lincoln Ave, Loveland, CO</span>
                 </div>
               </motion.div>
             </div>

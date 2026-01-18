@@ -30,11 +30,11 @@ const MidPageCTA = ({
             </div>
             <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
               <a
-                href="tel:+19705551234"
+                href="tel:+19704931992"
                 className="flex items-center justify-center gap-2 h-12 px-6 bg-charcoal text-primary-foreground rounded-lg font-medium hover:bg-charcoal/90 transition-colors"
               >
                 <Phone className="w-4 h-4" />
-                (970) 555-1234
+                (970) 493-1992
               </a>
               <Button variant="premium" size="lg" className="group h-12" asChild>
                 <Link to="/contact">
