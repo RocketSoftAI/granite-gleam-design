@@ -18,29 +18,29 @@ const HeroSection = () => {
           backgroundImage: 'linear-gradient(to bottom, hsl(30, 10%, 15%) 0%, hsl(30, 10%, 20%) 50%, hsl(30, 10%, 12%) 100%)'
         }}
       >
-        {/* Background Image with Overlay - Responsive with preloaded WebP */}
+        {/* Background Image with Overlay - Responsive with optimized images */}
         <div className="absolute inset-0">
           <picture>
-            {/* Mobile: 800px WebP */}
+            {/* Mobile: Compressed PNG */}
             <source
               media="(max-width: 640px)"
-              srcSet="/images/hero-mobile.webp"
-              type="image/webp"
+              srcSet="/images/hero-mobile.png"
+              type="image/png"
             />
-            {/* Tablet: 1200px WebP */}
+            {/* Tablet: Compressed PNG */}
             <source
               media="(max-width: 1024px)"
-              srcSet="/images/hero-tablet.webp"
-              type="image/webp"
+              srcSet="/images/hero-tablet.png"
+              type="image/png"
             />
-            {/* Desktop: Full resolution WebP */}
+            {/* Desktop: Compressed PNG */}
             <source
-              srcSet="/images/hero-desktop.webp"
-              type="image/webp"
+              srcSet="/images/hero-desktop.png"
+              type="image/png"
             />
             {/* Fallback - using loading="eager" explicitly for LCP element */}
             <img
-              src="/images/hero-desktop.webp"
+              src="/images/hero-desktop.png"
               alt="Luxury kitchen with custom stone countertops"
               className="w-full h-full object-cover"
               fetchPriority="high"
