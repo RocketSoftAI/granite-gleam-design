@@ -192,7 +192,7 @@ const ServiceAreaPage = () => {
                   <a href="tel:+19704931992" className="text-primary hover:underline">(970) 493-1992</a>
                 </p>
                 <p className="text-muted-foreground">
-                  <strong className="text-foreground">Hours:</strong> Mon-Fri 8am-5pm, Sat 9am-2pm
+                  <strong className="text-foreground">Hours:</strong> Mon-Fri 8am-4pm (Closed 12-1pm)
                 </p>
               </div>
             </div>

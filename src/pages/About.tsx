@@ -253,7 +253,7 @@ const AboutPage = () => {
           </p>
           <div className="text-primary-foreground/80">
             <p className="font-medium text-lg mb-2">3555 S Lincoln Ave, Loveland, CO 80537</p>
-            <p>Mon - Fri: 8am - 5pm | Sat: 9am - 2pm</p>
+            <p>Mon - Fri: 8am - 4pm (Closed 12pm - 1pm for lunch)</p>
           </div>
         </div>
       </section>

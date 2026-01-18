@@ -9,7 +9,7 @@ const ContactPage = () => {
       icon: Phone,
       title: 'Phone',
       primary: '(970) 493-1992',
-      secondary: 'Mon-Fri 8am-5pm, Sat 9am-2pm',
+      secondary: 'Mon-Fri 8am-4pm (Closed 12-1pm)',
       action: 'tel:+19704931992'
     },
     {
@@ -29,8 +29,8 @@ const ContactPage = () => {
     {
       icon: Clock,
       title: 'Hours',
-      primary: 'Mon-Fri: 8am-5pm',
-      secondary: 'Sat: 9am-2pm | Sun: Closed',
+      primary: 'Mon-Fri: 8am-4pm',
+      secondary: 'Closed 12pm-1pm for lunch',
       action: null
     }
   ];
