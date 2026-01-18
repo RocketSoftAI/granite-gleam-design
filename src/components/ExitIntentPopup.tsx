@@ -3,14 +3,18 @@ import { X, Gift, ArrowRight, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { emailSchema } from '@/lib/validations';
+import { exitPopupSchema } from '@/lib/validations';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 const ExitIntentPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+  });
+  const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const hasTriggered = useRef(false);
@@ -48,13 +52,20 @@ const ExitIntentPopup = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setEmailError('');
+    setErrors({});
     
-    // Validate email
-    const result = emailSchema.safeParse({ email });
+    // Validate form
+    const result = exitPopupSchema.safeParse(formData);
     
     if (!result.success) {
-      setEmailError(result.error.errors[0]?.message || 'Please enter a valid email');
+      const fieldErrors: { name?: string; email?: string; phone?: string } = {};
+      result.error.errors.forEach((err) => {
+        const field = err.path[0] as 'name' | 'email' | 'phone';
+        if (field) {
+          fieldErrors[field] = err.message;
+        }
+      });
+      setErrors(fieldErrors);
       return;
     }
     
@@ -63,8 +74,9 @@ const ExitIntentPopup = () => {
     try {
       const { data, error } = await supabase.functions.invoke('submit-lead', {
         body: {
-          name: 'Website Visitor',
+          name: result.data.name,
           email: result.data.email,
+          phone: result.data.phone || undefined,
           source: 'exit_popup',
           tags: ['Buyer Guide Download'],
         },
@@ -162,15 +174,41 @@ const ExitIntentPopup = () => {
                     <form onSubmit={handleSubmit} className="space-y-3">
                       <div>
                         <Input
+                          type="text"
+                          placeholder="Your name"
+                          value={formData.name}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          className={`h-12 bg-background ${errors.name ? 'border-destructive' : ''}`}
+                          maxLength={100}
+                        />
+                        {errors.name && (
+                          <p className="text-xs text-destructive mt-1">{errors.name}</p>
+                        )}
+                      </div>
+                      <div>
+                        <Input
                           type="email"
-                          placeholder="Enter your email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          className={`h-12 bg-background ${emailError ? 'border-destructive' : ''}`}
+                          placeholder="Email address"
+                          value={formData.email}
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          className={`h-12 bg-background ${errors.email ? 'border-destructive' : ''}`}
                           maxLength={255}
                         />
-                        {emailError && (
-                          <p className="text-xs text-destructive mt-1">{emailError}</p>
+                        {errors.email && (
+                          <p className="text-xs text-destructive mt-1">{errors.email}</p>
+                        )}
+                      </div>
+                      <div>
+                        <Input
+                          type="tel"
+                          placeholder="Phone number (optional)"
+                          value={formData.phone}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          className={`h-12 bg-background ${errors.phone ? 'border-destructive' : ''}`}
+                          maxLength={20}
+                        />
+                        {errors.phone && (
+                          <p className="text-xs text-destructive mt-1">{errors.phone}</p>
                         )}
                       </div>
                       <Button 
