@@ -18,37 +18,36 @@ const HeroSection = () => {
           backgroundImage: 'linear-gradient(to bottom, hsl(30, 10%, 15%) 0%, hsl(30, 10%, 20%) 50%, hsl(30, 10%, 12%) 100%)'
         }}
       >
-        {/* Background Image with Overlay - Responsive with optimized images */}
+        {/* Background Image with Overlay - Responsive WebP */}
         <div className="absolute inset-0">
           <picture>
-            {/* Mobile: Compressed PNG */}
+            {/* Mobile: WebP */}
             <source
               media="(max-width: 640px)"
-              srcSet="/images/hero-mobile.png"
-              type="image/png"
+              srcSet="/images/hero-mobile.webp"
+              type="image/webp"
             />
-            {/* Tablet: Compressed PNG */}
+            {/* Tablet: WebP */}
             <source
               media="(max-width: 1024px)"
-              srcSet="/images/hero-tablet.png"
-              type="image/png"
+              srcSet="/images/hero-tablet.webp"
+              type="image/webp"
             />
-            {/* Desktop: Compressed PNG */}
+            {/* Desktop: WebP */}
             <source
-              srcSet="/images/hero-desktop.png"
-              type="image/png"
+              srcSet="/images/hero-desktop.webp"
+              type="image/webp"
             />
-            {/* Fallback - using loading="eager" explicitly for LCP element */}
+            {/* Fallback */}
             <img
-              src="/images/hero-desktop.png"
+              src="/images/hero-desktop.webp"
               alt="Luxury kitchen with custom stone countertops"
               className="w-full h-full object-cover"
               fetchPriority="high"
               loading="eager"
               width="1920"
               height="1080"
-              decoding="async"
-              sizes="100vw"
+              decoding="sync"
             />
           </picture>
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-charcoal/40 to-charcoal/70" />
