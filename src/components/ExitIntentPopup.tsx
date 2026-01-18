@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { emailSchema } from '@/lib/validations';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const ExitIntentPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -60,11 +61,27 @@ const ExitIntentPopup = () => {
     setIsSubmitting(true);
     
     try {
-      // In production, this would send to your email service
+      const { data, error } = await supabase.functions.invoke('submit-lead', {
+        body: {
+          name: 'Website Visitor',
+          email: result.data.email,
+          source: 'exit_popup',
+          tags: ['Buyer Guide Download'],
+        },
+      });
+
+      if (error) {
+        console.error('Error submitting lead:', error);
+        toast.error('Something went wrong. Please try again.');
+        return;
+      }
+
+      console.log('Lead submitted successfully:', data);
       setIsSubmitted(true);
       toast.success('Check your inbox for the guide!');
       setTimeout(() => setIsOpen(false), 3000);
-    } catch {
+    } catch (err) {
+      console.error('Error submitting form:', err);
       toast.error('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
