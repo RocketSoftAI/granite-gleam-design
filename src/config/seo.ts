@@ -59,7 +59,7 @@ export const SITE_CONFIG = {
     lat: 40.3641,
     lng: -105.0750,
   },
-  hours: ['Mo-Fr 08:00-17:00', 'Sa 09:00-14:00'],
+  hours: ['Mo-Fr 08:00-12:00', 'Mo-Fr 13:00-16:00'],
   priceRange: '$$',
   serviceAreas: [
     'Fort Collins',
