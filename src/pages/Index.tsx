@@ -1,6 +1,5 @@
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import PortfolioSection from '@/components/PortfolioSection';
 import WhyUsSection from '@/components/WhyUsSection';
 import ProcessSection from '@/components/ProcessSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
@@ -24,7 +23,7 @@ const Index = () => {
       <Navbar />
       <main>
         <HeroSection />
-        <PortfolioSection />
+        <MaterialsSection />
         
         {/* Mid-page CTA #1 */}
         <section className="py-12 lg:py-16 bg-background">
@@ -39,7 +38,6 @@ const Index = () => {
         
         <WhyUsSection />
         <ProcessSection />
-        <MaterialsSection />
         
         {/* Mid-page CTA #2 */}
         <section className="py-12 lg:py-16 bg-background">
