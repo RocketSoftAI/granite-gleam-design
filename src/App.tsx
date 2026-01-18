@@ -21,6 +21,8 @@ import BlogPage from "./pages/blog";
 import BlogPost from "./pages/blog/BlogPost";
 import SpecialOffer from "./pages/SpecialOffer";
 import Book from "./pages/Book";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +50,8 @@ const App = () => (
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/special-offer" element={<SpecialOffer />} />
           <Route path="/book" element={<Book />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -10,6 +10,7 @@ import { quoteFormSchema, type QuoteFormData } from '@/lib/validations';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import quoteBackground from '@/assets/quote-background.jpg';
+import SmsConsentCheckbox from '@/components/SmsConsentCheckbox';
 
 const PROJECT_AREAS_OPTIONS = [
   { value: 'kitchen_only', label: 'Kitchen only' },
@@ -66,12 +67,20 @@ const QuoteSection = () => {
     budgetRange: '',
     message: '',
   });
-  const [errors, setErrors] = useState<Partial<Record<keyof QuoteFormData, string>>>({});
+  const [smsConsent, setSmsConsent] = useState(false);
+  const [errors, setErrors] = useState<Partial<Record<keyof QuoteFormData | 'smsConsent', string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    
+    // Validate SMS consent
+    if (!smsConsent) {
+      setErrors({ smsConsent: 'You must agree to receive communications to submit this form' });
+      toast.error('Please agree to the SMS consent to continue');
+      return;
+    }
     
     // Validate form data
     const result = quoteFormSchema.safeParse(formData);
@@ -104,6 +113,8 @@ const QuoteSection = () => {
           budgetRange: result.data.budgetRange,
           message: result.data.message,
           source: 'quote_form',
+          smsConsent: true,
+          smsConsentDate: new Date().toISOString(),
         },
       });
 
@@ -126,6 +137,7 @@ const QuoteSection = () => {
         budgetRange: '',
         message: '',
       });
+      setSmsConsent(false);
     } catch (err) {
       console.error('Error submitting form:', err);
       toast.error('Something went wrong. Please try again.');
@@ -407,6 +419,13 @@ const QuoteSection = () => {
                   </div>
                 </div>
 
+                {/* SMS Consent */}
+                <SmsConsentCheckbox
+                  checked={smsConsent}
+                  onCheckedChange={setSmsConsent}
+                  error={errors.smsConsent}
+                />
+
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
@@ -422,9 +441,6 @@ const QuoteSection = () => {
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Button>
                 </motion.div>
-                <p className="text-center text-xs text-muted-foreground">
-                  We typically respond within 24 hours. No spam, ever.
-                </p>
               </form>
             </motion.div>
           </ScrollAnimation>
