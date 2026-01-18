@@ -65,12 +65,11 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed left-0 right-0 z-50 transition-all duration-500 ${
           showTransparent
-            ? 'bg-transparent py-4 lg:py-6'
-            : 'bg-background/95 backdrop-blur-md shadow-soft py-3 lg:py-4'
+            ? 'bg-transparent py-4 lg:py-6 top-10 sm:top-11'
+            : 'bg-background/95 backdrop-blur-md shadow-soft py-3 lg:py-4 top-0'
         }`}
-        style={{ top: showTransparent ? '0' : '0' }}
       >
         <div className="container mx-auto px-6 lg:px-12">
           <div className="flex items-center justify-between">
