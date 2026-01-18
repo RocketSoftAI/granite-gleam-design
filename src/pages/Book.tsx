@@ -1,13 +1,10 @@
-import { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import SEOHead from '@/components/SEOHead';
 
 const BOOKING_URL = 'https://api.leadconnectorhq.com/widget/booking/7VbijpcAi4BpIyKbMJHa';
 
 const Book = () => {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-
   return (
     <>
       <SEOHead
@@ -20,7 +17,7 @@ const Book = () => {
       
       <div className="min-h-screen bg-background flex flex-col">
         {/* Simple header */}
-        <header className="flex items-center justify-between p-4 border-b border-border bg-card">
+        <header className="flex items-center justify-between p-4 border-b border-border bg-card flex-shrink-0">
           <Link 
             to="/" 
             className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
@@ -28,30 +25,29 @@ const Book = () => {
             <ArrowLeft className="w-5 h-5" />
             <span className="font-serif text-lg">Stoneworks</span>
           </Link>
-          <span className="text-sm text-muted-foreground">Book an Appointment</span>
+          <a 
+            href="tel:+19704931992" 
+            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+          >
+            <Phone className="w-4 h-4" />
+            <span className="hidden sm:inline">(970) 493-1992</span>
+          </a>
         </header>
 
         {/* Full-height calendar embed */}
-        <div className="flex-1 relative">
-          {/* Loading state */}
-          {!iframeLoaded && (
-            <div className="absolute inset-0 flex items-center justify-center bg-background z-10">
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-10 h-10 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-                <p className="text-muted-foreground">Loading calendar...</p>
-              </div>
-            </div>
-          )}
+        <div className="flex-1 flex flex-col" style={{ height: 'calc(100vh - 65px)' }}>
           <iframe
             src={BOOKING_URL}
-            className="w-full h-full"
+            width="100%"
+            height="100%"
             style={{ 
               border: 'none',
-              minHeight: 'calc(100vh - 65px)',
+              flex: 1,
+              minHeight: '700px',
             }}
             title="Book an Appointment"
             allow="geolocation"
-            onLoad={() => setIframeLoaded(true)}
+            loading="eager"
           />
         </div>
       </div>
