@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import PageHero from '@/components/PageHero';
 import SectionHeader from '@/components/SectionHeader';
-import FormPlaceholder from '@/components/FormPlaceholder';
+import ContactForm from '@/components/ContactForm';
 import { getAllMaterials } from '@/data/materials';
 
 import heroKitchen from '@/assets/hero-kitchen.jpg';
@@ -175,8 +175,7 @@ const ServicesPage = () => {
               </div>
             </div>
 
-            <FormPlaceholder
-              formId="services-quote-form"
+            <ContactForm
               title="Request a Free Quote"
               description="Fill out the form below and we'll get back to you within 24 hours."
             />

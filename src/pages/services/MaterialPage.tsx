@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import PageHero from '@/components/PageHero';
 import SectionHeader from '@/components/SectionHeader';
-import FormPlaceholder from '@/components/FormPlaceholder';
+import ContactForm from '@/components/ContactForm';
 import SEOHead from '@/components/SEOHead';
 import { getMaterialBySlug, getAllMaterials } from '@/data/materials';
 import { generateProductSchema, generateFAQSchema, generateBreadcrumbSchema, PAGE_SEO } from '@/config/seo';
@@ -267,8 +267,7 @@ const MaterialPage = () => {
 
             {/* Quote Form */}
             <div>
-              <FormPlaceholder
-                formId={`${materialData.slug}-quote-form`}
+              <ContactForm
                 title={`Get Your ${materialData.name} Quote`}
                 description="Tell us about your project and we'll provide a detailed estimate within 24 hours."
               />

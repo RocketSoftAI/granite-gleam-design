@@ -2,7 +2,7 @@ import { MessageSquare, Palette, Ruler, Hammer, CheckCircle, Clock, Calendar } f
 import Layout from '@/components/Layout';
 import PageHero from '@/components/PageHero';
 import SectionHeader from '@/components/SectionHeader';
-import FormPlaceholder from '@/components/FormPlaceholder';
+import ContactForm from '@/components/ContactForm';
 import SEOHead from '@/components/SEOHead';
 import { generateHowToSchema, generateBreadcrumbSchema } from '@/config/seo';
 
@@ -275,8 +275,7 @@ const ProcessPage = () => {
               />
             </div>
 
-            <FormPlaceholder
-              formId="process-consultation-form"
+            <ContactForm
               title="Schedule Your Consultation"
               description="Tell us about your project and we'll reach out within 24 hours to schedule your free consultation."
             />

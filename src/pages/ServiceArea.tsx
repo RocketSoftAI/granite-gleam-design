@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Layout from '@/components/Layout';
 import PageHero from '@/components/PageHero';
 import SectionHeader from '@/components/SectionHeader';
-import FormPlaceholder from '@/components/FormPlaceholder';
+import ContactForm from '@/components/ContactForm';
 
 const ServiceAreaPage = () => {
   const primaryCities = [
@@ -197,8 +197,7 @@ const ServiceAreaPage = () => {
               </div>
             </div>
 
-            <FormPlaceholder
-              formId="service-area-form"
+            <ContactForm
               title="Request a Consultation"
               description="Tell us about your project and location—we'll confirm coverage and schedule your free consultation."
             />
