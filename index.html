@@ -36,7 +36,7 @@
     <link rel="preconnect" href="https://www.googletagmanager.com" />
     <link rel="dns-prefetch" href="https://beta.leadconnectorhq.com" />
     
-    <!-- Critical CSS - Inlined for faster FCP -->
+    <!-- Critical CSS - Inlined for faster FCP/LCP -->
     <style>
       /* Critical above-the-fold styles */
       *,*::before,*::after{box-sizing:border-box}
@@ -45,7 +45,7 @@
       #root{min-height:100vh}
       .animate-fade-in{animation:fadeIn .5s ease-out forwards;opacity:0}
       @keyframes fadeIn{to{opacity:1}}
-      /* Hero section critical styles */
+      /* Hero section critical styles - provides instant visual before React loads */
       section.relative{position:relative}
       .min-h-screen{min-height:100vh}
       .flex{display:flex}
@@ -60,15 +60,19 @@
       .z-10{z-index:10}
       .container{width:100%;margin-left:auto;margin-right:auto;padding-left:1.5rem;padding-right:1.5rem}
       @media(min-width:1024px){.container{max-width:1280px}}
+      /* Hero placeholder gradient - shows immediately before image loads */
+      .hero-placeholder{background-color:hsl(30,10%,18%);background-image:linear-gradient(to bottom,hsl(30,10%,15%) 0%,hsl(30,10%,20%) 50%,hsl(30,10%,12%) 100%)}
     </style>
     
-    <!-- Hero Image Preload - Mobile First (critical for LCP) -->
+    <!-- Hero Image Preload - Critical for LCP -->
+    <!-- Using fetchpriority="high" to ensure browser prioritizes LCP image -->
     <link 
       rel="preload" 
       as="image" 
       href="/images/hero-mobile.webp"
       media="(max-width: 640px)"
       type="image/webp"
+      fetchpriority="high"
     />
     <link 
       rel="preload" 
@@ -76,6 +80,7 @@
       href="/images/hero-tablet.webp"
       media="(min-width: 641px) and (max-width: 1024px)"
       type="image/webp"
+      fetchpriority="high"
     />
     <link 
       rel="preload" 
@@ -83,6 +88,7 @@
       href="/images/hero-desktop.webp"
       media="(min-width: 1025px)"
       type="image/webp"
+      fetchpriority="high"
     />
     
     <!-- Font loading optimized for performance (non-blocking) -->
