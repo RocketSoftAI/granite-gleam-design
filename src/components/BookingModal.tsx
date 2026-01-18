@@ -2,7 +2,7 @@ import { X, ExternalLink } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const BOOKING_URL = 'https://api.leadconnectorhq.com/widget/booking/7VbijpcAi4BpIyKbMJHa';
 
@@ -14,6 +14,7 @@ interface BookingModalProps {
 const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
 
   // Reset iframe loaded state when modal closes
   useEffect(() => {
@@ -22,13 +23,13 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
     }
   }, [isOpen]);
 
-  // On mobile, open booking URL directly and close modal
+  // On mobile, navigate to dedicated booking page
   useEffect(() => {
     if (isOpen && isMobile) {
-      window.open(BOOKING_URL, '_blank', 'noopener,noreferrer');
+      navigate('/book');
       onClose();
     }
-  }, [isOpen, isMobile, onClose]);
+  }, [isOpen, isMobile, onClose, navigate]);
 
   // Prevent body scroll when modal is open (desktop only)
   useEffect(() => {
