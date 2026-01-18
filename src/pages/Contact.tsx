@@ -115,21 +115,17 @@ const ContactPage = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <div className="w-full h-full flex items-center justify-center">
-                <div className="text-center text-muted-foreground">
-                  <MapPin className="w-12 h-12 mx-auto mb-4 opacity-30" />
-                  <p className="font-medium mb-2">Interactive Map</p>
-                  <p className="text-sm">123 Craftsman Way, Fort Collins, CO</p>
-                  <a 
-                    href="https://maps.google.com" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-block mt-4 text-primary text-sm font-medium hover:underline"
-                  >
-                    Open in Google Maps →
-                  </a>
-                </div>
-              </div>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3028.7244085042!2d-105.0749!3d40.5853!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x876eaff4c5c4a5a7%3A0x0!2sFort%20Collins%2C%20CO%2080524!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="StoneWorks Showroom Location"
+                className="w-full h-full"
+              />
             </motion.div>
 
             {/* Right: Showroom Info */}
