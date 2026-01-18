@@ -11,12 +11,59 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import quoteBackground from '@/assets/quote-background.jpg';
 
+const PROJECT_AREAS_OPTIONS = [
+  { value: 'kitchen_only', label: 'Kitchen only' },
+  { value: 'master_bathroom', label: 'Master bathroom' },
+  { value: 'guest_bathroom', label: 'Guest bathroom' },
+  { value: 'multiple_bathrooms', label: 'Multiple bathrooms' },
+  { value: 'kitchen_bathrooms', label: 'Kitchen + bathrooms' },
+  { value: 'outdoor_kitchen', label: 'Outdoor kitchen' },
+  { value: 'other', label: 'Other' },
+];
+
+const PROPERTY_TYPE_OPTIONS = [
+  { value: 'primary_residence', label: 'Primary residence' },
+  { value: 'second_home', label: 'Second home' },
+  { value: 'rental_property', label: 'Rental property' },
+  { value: 'commercial_property', label: 'Commercial property' },
+  { value: 'other_property', label: 'Other property' },
+];
+
+const PROJECT_TIMELINE_OPTIONS = [
+  { value: 'this_month', label: 'This month' },
+  { value: '1_3_months', label: '1-3 months' },
+  { value: '3_6_months', label: '3-6 months' },
+  { value: '6_plus_months', label: '6+ months' },
+  { value: 'just_exploring', label: 'Just exploring' },
+];
+
+const DECISION_STAGE_OPTIONS = [
+  { value: 'just_starting_research', label: 'Just starting research' },
+  { value: 'comparing_materials', label: 'Comparing materials' },
+  { value: 'getting_quotes', label: 'Getting quotes' },
+  { value: 'ready_to_schedule', label: 'Ready to schedule' },
+  { value: 'emergency_replacement', label: 'Emergency replacement' },
+];
+
+const BUDGET_RANGE_OPTIONS = [
+  { value: 'under_3000', label: 'Under $3,000' },
+  { value: '3000_6000', label: '$3,000 - $6,000' },
+  { value: '6000_10000', label: '$6,000 - $10,000' },
+  { value: '10000_15000', label: '$10,000 - $15,000' },
+  { value: '15000_plus', label: '$15,000+' },
+  { value: 'not_sure', label: 'Not sure yet' },
+];
+
 const QuoteSection = () => {
   const [formData, setFormData] = useState<QuoteFormData>({
     name: '',
     email: '',
     phone: '',
-    projectType: '',
+    projectAreas: '',
+    propertyType: '',
+    projectTimeline: '',
+    decisionStage: '',
+    budgetRange: '',
     message: '',
   });
   const [errors, setErrors] = useState<Partial<Record<keyof QuoteFormData, string>>>({});
@@ -50,7 +97,11 @@ const QuoteSection = () => {
           name: result.data.name,
           email: result.data.email,
           phone: result.data.phone,
-          projectType: result.data.projectType,
+          projectAreas: result.data.projectAreas,
+          propertyType: result.data.propertyType,
+          projectTimeline: result.data.projectTimeline,
+          decisionStage: result.data.decisionStage,
+          budgetRange: result.data.budgetRange,
           message: result.data.message,
           source: 'quote_form',
         },
@@ -68,7 +119,11 @@ const QuoteSection = () => {
         name: '',
         email: '',
         phone: '',
-        projectType: '',
+        projectAreas: '',
+        propertyType: '',
+        projectTimeline: '',
+        decisionStage: '',
+        budgetRange: '',
         message: '',
       });
     } catch (err) {
@@ -92,7 +147,7 @@ const QuoteSection = () => {
       </div>
 
       <div className="relative z-10 container mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
           {/* Left Column - Content */}
           <ScrollAnimation variant="slideLeft">
             <span className="label-caps text-primary-foreground/60 mb-4 block">Start Your Project</span>
@@ -161,6 +216,7 @@ const QuoteSection = () => {
                 Request a Free Quote
               </h3>
               <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Name & Phone Row */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
@@ -195,6 +251,8 @@ const QuoteSection = () => {
                     )}
                   </div>
                 </div>
+
+                {/* Email */}
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Email Address
@@ -211,36 +269,132 @@ const QuoteSection = () => {
                     <p className="text-xs text-destructive mt-1">{errors.email}</p>
                   )}
                 </div>
+
+                {/* Project Areas & Property Type Row */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Project Areas
+                    </label>
+                    <Select 
+                      value={formData.projectAreas}
+                      onValueChange={(value) => setFormData({ ...formData, projectAreas: value })}
+                    >
+                      <SelectTrigger className={`h-12 bg-background ${errors.projectAreas ? 'border-destructive' : ''}`}>
+                        <SelectValue placeholder="Select area" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-card border-border">
+                        {PROJECT_AREAS_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errors.projectAreas && (
+                      <p className="text-xs text-destructive mt-1">{errors.projectAreas}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Property Type
+                    </label>
+                    <Select 
+                      value={formData.propertyType}
+                      onValueChange={(value) => setFormData({ ...formData, propertyType: value })}
+                    >
+                      <SelectTrigger className={`h-12 bg-background ${errors.propertyType ? 'border-destructive' : ''}`}>
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-card border-border">
+                        {PROPERTY_TYPE_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errors.propertyType && (
+                      <p className="text-xs text-destructive mt-1">{errors.propertyType}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Timeline & Decision Stage Row */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Project Timeline
+                    </label>
+                    <Select 
+                      value={formData.projectTimeline}
+                      onValueChange={(value) => setFormData({ ...formData, projectTimeline: value })}
+                    >
+                      <SelectTrigger className={`h-12 bg-background ${errors.projectTimeline ? 'border-destructive' : ''}`}>
+                        <SelectValue placeholder="When do you need it?" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-card border-border">
+                        {PROJECT_TIMELINE_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errors.projectTimeline && (
+                      <p className="text-xs text-destructive mt-1">{errors.projectTimeline}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Decision Stage
+                    </label>
+                    <Select 
+                      value={formData.decisionStage}
+                      onValueChange={(value) => setFormData({ ...formData, decisionStage: value })}
+                    >
+                      <SelectTrigger className={`h-12 bg-background ${errors.decisionStage ? 'border-destructive' : ''}`}>
+                        <SelectValue placeholder="Where are you in the process?" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-card border-border">
+                        {DECISION_STAGE_OPTIONS.map((opt) => (
+                          <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    {errors.decisionStage && (
+                      <p className="text-xs text-destructive mt-1">{errors.decisionStage}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Budget Range */}
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
-                    Project Type
+                    Budget Range
                   </label>
-                  <Select onValueChange={(value) => setFormData({ ...formData, projectType: value })}>
-                    <SelectTrigger className={`h-12 bg-background ${errors.projectType ? 'border-destructive' : ''}`}>
-                      <SelectValue placeholder="Select project type" />
+                  <Select 
+                    value={formData.budgetRange}
+                    onValueChange={(value) => setFormData({ ...formData, budgetRange: value })}
+                  >
+                    <SelectTrigger className={`h-12 bg-background ${errors.budgetRange ? 'border-destructive' : ''}`}>
+                      <SelectValue placeholder="Select your budget" />
                     </SelectTrigger>
                     <SelectContent className="bg-card border-border">
-                      <SelectItem value="kitchen">Kitchen Countertops</SelectItem>
-                      <SelectItem value="bathroom">Bathroom Vanity</SelectItem>
-                      <SelectItem value="outdoor">Outdoor Kitchen</SelectItem>
-                      <SelectItem value="fireplace">Fireplace Surround</SelectItem>
-                      <SelectItem value="commercial">Commercial Project</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                      {BUDGET_RANGE_OPTIONS.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
-                  {errors.projectType && (
-                    <p className="text-xs text-destructive mt-1">{errors.projectType}</p>
+                  {errors.budgetRange && (
+                    <p className="text-xs text-destructive mt-1">{errors.budgetRange}</p>
                   )}
                 </div>
+
+                {/* Message */}
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Tell Us About Your Project
                   </label>
                   <Textarea
-                    placeholder="Describe your vision, timeline, and any specific materials you're interested in..."
+                    placeholder="Describe your vision and any specific materials you're interested in..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className={`min-h-[120px] bg-background resize-none ${errors.message ? 'border-destructive' : ''}`}
+                    className={`min-h-[100px] bg-background resize-none ${errors.message ? 'border-destructive' : ''}`}
                     maxLength={1000}
                   />
                   <div className="flex justify-between mt-1">
@@ -252,6 +406,7 @@ const QuoteSection = () => {
                     </p>
                   </div>
                 </div>
+
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}

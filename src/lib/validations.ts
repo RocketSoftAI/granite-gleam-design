@@ -19,9 +19,21 @@ export const quoteFormSchema = z.object({
     .trim()
     .regex(phoneRegex, { message: "Please enter a valid phone number" })
     .or(z.string().length(0)), // Allow empty phone
-  projectType: z
+  projectAreas: z
     .string()
-    .min(1, { message: "Please select a project type" }),
+    .min(1, { message: "Please select project area(s)" }),
+  propertyType: z
+    .string()
+    .min(1, { message: "Please select property type" }),
+  projectTimeline: z
+    .string()
+    .min(1, { message: "Please select your timeline" }),
+  decisionStage: z
+    .string()
+    .min(1, { message: "Please select your decision stage" }),
+  budgetRange: z
+    .string()
+    .min(1, { message: "Please select your budget range" }),
   message: z
     .string()
     .trim()
