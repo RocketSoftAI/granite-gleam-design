@@ -1,11 +1,15 @@
-import { Shield, Award, Users, Mountain, Heart, Truck, Wrench, Star } from 'lucide-react';
+import { useState } from 'react';
+import { Shield, Award, Users, Mountain, Heart, Truck, Wrench, Star, Calendar } from 'lucide-react';
 import Layout from '@/components/Layout';
 import PageHero from '@/components/PageHero';
 import SectionHeader from '@/components/SectionHeader';
+import { Button } from '@/components/ui/button';
+import BookingModal from '@/components/BookingModal';
 
 import heroKitchen from '@/assets/hero-kitchen.jpg';
 
 const AboutPage = () => {
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const values = [
     {
       icon: Shield,
@@ -247,16 +251,27 @@ const AboutPage = () => {
             <br />
             <span className="italic font-normal opacity-80">in Person</span>
           </h2>
-          <p className="body-large text-primary-foreground/70 max-w-2xl mx-auto mb-10">
+          <p className="body-large text-primary-foreground/70 max-w-2xl mx-auto mb-8">
             Visit our showroom to browse hundreds of slabs, feel different finishes, 
-            and discuss your project with our design team. No appointment necessary.
+            and discuss your project with our design team.
           </p>
+          <Button 
+            variant="hero" 
+            size="heroLg" 
+            onClick={() => setIsCalendarOpen(true)}
+            className="mb-8"
+          >
+            <Calendar className="w-4 h-4 mr-2" />
+            Book an Appointment
+          </Button>
           <div className="text-primary-foreground/80">
             <p className="font-medium text-lg mb-2">3555 S Lincoln Ave, Loveland, CO 80537</p>
             <p>Mon - Fri: 8am - 4pm (Closed 12pm - 1pm for lunch)</p>
           </div>
         </div>
       </section>
+
+      <BookingModal isOpen={isCalendarOpen} onClose={() => setIsCalendarOpen(false)} />
     </Layout>
   );
 };
