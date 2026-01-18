@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { exitPopupSchema } from '@/lib/validations';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import SmsConsentCheckbox from '@/components/SmsConsentCheckbox';
 
 const ExitIntentPopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +15,8 @@ const ExitIntentPopup = () => {
     email: '',
     phone: '',
   });
-  const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string }>({});
+  const [smsConsent, setSmsConsent] = useState(false);
+  const [errors, setErrors] = useState<{ name?: string; email?: string; phone?: string; smsConsent?: string }>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const hasTriggered = useRef(false);
@@ -54,6 +56,12 @@ const ExitIntentPopup = () => {
     e.preventDefault();
     setErrors({});
     
+    // Validate SMS consent
+    if (!smsConsent) {
+      setErrors({ smsConsent: 'You must agree to receive communications to submit this form' });
+      return;
+    }
+    
     // Validate form
     const result = exitPopupSchema.safeParse(formData);
     
@@ -79,6 +87,8 @@ const ExitIntentPopup = () => {
           phone: result.data.phone || undefined,
           source: 'exit_popup',
           tags: ['Buyer Guide Download'],
+          smsConsent: true,
+          smsConsentDate: new Date().toISOString(),
         },
       });
 
@@ -157,7 +167,7 @@ const ExitIntentPopup = () => {
                       <span className="font-semibold text-foreground">$200 off</span> your project!
                     </p>
 
-                    <ul className="space-y-2 mb-6">
+                    <ul className="space-y-2 mb-4">
                       {[
                         'Material comparison chart',
                         'Cost calculator worksheet',
@@ -211,6 +221,14 @@ const ExitIntentPopup = () => {
                           <p className="text-xs text-destructive mt-1">{errors.phone}</p>
                         )}
                       </div>
+                      
+                      {/* SMS Consent */}
+                      <SmsConsentCheckbox
+                        checked={smsConsent}
+                        onCheckedChange={setSmsConsent}
+                        error={errors.smsConsent}
+                      />
+                      
                       <Button 
                         variant="premium" 
                         size="xl" 
@@ -222,10 +240,6 @@ const ExitIntentPopup = () => {
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </Button>
                     </form>
-
-                    <p className="text-xs text-muted-foreground text-center mt-4">
-                      No spam. Unsubscribe anytime. Your info is safe.
-                    </p>
                   </>
                 ) : (
                   <div className="text-center py-8">

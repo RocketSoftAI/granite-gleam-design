@@ -16,10 +16,13 @@ interface LeadData {
   decisionStage?: string;
   budgetRange?: string;
   message?: string;
-  source: 'quote_form' | 'exit_popup';
+  source: 'quote_form' | 'exit_popup' | 'stoneworks-website-contact';
   tags?: string[];
   // Legacy field for exit popup
   projectType?: string;
+  // A2P SMS Consent fields
+  smsConsent?: boolean;
+  smsConsentDate?: string;
 }
 
 // Map form values to GHL-friendly display labels
@@ -96,6 +99,8 @@ serve(async (req) => {
     } else if (leadData.source === 'exit_popup') {
       tags.push('Exit Popup Lead');
       tags.push('$200 Discount');
+    } else if (leadData.source === 'stoneworks-website-contact') {
+      tags.push('Contact Form');
     }
     if (leadData.tags) {
       tags.push(...leadData.tags);
@@ -146,6 +151,23 @@ serve(async (req) => {
         key: 'project_notes',
         field_value: leadData.message
       });
+    }
+    
+    // Add A2P SMS Consent fields
+    if (leadData.smsConsent) {
+      // a2p_checkbox - set to true/checked
+      customFields.push({
+        key: 'a2p_checkbox',
+        field_value: 'true'
+      });
+      
+      // a2p_sms_optin_date - set to the consent date
+      if (leadData.smsConsentDate) {
+        customFields.push({
+          key: 'a2p_sms_optin_date',
+          field_value: leadData.smsConsentDate
+        });
+      }
     }
 
     console.log('Custom fields to send:', customFields);

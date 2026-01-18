@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { quoteFormSchema, type QuoteFormData } from '@/lib/validations';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import SmsConsentCheckbox from '@/components/SmsConsentCheckbox';
 
 const PROJECT_AREAS_OPTIONS = [
   { value: 'kitchen_only', label: 'Kitchen only' },
@@ -72,12 +73,20 @@ const ContactForm = ({
     budgetRange: '',
     message: '',
   });
-  const [errors, setErrors] = useState<Partial<Record<keyof QuoteFormData, string>>>({});
+  const [smsConsent, setSmsConsent] = useState(false);
+  const [errors, setErrors] = useState<Partial<Record<keyof QuoteFormData | 'smsConsent', string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
+    
+    // Validate SMS consent
+    if (!smsConsent) {
+      setErrors({ smsConsent: 'You must agree to receive communications to submit this form' });
+      toast.error('Please agree to the SMS consent to continue');
+      return;
+    }
     
     const result = quoteFormSchema.safeParse(formData);
     
@@ -109,6 +118,8 @@ const ContactForm = ({
           budgetRange: result.data.budgetRange,
           message: result.data.message,
           source: 'stoneworks-website-contact',
+          smsConsent: true,
+          smsConsentDate: new Date().toISOString(),
         },
       });
 
@@ -131,6 +142,7 @@ const ContactForm = ({
         budgetRange: '',
         message: '',
       });
+      setSmsConsent(false);
     } catch (err) {
       console.error('Error submitting form:', err);
       toast.error('Something went wrong. Please try again.');
@@ -345,6 +357,13 @@ const ContactForm = ({
           </div>
         </div>
 
+        {/* SMS Consent */}
+        <SmsConsentCheckbox
+          checked={smsConsent}
+          onCheckedChange={setSmsConsent}
+          error={errors.smsConsent}
+        />
+
         <Button
           type="submit"
           size="lg"
@@ -354,10 +373,6 @@ const ContactForm = ({
           {isSubmitting ? 'Sending...' : 'Get My Free Quote'}
           {!isSubmitting && <ArrowRight className="ml-2 w-5 h-5" />}
         </Button>
-
-        <p className="text-xs text-muted-foreground text-center">
-          We respect your privacy. No spam, ever.
-        </p>
       </form>
     </motion.div>
   );
