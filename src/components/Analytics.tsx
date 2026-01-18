@@ -7,6 +7,17 @@ import { useLocation } from 'react-router-dom';
 const GA_MEASUREMENT_ID = 'G-8DEGJZ27W5';
 const GTM_ID = 'GTM-TR62NWS4';
 
+// Validation regex for tracking IDs to prevent XSS if IDs ever become configurable
+const TRACKING_ID_REGEX = /^(GTM|G|UA)-[A-Z0-9]+$/;
+
+const validateTrackingId = (id: string, type: string): boolean => {
+  if (!TRACKING_ID_REGEX.test(id)) {
+    console.error(`Invalid ${type} tracking ID format: ${id}`);
+    return false;
+  }
+  return true;
+};
+
 declare global {
   interface Window {
     dataLayer: unknown[];
@@ -27,15 +38,19 @@ declare global {
 let isInitialized = false;
 
 const initializeGTM = () => {
-  // GTM script
+  // Validate GTM ID before use
+  if (!validateTrackingId(GTM_ID, 'GTM')) {
+    return;
+  }
+
+  // Initialize dataLayer before GTM loads
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({'gtm.start': new Date().getTime(), event: 'gtm.js'});
+
+  // Load GTM script via src (safer than innerHTML)
   const gtmScript = document.createElement('script');
-  gtmScript.innerHTML = `
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','${GTM_ID}');
-  `;
+  gtmScript.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
+  gtmScript.async = true;
   document.head.appendChild(gtmScript);
 
   // GTM noscript fallback
@@ -55,10 +70,15 @@ const initializeGA = () => {
     return;
   }
 
+  // Validate GA ID before use
+  if (!validateTrackingId(GA_MEASUREMENT_ID, 'GA')) {
+    return;
+  }
+
   // Initialize GTM
   initializeGTM();
 
-  // Create GA4 script element
+  // Create GA4 script element (using src is safer than innerHTML)
   const script = document.createElement('script');
   script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
   script.async = true;
