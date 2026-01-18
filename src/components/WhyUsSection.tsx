@@ -5,8 +5,8 @@ import { ScrollAnimation, StaggerContainer, StaggerItem } from '@/components/ui/
 const differentiators = [
   {
     icon: Shield,
-    title: 'Lifetime Warranty',
-    description: 'Our craftsmanship stands the test of time. We back every installation with our comprehensive lifetime warranty.',
+    title: '1 Year Warranty',
+    description: 'Our craftsmanship stands the test of time. We back every installation with our comprehensive 1 year warranty.',
   },
   {
     icon: Award,
