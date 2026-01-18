@@ -19,12 +19,9 @@ declare global {
  * 
  * Features:
  * - Lazy loads GA script after page load (performance optimization)
+ * - Uses requestIdleCallback for non-blocking initialization
  * - Tracks page views on route changes
  * - Provides trackEvent function for custom events
- * 
- * SETUP:
- * 1. Replace GA_MEASUREMENT_ID above with your GA4 ID
- * 2. The component auto-initializes when included in the app
  */
 
 let isInitialized = false;
@@ -150,14 +147,29 @@ export const trackMaterialQuoteForm = (material: string) => {
 const Analytics = () => {
   const location = useLocation();
 
-  // Initialize GA on first load (lazy)
+  // Initialize GA on first load (lazy with requestIdleCallback)
   useEffect(() => {
-    // Delay initialization to not block initial render
-    const timer = setTimeout(() => {
-      initializeGA();
-    }, 2000); // 2 second delay for better LCP
+    const init = () => {
+      // Use requestIdleCallback for non-blocking initialization
+      if ('requestIdleCallback' in window) {
+        (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => void })
+          .requestIdleCallback(initializeGA, { timeout: 5000 });
+      } else {
+        // Fallback to setTimeout for browsers without requestIdleCallback
+        setTimeout(initializeGA, 4000);
+      }
+    };
 
-    return () => clearTimeout(timer);
+    // Wait for page to fully load before initializing analytics
+    if (document.readyState === 'complete') {
+      init();
+    } else {
+      window.addEventListener('load', init, { once: true });
+    }
+
+    return () => {
+      window.removeEventListener('load', init);
+    };
   }, []);
 
   // Track page views on route change

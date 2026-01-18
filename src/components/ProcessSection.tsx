@@ -1,7 +1,6 @@
 import { MessageSquare, Palette, Ruler, Hammer, CheckCircle, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ScrollAnimation, StaggerContainer, StaggerItem } from '@/components/ui/scroll-animation';
-import { motion } from 'framer-motion';
 
 const steps = [
   {
@@ -70,13 +69,11 @@ const ProcessSection = () => {
                 <div className="relative group">
                   {/* Step Number Circle */}
                   <div className="relative z-10 mb-6 flex justify-center lg:justify-start">
-                    <motion.div 
-                      className="w-16 h-16 rounded-full bg-background border-2 border-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 shadow-soft"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
+                    <div 
+                      className="w-16 h-16 rounded-full bg-background border-2 border-primary flex items-center justify-center group-hover:bg-primary group-hover:text-primary-foreground group-hover:scale-110 active:scale-95 transition-all duration-500 shadow-soft"
                     >
                       <item.icon className="w-6 h-6" />
-                    </motion.div>
+                    </div>
                   </div>
 
                   {/* Content */}

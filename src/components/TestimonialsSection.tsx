@@ -1,7 +1,6 @@
 import { Star, Quote, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ScrollAnimation, StaggerContainer, StaggerItem } from '@/components/ui/scroll-animation';
-import { motion } from 'framer-motion';
 
 const testimonials = [
   {
@@ -45,9 +44,8 @@ const TestimonialsSection = () => {
         <StaggerContainer className="grid md:grid-cols-2 lg:grid-cols-3 gap-8" staggerDelay={0.15}>
           {testimonials.map((testimonial) => (
             <StaggerItem key={testimonial.name}>
-              <motion.div
-                className="bg-card p-8 lg:p-10 rounded-lg shadow-soft relative group hover:shadow-medium transition-all duration-500 h-full"
-                whileHover={{ y: -5 }}
+              <div
+                className="bg-card p-8 lg:p-10 rounded-lg shadow-soft relative group hover:shadow-medium hover:-translate-y-1 transition-all duration-500 h-full"
               >
                 {/* Quote Icon */}
                 <div className="absolute -top-4 right-8 w-10 h-10 bg-primary rounded-full flex items-center justify-center">
@@ -57,14 +55,7 @@ const TestimonialsSection = () => {
                 {/* Stars */}
                 <div className="flex gap-1 mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: i * 0.1 }}
-                    >
-                      <Star className="w-4 h-4 fill-bronze text-bronze" />
-                    </motion.div>
+                    <Star key={i} className="w-4 h-4 fill-bronze text-bronze" />
                   ))}
                 </div>
 
@@ -82,7 +73,7 @@ const TestimonialsSection = () => {
                     {testimonial.project} • {testimonial.location}
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </StaggerItem>
           ))}
         </StaggerContainer>
@@ -101,10 +92,7 @@ const TestimonialsSection = () => {
         {/* Trust Badges */}
         <ScrollAnimation variant="fadeUp" delay={0.4}>
           <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16 mt-16 pt-16 border-t border-border">
-            <motion.div 
-              className="text-center"
-              whileHover={{ scale: 1.05 }}
-            >
+            <div className="text-center hover:scale-105 transition-transform duration-300">
               <div className="font-serif text-5xl font-medium text-foreground mb-2">4.9</div>
               <div className="flex justify-center gap-1 mb-1">
                 {[1, 2, 3, 4, 5].map((i) => (
@@ -112,23 +100,17 @@ const TestimonialsSection = () => {
                 ))}
               </div>
               <span className="label-caps text-muted-foreground">Google Reviews</span>
-            </motion.div>
+            </div>
             <div className="w-px h-16 bg-border hidden sm:block" />
-            <motion.div 
-              className="text-center"
-              whileHover={{ scale: 1.05 }}
-            >
+            <div className="text-center hover:scale-105 transition-transform duration-300">
               <div className="font-serif text-5xl font-medium text-foreground mb-2">A+</div>
               <span className="label-caps text-muted-foreground">BBB Rating</span>
-            </motion.div>
+            </div>
             <div className="w-px h-16 bg-border hidden sm:block" />
-            <motion.div 
-              className="text-center"
-              whileHover={{ scale: 1.05 }}
-            >
+            <div className="text-center hover:scale-105 transition-transform duration-300">
               <div className="font-serif text-5xl font-medium text-foreground mb-2">20+</div>
               <span className="label-caps text-muted-foreground">Years in Business</span>
-            </motion.div>
+            </div>
           </div>
         </ScrollAnimation>
       </div>

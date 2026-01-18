@@ -30,9 +30,36 @@
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     
-    <!-- Font preloading for performance (WOFF2 with font-display: swap) -->
+    <!-- Critical Resource Hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://beta.leadconnectorhq.com" />
+    
+    <!-- Hero Image Preload - Mobile First (critical for LCP) -->
+    <link 
+      rel="preload" 
+      as="image" 
+      href="/images/hero-mobile.webp"
+      media="(max-width: 640px)"
+      type="image/webp"
+    />
+    <link 
+      rel="preload" 
+      as="image" 
+      href="/images/hero-tablet.webp"
+      media="(min-width: 641px) and (max-width: 1024px)"
+      type="image/webp"
+    />
+    <link 
+      rel="preload" 
+      as="image" 
+      href="/images/hero-desktop.webp"
+      media="(min-width: 1025px)"
+      type="image/webp"
+    />
+    
+    <!-- Font loading optimized for performance (non-blocking) -->
     <link 
       rel="preload" 
       as="style" 
@@ -50,21 +77,50 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&display=swap"
       />
     </noscript>
-
-    <!-- DNS prefetch for performance -->
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
   </head>
 
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
 
-    <!-- GHL Chat Widget - deferred for performance -->
-    <script
-      src="https://beta.leadconnectorhq.com/loader.js"
-      data-resources-url="https://beta.leadconnectorhq.com/chat-widget/loader.js"
-      data-widget-id="68d6b1e32c7d0b6e6655dd6c"
-      defer>
+    <!-- GHL Chat Widget - Lazy loaded for performance -->
+    <script>
+      (function() {
+        var loaded = false;
+        
+        function loadChatWidget() {
+          if (loaded) return;
+          loaded = true;
+          
+          var script = document.createElement('script');
+          script.src = 'https://beta.leadconnectorhq.com/loader.js';
+          script.setAttribute('data-resources-url', 'https://beta.leadconnectorhq.com/chat-widget/loader.js');
+          script.setAttribute('data-widget-id', '68d6b1e32c7d0b6e6655dd6c');
+          script.async = true;
+          document.body.appendChild(script);
+        }
+        
+        // Mobile: Load after scroll or 10 seconds
+        if (window.innerWidth <= 768) {
+          var scrollHandler = function() {
+            if (window.scrollY > window.innerHeight * 0.5) {
+              loadChatWidget();
+              window.removeEventListener('scroll', scrollHandler);
+            }
+          };
+          window.addEventListener('scroll', scrollHandler, { passive: true });
+          setTimeout(loadChatWidget, 10000);
+        } else {
+          // Desktop: Load after 3 seconds
+          if (document.readyState === 'complete') {
+            setTimeout(loadChatWidget, 3000);
+          } else {
+            window.addEventListener('load', function() {
+              setTimeout(loadChatWidget, 3000);
+            }, { once: true });
+          }
+        }
+      })();
     </script>
     
     <!-- Hide GHL chat bubble on mobile, keep icon only -->
@@ -124,10 +180,10 @@
         }
         
         // Run multiple times as widget loads async
-        setTimeout(clipWidget, 500);
-        setTimeout(clipWidget, 1500);
-        setTimeout(clipWidget, 3000);
+        setTimeout(clipWidget, 2000);
         setTimeout(clipWidget, 5000);
+        setTimeout(clipWidget, 10000);
+        setTimeout(clipWidget, 15000);
         
         // Also observe for DOM changes
         var observer = new MutationObserver(clipWidget);

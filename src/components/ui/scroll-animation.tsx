@@ -1,5 +1,4 @@
-import { motion, useInView, Variants } from 'framer-motion';
-import { useRef, ReactNode } from 'react';
+import { useRef, useEffect, ReactNode, useState } from 'react';
 
 interface ScrollAnimationProps {
   children: ReactNode;
@@ -11,60 +10,88 @@ interface ScrollAnimationProps {
   amount?: number;
 }
 
-const variants: Record<string, Variants> = {
-  fadeUp: {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0 },
-  },
-  fadeIn: {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-  },
-  slideLeft: {
-    hidden: { opacity: 0, x: -60 },
-    visible: { opacity: 1, x: 0 },
-  },
-  slideRight: {
-    hidden: { opacity: 0, x: 60 },
-    visible: { opacity: 1, x: 0 },
-  },
-  scale: {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: { opacity: 1, scale: 1 },
-  },
-  stagger: {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0 },
-  },
-};
-
+// CSS-based scroll animations using IntersectionObserver
+// Lightweight replacement for framer-motion to reduce bundle size by ~150KB
 export const ScrollAnimation = ({
   children,
   className = '',
   delay = 0,
-  duration = 0.6,
-  once = true,
   variant = 'fadeUp',
-  amount = 0.2,
+  once = true,
 }: ScrollAnimationProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, amount });
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (once) observer.disconnect();
+        } else if (!once) {
+          setIsVisible(false);
+        }
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [once]);
+
+  const getVariantStyles = () => {
+    const baseHidden = 'opacity-0';
+    const baseVisible = 'opacity-100';
+    
+    switch (variant) {
+      case 'fadeUp':
+        return {
+          hidden: `${baseHidden} translate-y-8`,
+          visible: `${baseVisible} translate-y-0`,
+        };
+      case 'fadeIn':
+        return {
+          hidden: baseHidden,
+          visible: baseVisible,
+        };
+      case 'slideLeft':
+        return {
+          hidden: `${baseHidden} -translate-x-12`,
+          visible: `${baseVisible} translate-x-0`,
+        };
+      case 'slideRight':
+        return {
+          hidden: `${baseHidden} translate-x-12`,
+          visible: `${baseVisible} translate-x-0`,
+        };
+      case 'scale':
+        return {
+          hidden: `${baseHidden} scale-95`,
+          visible: `${baseVisible} scale-100`,
+        };
+      default:
+        return {
+          hidden: `${baseHidden} translate-y-8`,
+          visible: `${baseVisible} translate-y-0`,
+        };
+    }
+  };
+
+  const styles = getVariantStyles();
+  const transitionClass = 'transition-all duration-700 ease-out';
+  const delayStyle = delay > 0 ? { transitionDelay: `${delay * 1000}ms` } : {};
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={variants[variant]}
-      transition={{
-        duration,
-        delay,
-        ease: [0.25, 0.4, 0.25, 1], // Custom easing for premium feel
-      }}
-      className={className}
+      className={`${transitionClass} ${isVisible ? styles.visible : styles.hidden} ${className}`}
+      style={delayStyle}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
 
@@ -83,29 +110,41 @@ export const StaggerContainer = ({
   once = true,
 }: StaggerContainerProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once, amount: 0.2 });
+  const [isVisible, setIsVisible] = useState(false);
 
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: staggerDelay,
-        delayChildren: 0.1,
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (once) observer.disconnect();
+        } else if (!once) {
+          setIsVisible(false);
+        }
       },
-    },
-  };
+      { threshold: 0.1, rootMargin: '0px 0px -30px 0px' }
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [once]);
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={containerVariants}
       className={className}
+      style={{
+        // Pass stagger delay to children via CSS custom property
+        ['--stagger-delay' as string]: `${staggerDelay}s`,
+        ['--is-visible' as string]: isVisible ? '1' : '0',
+      }}
+      data-stagger-visible={isVisible}
     >
       {children}
-    </motion.div>
+    </div>
   );
 };
 
@@ -113,55 +152,62 @@ export const StaggerContainer = ({
 interface StaggerItemProps {
   children: ReactNode;
   className?: string;
+  index?: number;
 }
 
 export const StaggerItem = ({ children, className = '' }: StaggerItemProps) => {
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.25, 0.4, 0.25, 1],
-      },
-    },
-  };
+  const ref = useRef<HTMLDivElement>(null);
+  const [index, setIndex] = useState(0);
+  const [parentVisible, setParentVisible] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    // Find index among siblings
+    const parent = element.parentElement;
+    if (parent) {
+      const siblings = Array.from(parent.children);
+      setIndex(siblings.indexOf(element));
+
+      // Watch for parent visibility changes
+      const checkVisibility = () => {
+        setParentVisible(parent.dataset.staggerVisible === 'true');
+      };
+      
+      checkVisibility();
+      const observer = new MutationObserver(checkVisibility);
+      observer.observe(parent, { attributes: true, attributeFilter: ['data-stagger-visible'] });
+      
+      return () => observer.disconnect();
+    }
+  }, []);
 
   return (
-    <motion.div variants={itemVariants} className={className}>
+    <div
+      ref={ref}
+      className={`transition-all duration-500 ease-out ${
+        parentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+      } ${className}`}
+      style={{ transitionDelay: parentVisible ? `${index * 0.1}s` : '0s' }}
+    >
       {children}
-    </motion.div>
+    </div>
   );
 };
 
-// Parallax effect component
+// Parallax effect component - simplified for performance
 interface ParallaxProps {
   children: ReactNode;
   className?: string;
   speed?: number;
 }
 
-export const Parallax = ({ children, className = '', speed = 0.5 }: ParallaxProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-
+export const Parallax = ({ children, className = '' }: ParallaxProps) => {
   return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{
-        y: 0,
-      }}
-      whileInView={{
-        y: [0, -20 * speed],
-      }}
-      transition={{
-        duration: 0.8,
-        ease: 'easeOut',
-      }}
-    >
+    <div className={className}>
       {children}
-    </motion.div>
+    </div>
   );
 };
 
