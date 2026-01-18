@@ -19,6 +19,13 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
 
+  // Must declare ALL hooks before any conditional returns
+  const handleOpenChange = useCallback((open: boolean) => {
+    if (!open) {
+      onClose();
+    }
+  }, [onClose]);
+
   // On mobile, navigate to dedicated booking page
   useEffect(() => {
     if (isOpen && isMobile) {
@@ -31,12 +38,6 @@ const BookingModal = ({ isOpen, onClose }: BookingModalProps) => {
   if (isMobile) {
     return null;
   }
-
-  const handleOpenChange = useCallback((open: boolean) => {
-    if (!open) {
-      onClose();
-    }
-  }, [onClose]);
 
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
