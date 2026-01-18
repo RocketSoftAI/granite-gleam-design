@@ -252,7 +252,7 @@ const AboutPage = () => {
             and discuss your project with our design team. No appointment necessary.
           </p>
           <div className="text-primary-foreground/80">
-            <p className="font-medium text-lg mb-2">123 Craftsman Way, Fort Collins, CO 80524</p>
+            <p className="font-medium text-lg mb-2">3555 S Lincoln Ave, Loveland, CO 80537</p>
             <p>Mon - Fri: 8am - 5pm | Sat: 9am - 2pm</p>
           </div>
         </div>

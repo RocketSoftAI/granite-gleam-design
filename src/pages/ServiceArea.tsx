@@ -185,11 +185,11 @@ const ServiceAreaPage = () => {
               
               <div className="mt-8 space-y-4">
                 <p className="text-muted-foreground">
-                  <strong className="text-foreground">Showroom:</strong> 123 Craftsman Way, Fort Collins, CO 80524
+                  <strong className="text-foreground">Showroom:</strong> 3555 S Lincoln Ave, Loveland, CO 80537
                 </p>
                 <p className="text-muted-foreground">
                   <strong className="text-foreground">Phone:</strong>{' '}
-                  <a href="tel:+19705551234" className="text-primary hover:underline">(970) 555-1234</a>
+                  <a href="tel:+19704931992" className="text-primary hover:underline">(970) 493-1992</a>
                 </p>
                 <p className="text-muted-foreground">
                   <strong className="text-foreground">Hours:</strong> Mon-Fri 8am-5pm, Sat 9am-2pm

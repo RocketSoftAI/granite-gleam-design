@@ -130,16 +130,16 @@ const Footer = () => {
           <div>
             <h4 className="font-serif text-lg font-medium mb-6">Visit Our Showroom</h4>
             <address className="not-italic text-sm text-primary-foreground/60 space-y-3">
-              <p>123 Craftsman Way</p>
-              <p>Fort Collins, CO 80524</p>
+              <p>3555 S Lincoln Ave</p>
+              <p>Loveland, CO 80537</p>
               <p className="pt-2">
-                <a href="tel:+19705551234" className="hover:text-primary-foreground transition-colors">
-                  (970) 555-1234
+                <a href="tel:+19704931992" className="hover:text-primary-foreground transition-colors">
+                  (970) 493-1992
                 </a>
               </p>
               <p>
-                <a href="mailto:info@stoneworksco.com" className="hover:text-primary-foreground transition-colors">
-                  info@stoneworksco.com
+                <a href="mailto:office@stoneworksofcolorado.com" className="hover:text-primary-foreground transition-colors">
+                  office@stoneworksofcolorado.com
                 </a>
               </p>
             </address>
