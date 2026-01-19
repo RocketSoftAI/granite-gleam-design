@@ -5,11 +5,31 @@ import { Link } from 'react-router-dom';
 const PromoBanner = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
+    // Check dismissal state first
     const dismissed = sessionStorage.getItem('promo-banner-dismissed');
-    if (!dismissed) {
-      const timer = setTimeout(() => setIsVisible(true), 500);
+    if (dismissed) {
+      setIsDismissed(true);
+      return;
+    }
+    
+    // Defer visibility to avoid interfering with LCP
+    // Use requestIdleCallback for non-critical UI
+    const showBanner = () => {
+      setIsMounted(true);
+      // Small delay for smooth appearance after hero loads
+      requestAnimationFrame(() => {
+        setIsVisible(true);
+      });
+    };
+
+    if ('requestIdleCallback' in window) {
+      const id = requestIdleCallback(showBanner, { timeout: 2000 });
+      return () => cancelIdleCallback(id);
+    } else {
+      const timer = setTimeout(showBanner, 1000);
       return () => clearTimeout(timer);
     }
   }, []);
@@ -19,11 +39,14 @@ const PromoBanner = () => {
     sessionStorage.setItem('promo-banner-dismissed', 'true');
   };
 
-  if (isDismissed || !isVisible) return null;
+  // Don't render until mounted to avoid hydration issues
+  if (!isMounted || isDismissed) return null;
 
   return (
     <div
-      className="bg-gradient-to-r from-primary via-bronze to-primary text-primary-foreground overflow-hidden relative z-[60] animate-fade-in"
+      className={`fixed top-0 left-0 right-0 bg-gradient-to-r from-primary via-bronze to-primary text-primary-foreground overflow-hidden z-[60] transition-all duration-500 ${
+        isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
+      }`}
     >
       <div className="container mx-auto px-4 py-2.5">
         <div className="flex items-center justify-center gap-3 text-center">

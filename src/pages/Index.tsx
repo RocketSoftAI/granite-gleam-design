@@ -23,12 +23,14 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEOHead schema={schema} />
-      <Suspense fallback={null}>
-        <PromoBanner />
-      </Suspense>
+      {/* Navbar renders first for proper structure matching pre-rendered HTML */}
       <Navbar />
       <main>
         <HeroSection />
+        {/* PromoBanner deferred to after hero to avoid hydration conflicts */}
+        <Suspense fallback={null}>
+          <PromoBanner />
+        </Suspense>
         
         {/* Lazy load materials - below fold */}
         <Suspense fallback={<SectionLoadingSkeleton />}>
