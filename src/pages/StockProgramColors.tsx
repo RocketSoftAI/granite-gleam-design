@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Download } from 'lucide-react';
+import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const StockProgramColors = () => {
@@ -12,22 +12,14 @@ const StockProgramColors = () => {
     canonicalPath: '/stock-program-colors',
   };
 
-  const quartzBrands = [
-    'Q Quartz by MSI',
-    'Hanstone by ESI',
-    'Nustone by Dorado',
-    'Cambria',
-    'Cosmos',
-    'Pental',
-    'Sharpstone',
-  ];
+  const pdfUrl = '/documents/stock-program-colors.pdf';
 
   return (
     <Layout>
       <SEOHead customSEO={customSEO} />
 
       {/* Compact Header */}
-      <section className="bg-charcoal pt-24 pb-12">
+      <section className="bg-charcoal pt-24 pb-6">
         <div className="container mx-auto px-6 lg:px-12">
           <Link
             to="/stock-program"
@@ -36,70 +28,42 @@ const StockProgramColors = () => {
             <ArrowLeft className="w-4 h-4" />
             Back to Stock Program
           </Link>
-          <h1 className="font-serif text-3xl md:text-4xl font-medium text-primary-foreground mb-4">
-            Stock Program Colors
-          </h1>
-          <p className="text-primary-foreground/80 max-w-2xl">
-            Stoneworks of Colorado has a variety of stock in selection. Contact us today to learn more about our current specials.
-          </p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h1 className="font-serif text-3xl md:text-4xl font-medium text-primary-foreground mb-2">
+                Stock Program Colors
+              </h1>
+              <p className="text-primary-foreground/80 text-sm">
+                Stoneworks of Colorado has a variety of stock in selection. Contact us today to learn more about our current specials.
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <Button asChild variant="outline" size="sm" className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
+                <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
+                  <ExternalLink className="w-4 h-4" />
+                  Open in New Tab
+                </a>
+              </Button>
+              <Button asChild variant="outline" size="sm" className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
+                <a href={pdfUrl} download className="inline-flex items-center gap-2">
+                  <Download className="w-4 h-4" />
+                  Download
+                </a>
+              </Button>
+            </div>
+          </div>
         </div>
       </section>
 
-      <section className="py-12 lg:py-16 bg-background">
-        <div className="container mx-auto px-6 lg:px-12">
-          {/* Important Notes */}
-          <div className="bg-muted/50 rounded-lg p-6 mb-10 border border-border">
-            <h2 className="font-medium text-foreground mb-3">Important Information</h2>
-            <ul className="text-sm text-muted-foreground space-y-2">
-              <li>• Colors above and samples provided are for visual reference only; actual product may vary.</li>
-              <li>• Slab selection is not permitted with stock material; client is encouraged to view front slab of current bundle(s) approx. 7-10 business days before install.</li>
-              <li>• Leathered/matte materials are more susceptible to oily markings and blemishes; additional client maintenance is necessary.</li>
-              <li>• Please ask Stoneworks' salesperson for more information on your selected product.</li>
-            </ul>
-          </div>
-
-          {/* Quartz Brands */}
-          <div className="mb-10">
-            <h2 className="font-serif text-2xl font-medium text-foreground mb-6">
-              Quartz Brands Available
-            </h2>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {quartzBrands.map((brand) => (
-                <div
-                  key={brand}
-                  className="bg-muted/50 rounded-lg p-5 border border-border text-center"
-                >
-                  <span className="font-medium text-foreground">{brand}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* View Colors CTA */}
-          <div className="bg-primary/10 rounded-lg p-8 text-center mb-10">
-            <h3 className="font-serif text-xl font-medium text-foreground mb-3">
-              View All Available Colors
-            </h3>
-            <p className="text-muted-foreground mb-6">
-              Browse our complete selection of in-stock granite and quartz colors with photos.
-            </p>
-            <Button asChild>
-              <Link to="/stock-program#granite">View Color Gallery</Link>
-            </Button>
-          </div>
-
-          {/* Download PDF */}
-          <div className="text-center">
-            <Button asChild variant="outline" size="lg">
-              <a
-                href="/documents/stock-program-colors.pdf"
-                download
-                className="inline-flex items-center gap-2"
-              >
-                <Download className="w-4 h-4" />
-                Download Stock Program PDF
-              </a>
-            </Button>
+      {/* PDF Embed */}
+      <section className="bg-muted">
+        <div className="container mx-auto px-6 lg:px-12 py-6">
+          <div className="bg-background rounded-lg overflow-hidden shadow-lg">
+            <iframe
+              src={pdfUrl}
+              className="w-full h-[80vh] min-h-[600px]"
+              title="Stock Program Colors PDF"
+            />
           </div>
         </div>
       </section>
