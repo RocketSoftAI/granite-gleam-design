@@ -16,6 +16,7 @@ import Index from "./pages/Index";
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ServicesPage = lazy(() => import("./pages/services"));
 const MaterialPage = lazy(() => import("./pages/services/MaterialPage"));
+const StockProgram = lazy(() => import("./pages/StockProgram"));
 const About = lazy(() => import("./pages/About"));
 const Process = lazy(() => import("./pages/Process"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -53,6 +54,7 @@ const App = () => (
             <Route path="/faq" element={<FAQ />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/service-area" element={<ServiceArea />} />
+            <Route path="/stock-program" element={<StockProgram />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/special-offer" element={<SpecialOffer />} />
