@@ -18,7 +18,7 @@ const HeroSection = () => {
           backgroundImage: 'linear-gradient(to bottom, hsl(30, 10%, 15%) 0%, hsl(30, 10%, 20%) 50%, hsl(30, 10%, 12%) 100%)'
         }}
       >
-        {/* Background Image with Overlay - Responsive WebP */}
+        {/* Background Image with Overlay - Responsive WebP with sizes for optimal loading */}
         <div className="absolute inset-0">
           <picture>
             {/* Mobile: WebP */}
@@ -38,7 +38,7 @@ const HeroSection = () => {
               srcSet="/images/hero-desktop.webp"
               type="image/webp"
             />
-            {/* Fallback */}
+            {/* Fallback with sizes attribute for browser optimization */}
             <img
               src="/images/hero-desktop.webp"
               alt="Luxury kitchen with custom stone countertops"
@@ -48,6 +48,7 @@ const HeroSection = () => {
               width="1920"
               height="1080"
               decoding="sync"
+              sizes="100vw"
             />
           </picture>
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-charcoal/40 to-charcoal/70" />
