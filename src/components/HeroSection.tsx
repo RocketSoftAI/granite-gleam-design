@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -6,39 +6,47 @@ import BookingModal from '@/components/BookingModal';
 
 const HeroSection = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Mark as hydrated after mount - allows CSS animations to run
+  useEffect(() => {
+    setIsHydrated(true);
+    
+    // Remove the data-prerender attribute from pre-rendered hero if it exists
+    const prerenderHero = document.querySelector('[data-prerender="hero"]');
+    if (prerenderHero && sectionRef.current) {
+      prerenderHero.removeAttribute('data-prerender');
+    }
+  }, []);
 
   return (
     <>
       <section 
+        ref={sectionRef}
         className="relative min-h-screen flex items-center justify-center overflow-hidden"
         style={{
-          // CSS gradient placeholder - shows immediately while image loads
-          // This provides instant visual feedback and improves perceived LCP
           backgroundColor: 'hsl(30, 10%, 18%)',
           backgroundImage: 'linear-gradient(to bottom, hsl(30, 10%, 15%) 0%, hsl(30, 10%, 20%) 50%, hsl(30, 10%, 12%) 100%)'
         }}
       >
-        {/* Background Image with Overlay - Optimized Responsive WebP */}
+        {/* Background Image with Overlay - matches pre-rendered structure */}
         <div className="absolute inset-0">
           <picture>
-            {/* Mobile: Optimized WebP */}
             <source
               media="(max-width: 640px)"
               srcSet="/images/hero-mobile-opt.webp"
               type="image/webp"
             />
-            {/* Tablet: Optimized WebP */}
             <source
               media="(max-width: 1024px)"
               srcSet="/images/hero-tablet-opt.webp"
               type="image/webp"
             />
-            {/* Desktop: Optimized WebP */}
             <source
               srcSet="/images/hero-desktop-opt.webp"
               type="image/webp"
             />
-            {/* Fallback with sizes attribute for browser optimization */}
             <img
               src="/images/hero-desktop-opt.webp"
               alt="Luxury kitchen with custom stone countertops"
@@ -54,11 +62,11 @@ const HeroSection = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-charcoal/50 via-charcoal/40 to-charcoal/70" />
         </div>
 
-        {/* Content */}
-        <div className="relative z-10 container mx-auto px-6 lg:px-12 pt-24">
+        {/* Content - matches pre-rendered structure for hydration */}
+        <div className="relative z-10 w-full container mx-auto px-6 lg:px-12 pt-24">
           <div className="max-w-3xl">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 px-4 py-2 rounded-full mb-8 animate-fade-in">
+            <div className={`inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 px-4 py-2 rounded-full mb-8 ${isHydrated ? 'animate-fade-in' : ''}`}>
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-xs uppercase tracking-widest text-primary-foreground/80 font-medium">
                 Northern Colorado's Premier Stone Fabricator
@@ -66,20 +74,20 @@ const HeroSection = () => {
             </div>
 
             {/* Main Heading */}
-            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-medium text-primary-foreground mb-6 animate-fade-in leading-tight" style={{ animationDelay: '0.1s' }}>
+            <h1 className={`font-serif text-5xl md:text-6xl lg:text-7xl font-medium text-primary-foreground mb-6 leading-tight ${isHydrated ? 'animate-fade-in' : ''}`} style={isHydrated ? { animationDelay: '0.1s' } : undefined}>
               Timeless Stone,
               <br />
               <span className="italic font-normal opacity-90">Crafted for You</span>
             </h1>
 
             {/* Subheading */}
-            <p className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <p className={`text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-xl ${isHydrated ? 'animate-fade-in' : ''}`} style={isHydrated ? { animationDelay: '0.2s' } : undefined}>
               With over 20 years of expertise in granite, quartz, marble, and quartzite, 
               we create custom countertops that elevate your kitchen and bath to works of art.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
+            {/* CTA Buttons - Only render after hydration to avoid mismatch */}
+            <div className={`flex flex-wrap gap-4 ${isHydrated ? 'animate-fade-in' : 'opacity-0'}`} style={isHydrated ? { animationDelay: '0.3s' } : undefined}>
               <Button 
                 variant="hero" 
                 size="heroLg" 
@@ -98,7 +106,7 @@ const HeroSection = () => {
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex flex-wrap items-center gap-8 mt-16 pt-8 border-t border-primary-foreground/20 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+            <div className={`flex flex-wrap items-center gap-8 mt-16 pt-8 border-t border-primary-foreground/20 ${isHydrated ? 'animate-fade-in' : 'opacity-0'}`} style={isHydrated ? { animationDelay: '0.4s' } : undefined}>
               <div className="text-center">
                 <span className="block text-3xl font-serif font-medium text-primary-foreground">20+</span>
                 <span className="text-xs uppercase tracking-wider text-primary-foreground/60">Years Experience</span>
