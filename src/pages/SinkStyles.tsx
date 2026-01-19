@@ -13,9 +13,9 @@ const SinkStyles = () => {
   };
 
   const pages = [
-    '/images/documents/sink-styles-1.jpg',
-    '/images/documents/sink-styles-2-fixed.jpg',
-    '/images/documents/sink-styles-3.jpg',
+    { src: '/images/documents/sink-styles-1.jpg', rotate: false },
+    { src: '/images/documents/sink-styles-2.jpg', rotate: true },
+    { src: '/images/documents/sink-styles-3.jpg', rotate: false },
   ];
 
   return (
@@ -55,12 +55,22 @@ const SinkStyles = () => {
         <div className="container mx-auto px-6 lg:px-12 space-y-6">
           {pages.map((page, index) => (
             <div key={index} className="bg-background rounded-lg overflow-hidden shadow-lg">
-              <img
-                src={page}
-                alt={`Sink Styles Brochure - Page ${index + 1}`}
-                className="w-full h-auto"
-                loading={index === 0 ? 'eager' : 'lazy'}
-              />
+              {page.rotate ? (
+                <img
+                  src={page.src}
+                  alt={`Sink Styles Brochure - Page ${index + 1}`}
+                  className="w-full h-auto"
+                  style={{ transform: 'rotate(-90deg)' }}
+                  loading="lazy"
+                />
+              ) : (
+                <img
+                  src={page.src}
+                  alt={`Sink Styles Brochure - Page ${index + 1}`}
+                  className="w-full h-auto"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                />
+              )}
             </div>
           ))}
         </div>
