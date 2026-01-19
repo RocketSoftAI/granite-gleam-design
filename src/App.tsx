@@ -17,6 +17,9 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const ServicesPage = lazy(() => import("./pages/services"));
 const MaterialPage = lazy(() => import("./pages/services/MaterialPage"));
 const StockProgram = lazy(() => import("./pages/StockProgram"));
+const StockProgramColors = lazy(() => import("./pages/StockProgramColors"));
+const EdgeStyles = lazy(() => import("./pages/EdgeStyles"));
+const SinkStyles = lazy(() => import("./pages/SinkStyles"));
 const About = lazy(() => import("./pages/About"));
 const Process = lazy(() => import("./pages/Process"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -55,6 +58,9 @@ const App = () => (
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/service-area" element={<ServiceArea />} />
             <Route path="/stock-program" element={<StockProgram />} />
+            <Route path="/stock-program-colors" element={<StockProgramColors />} />
+            <Route path="/edge-styles" element={<EdgeStyles />} />
+            <Route path="/sink-styles" element={<SinkStyles />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/special-offer" element={<SpecialOffer />} />

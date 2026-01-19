@@ -73,16 +73,16 @@ export const infoCards = [
   {
     title: 'Stock Program',
     description: 'Stoneworks of Colorado has a variety of stock in selection, contact us today to learn more about the current specials.',
-    pdfUrl: '/documents/stock-program-colors.pdf',
+    pageUrl: '/stock-program-colors',
   },
   {
     title: 'Edge Styles',
     description: 'Stoneworks of Colorado offers a variety of edging styles for your next renovation, or new home project.',
-    pdfUrl: '/documents/edge-styles.pdf',
+    pageUrl: '/edge-styles',
   },
   {
     title: 'Sink Styles',
     description: 'Stoneworks of Colorado offers a variety of sink styles for your next countertop installation.',
-    pdfUrl: '/documents/sink-styles.pdf',
+    pageUrl: '/sink-styles',
   },
 ];
