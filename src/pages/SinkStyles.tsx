@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const SinkStyles = () => {
@@ -12,7 +12,11 @@ const SinkStyles = () => {
     canonicalPath: '/sink-styles',
   };
 
-  const pdfUrl = '/documents/sink-styles.pdf';
+  const pages = [
+    '/images/documents/sink-styles-1.jpg',
+    '/images/documents/sink-styles-2.jpg',
+    '/images/documents/sink-styles-3.jpg',
+  ];
 
   return (
     <Layout>
@@ -37,34 +41,29 @@ const SinkStyles = () => {
                 Stoneworks of Colorado offers a variety of sink styles for your next countertop installation.
               </p>
             </div>
-            <div className="flex gap-3">
-              <Button asChild variant="outline" size="sm" className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4" />
-                  Open in New Tab
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="sm" className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                <a href={pdfUrl} download className="inline-flex items-center gap-2">
-                  <Download className="w-4 h-4" />
-                  Download
-                </a>
-              </Button>
-            </div>
+            <Button asChild variant="outline" size="sm" className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 w-fit">
+              <a href="/documents/sink-styles.pdf" download className="inline-flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Download PDF
+              </a>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* PDF Embed */}
-      <section className="bg-muted">
-        <div className="container mx-auto px-6 lg:px-12 py-6">
-          <div className="bg-background rounded-lg overflow-hidden shadow-lg">
-            <iframe
-              src={pdfUrl}
-              className="w-full h-[80vh] min-h-[600px]"
-              title="Sink Styles PDF"
-            />
-          </div>
+      {/* Images Display */}
+      <section className="bg-muted py-8">
+        <div className="container mx-auto px-6 lg:px-12 space-y-6">
+          {pages.map((page, index) => (
+            <div key={index} className="bg-background rounded-lg overflow-hidden shadow-lg">
+              <img
+                src={page}
+                alt={`Sink Styles Brochure - Page ${index + 1}`}
+                className="w-full h-auto"
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+            </div>
+          ))}
         </div>
       </section>
     </Layout>
