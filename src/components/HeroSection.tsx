@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -6,19 +6,7 @@ import BookingModal from '@/components/BookingModal';
 
 const HeroSection = () => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [isHydrated, setIsHydrated] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-
-  // Mark as hydrated after mount - allows CSS animations to run
-  useEffect(() => {
-    setIsHydrated(true);
-    
-    // Remove the data-prerender attribute from pre-rendered hero if it exists
-    const prerenderHero = document.querySelector('[data-prerender="hero"]');
-    if (prerenderHero && sectionRef.current) {
-      prerenderHero.removeAttribute('data-prerender');
-    }
-  }, []);
 
   return (
     <>
@@ -65,29 +53,29 @@ const HeroSection = () => {
         {/* Content - matches pre-rendered structure for hydration */}
         <div className="relative z-10 w-full container mx-auto px-6 lg:px-12 pt-24">
           <div className="max-w-3xl">
-            {/* Badge */}
-            <div className={`inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 px-4 py-2 rounded-full mb-8 ${isHydrated ? 'animate-fade-in' : ''}`}>
+            {/* Badge - no animation delay for LCP */}
+            <div className="inline-flex items-center gap-2 bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 px-4 py-2 rounded-full mb-8">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span className="text-xs uppercase tracking-widest text-primary-foreground/80 font-medium">
                 Northern Colorado's Premier Stone Fabricator
               </span>
             </div>
 
-            {/* Main Heading */}
-            <h1 className={`font-serif text-5xl md:text-6xl lg:text-7xl font-medium text-primary-foreground mb-6 leading-tight ${isHydrated ? 'animate-fade-in' : ''}`} style={isHydrated ? { animationDelay: '0.1s' } : undefined}>
+            {/* Main Heading - no animation delay for LCP */}
+            <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-medium text-primary-foreground mb-6 leading-tight">
               Timeless Stone,
               <br />
               <span className="italic font-normal opacity-90">Crafted for You</span>
             </h1>
 
-            {/* Subheading */}
-            <p className={`text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-xl ${isHydrated ? 'animate-fade-in' : ''}`} style={isHydrated ? { animationDelay: '0.2s' } : undefined}>
+            {/* Subheading - no animation delay for LCP */}
+            <p className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-xl">
               With over 20 years of expertise in granite, quartz, marble, and quartzite, 
               we create custom countertops that elevate your kitchen and bath to works of art.
             </p>
 
-            {/* CTA Buttons - Only render after hydration to avoid mismatch */}
-            <div className={`flex flex-wrap gap-4 ${isHydrated ? 'animate-fade-in' : 'opacity-0'}`} style={isHydrated ? { animationDelay: '0.3s' } : undefined}>
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-4">
               <Button 
                 variant="hero" 
                 size="heroLg" 
@@ -106,7 +94,7 @@ const HeroSection = () => {
             </div>
 
             {/* Trust Indicators */}
-            <div className={`flex flex-wrap items-center gap-8 mt-16 pt-8 border-t border-primary-foreground/20 ${isHydrated ? 'animate-fade-in' : 'opacity-0'}`} style={isHydrated ? { animationDelay: '0.4s' } : undefined}>
+            <div className="flex flex-wrap items-center gap-8 mt-16 pt-8 border-t border-primary-foreground/20">
               <div className="text-center">
                 <span className="block text-3xl font-serif font-medium text-primary-foreground">20+</span>
                 <span className="text-xs uppercase tracking-wider text-primary-foreground/60">Years Experience</span>
