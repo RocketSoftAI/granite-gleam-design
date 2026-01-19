@@ -23,20 +23,20 @@ const HeroSection = () => {
           <picture>
             <source
               media="(max-width: 640px)"
-              srcSet="/images/hero-mobile-opt.webp"
+              srcSet="/images/hero-mobile-opt.webp?v=2"
               type="image/webp"
             />
             <source
               media="(max-width: 1024px)"
-              srcSet="/images/hero-tablet-opt.webp"
+              srcSet="/images/hero-tablet-opt.webp?v=2"
               type="image/webp"
             />
             <source
-              srcSet="/images/hero-desktop-opt.webp"
+              srcSet="/images/hero-desktop-opt.webp?v=2"
               type="image/webp"
             />
             <img
-              src="/images/hero-desktop-opt.webp"
+              src="/images/hero-desktop-opt.webp?v=2"
               alt="Luxury kitchen with custom stone countertops"
               className="w-full h-full object-cover"
               fetchPriority="high"
