@@ -1,7 +1,7 @@
 import Layout from '@/components/Layout';
 import SEOHead from '@/components/SEOHead';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Download, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const StockProgramColors = () => {
@@ -11,8 +11,6 @@ const StockProgramColors = () => {
       'View our current stock program color specials for granite and quartz countertops. Contact us for pricing and availability.',
     canonicalPath: '/stock-program-colors',
   };
-
-  const pdfUrl = '/documents/stock-program-colors.pdf';
 
   return (
     <Layout>
@@ -37,32 +35,24 @@ const StockProgramColors = () => {
                 Stoneworks of Colorado has a variety of stock in selection. Contact us today to learn more about our current specials.
               </p>
             </div>
-            <div className="flex gap-3">
-              <Button asChild variant="outline" size="sm" className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2">
-                  <ExternalLink className="w-4 h-4" />
-                  Open in New Tab
-                </a>
-              </Button>
-              <Button asChild variant="outline" size="sm" className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                <a href={pdfUrl} download className="inline-flex items-center gap-2">
-                  <Download className="w-4 h-4" />
-                  Download
-                </a>
-              </Button>
-            </div>
+            <Button asChild variant="outline" size="sm" className="bg-transparent border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 w-fit">
+              <a href="/documents/stock-program-colors.pdf" download className="inline-flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Download PDF
+              </a>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* PDF Embed */}
-      <section className="bg-muted">
-        <div className="container mx-auto px-6 lg:px-12 py-6">
+      {/* Image Display */}
+      <section className="bg-muted py-8">
+        <div className="container mx-auto px-6 lg:px-12">
           <div className="bg-background rounded-lg overflow-hidden shadow-lg">
-            <iframe
-              src={pdfUrl}
-              className="w-full h-[80vh] min-h-[600px]"
-              title="Stock Program Colors PDF"
+            <img
+              src="/images/documents/stock-program-colors.jpg"
+              alt="Stock Program Colors - Granite and Quartz Specials"
+              className="w-full h-auto"
             />
           </div>
         </div>
