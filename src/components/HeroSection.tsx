@@ -18,29 +18,29 @@ const HeroSection = () => {
           backgroundImage: 'linear-gradient(to bottom, hsl(30, 10%, 15%) 0%, hsl(30, 10%, 20%) 50%, hsl(30, 10%, 12%) 100%)'
         }}
       >
-        {/* Background Image with Overlay - Responsive WebP with sizes for optimal loading */}
+        {/* Background Image with Overlay - Optimized Responsive WebP */}
         <div className="absolute inset-0">
           <picture>
-            {/* Mobile: WebP */}
+            {/* Mobile: Optimized WebP */}
             <source
               media="(max-width: 640px)"
-              srcSet="/images/hero-mobile.webp"
+              srcSet="/images/hero-mobile-opt.webp"
               type="image/webp"
             />
-            {/* Tablet: WebP */}
+            {/* Tablet: Optimized WebP */}
             <source
               media="(max-width: 1024px)"
-              srcSet="/images/hero-tablet.webp"
+              srcSet="/images/hero-tablet-opt.webp"
               type="image/webp"
             />
-            {/* Desktop: WebP */}
+            {/* Desktop: Optimized WebP */}
             <source
-              srcSet="/images/hero-desktop.webp"
+              srcSet="/images/hero-desktop-opt.webp"
               type="image/webp"
             />
             {/* Fallback with sizes attribute for browser optimization */}
             <img
-              src="/images/hero-desktop.webp"
+              src="/images/hero-desktop-opt.webp"
               alt="Luxury kitchen with custom stone countertops"
               className="w-full h-full object-cover"
               fetchPriority="high"
