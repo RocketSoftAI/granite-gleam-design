@@ -14,7 +14,7 @@ const SinkStyles = () => {
 
   const pages = [
     '/images/documents/sink-styles-1.jpg',
-    '/images/documents/sink-styles-2.jpg',
+    '/images/documents/sink-styles-2-rotated.jpg',
     '/images/documents/sink-styles-3.jpg',
   ];
 
